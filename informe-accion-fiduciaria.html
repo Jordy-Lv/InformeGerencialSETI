@@ -520,6 +520,7 @@ body.exportando .ed{background:transparent!important;box-shadow:none!important}
   <span class="hint" id="hintEdit">Haz clic en “Editar datos” para modificar el informe</span>
   <button class="btn btn-ghost" id="btnLoad" onclick="abrirCarga()"><i class="fa-solid fa-folder-open"></i> Cargar informes</button>
   <button class="btn btn-ghost" id="btnEdit" onclick="toggleEditar()"><i class="fa-solid fa-pen"></i> Editar datos</button>
+  <button class="btn btn-ghost" id="btnHtml" onclick="exportarHTML()"><i class="fa-solid fa-file-lines"></i> Exportar HTML</button>
   <button class="btn btn-primary" id="btnPdf" onclick="exportarPDF()"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
 </div>
 
@@ -1588,6 +1589,20 @@ const REPORTE = {
 };
 window.REPORTE = REPORTE;
 
+/* Rehidratación del informe exportado. Se ejecuta aquí, mientras se evalúa el
+   script, y no dentro del evento «load»: el bloque de mini-dashboards renderiza
+   todos los modales 80 ms después de «load», y el arranque principal espera antes
+   a document.fonts.ready. Rehidratar allí sería una carrera —si las fuentes
+   tardasen más de 80 ms, los modales se pintarían contra un store vacío y el
+   cliente vería «Pendiente de cargar» en todo el informe. */
+if(window.__INFORME_CLIENTE__ && window.__ESTADO__){
+  const est=window.__ESTADO__;
+  if(est.periodo) REPORTE.periodo=est.periodo;
+  if(est.dominios) DOMINIOS.forEach(k=>{ if(est.dominios[k]) REPORTE.dominios[k]={...VACIO,...est.dominios[k]}; });
+  REPORTE.reconciliaciones=est.reconciliaciones||[];
+  if(est.DATA_CASOS) Object.assign(DATA_CASOS,est.DATA_CASOS);
+}
+
 function reset(t){ CARGA.avisos=CARGA.avisos.filter(a=>a.tipo!==t); CARGA.errores=CARGA.errores.filter(a=>a.tipo!==t); }
 function avisar(t,x){ if(!CARGA.avisos.some(a=>a.tipo===t&&a.texto===x)) CARGA.avisos.push({tipo:t,texto:x}); }
 function bloquear(t,x){ if(!CARGA.errores.some(a=>a.tipo===t&&a.texto===x)) CARGA.errores.push({tipo:t,texto:x}); }
@@ -1640,8 +1655,14 @@ function estadoValidacion(){
   };
 }
 
+/* Los selectores de periodo viven dentro del panel de carga, que el informe
+   exportado no lleva. Cuando no existen, el periodo se toma del store, que es
+   donde aplicarPeriodo() lo deja publicado. Sin este respaldo, el exportado
+   devolvería NaN y arrastraría el fallo a etiquetas, gráficos y modales. */
 function periodo(){
-  return {mes:Number(document.getElementById('periodMonth').value),anio:Number(document.getElementById('periodYear').value)};
+  const m=document.getElementById('periodMonth'), a=document.getElementById('periodYear');
+  if(!m||!a) return {mes:REPORTE.periodo.mes, anio:REPORTE.periodo.anio};
+  return {mes:Number(m.value),anio:Number(a.value)};
 }
 function etiquetaPeriodo(m,a){ return `${MESES_CORTOS[m]}-${String(a).slice(-2)}`; }
 /* Índice del mes en curso dentro de la serie de casos. El histórico lo aporta la
@@ -1791,6 +1812,12 @@ function actualizarResumen(){
   const btn=document.getElementById('btnPdf');
   btn.setAttribute('aria-disabled',String(!listo));
   btn.title=listo?'Exportar PDF':'Faltan criterios por completar; abre Cargar informes para revisarlos.';
+  // El HTML interactivo sale por la misma puerta que el PDF: mismos criterios.
+  const btnH=document.getElementById('btnHtml');
+  if(btnH){
+    btnH.setAttribute('aria-disabled',String(!listo));
+    btnH.title=listo?'Exportar el informe interactivo para el cliente':'Faltan criterios por completar; abre Cargar informes para revisarlos.';
+  }
   if(listo){ const f=document.getElementById('loadFeedback'); if(f){f.textContent='';f.classList.remove('is-visible');} }
 }
 /* El estado de las tarjetas cuelga del store, no de la carga de un archivo
@@ -2492,7 +2519,6 @@ function cargarBackups(wb){
   const cInstancia=col(rows[h],['instancias']);
   const datos=rows.slice(h+1).filter(r=>r[cInstancia]); const labels=datos.map(r=>String(r[cInstancia]));
   const series=cols.map(x=>datos.map(r=>Math.max(0,Math.min(100,numero(r[x.i])*(Math.abs(numero(r[x.i]))<=1.01?100:1)))));
-  if(chartBackups){chartBackups.data.labels=labels;chartBackups.data.datasets=cols.map((x,j)=>({label:etiquetaPeriodo(x.d.getMonth(),x.d.getFullYear()),data:series[j],borderColor:['#B02FA0','#59A14F','#1F3864'][j],backgroundColor:['#B02FA0','#59A14F','#1F3864'][j],tension:0}));chartBackups.update();}
   const actual=series.at(-1)||[], promedio=actual.length?actual.reduce((a,b)=>a+b,0)/actual.length:null;
   document.querySelector('[data-k="bk"]').textContent=`La ejecución de Backup está al ${pct(promedio,0)} en el mes de ${MESES[mes]}.`;
   // Los nombres reales de las instancias se publican al store: antes solo
@@ -2512,6 +2538,9 @@ function cargarBackups(wb){
       columnaInstancia:'Instancias'
     })
   });
+  // Se repinta después de publicar, no antes: la serie se lee del store para que
+  // el gráfico no pueda mostrar algo distinto de lo que el store declara.
+  if(chartBackups){ const s=serieBackups(); chartBackups.data.labels=s.labels; chartBackups.data.datasets=s.datasets; chartBackups.update(); }
   return promedio;
 }
 /* Histórico de casos (slide 5). Toma de la hoja «Casos» del consolidado los tres
@@ -3014,6 +3043,28 @@ async function cargarConsolidado(file){
    GRÁFICOS
    ============================================================ */
 let chartCasos, chartBackups;
+const COLORES_BACKUPS=['#B02FA0','#59A14F','#1F3864'];
+/* Serie de backups tal como está publicada en el store. La usan por igual el
+   primer pintado y el repintado posterior a cargar el consolidado, para que no
+   existan dos versiones de la misma serie.
+
+   Sin dato publicado devuelve un gráfico vacío. Antes se pintaban tres series
+   constantes de 100% con los meses fijos «abr-26/may-26/jun-26»: en la sesión de
+   autoría quedaban tapadas al cargar el consolidado, pero en el informe exportado
+   —donde ningún cargador llega a ejecutarse— habrían llegado al cliente como si
+   fueran las cifras de su periodo. */
+function serieBackups(){
+  const d=REPORTE.d('backups');
+  if(!REPORTE.cifra('backups')||!d.datos) return {labels:[],datasets:[]};
+  return {
+    labels:(d.datos.instancias||[]).map(i=>i.nombre),
+    datasets:(d.datos.historico||[]).map((h,j)=>({
+      label:h.etiqueta, data:h.valores,
+      borderColor:COLORES_BACKUPS[j%COLORES_BACKUPS.length],
+      backgroundColor:COLORES_BACKUPS[j%COLORES_BACKUPS.length], tension:0
+    }))
+  };
+}
 function pintarGraficos(){
   if(window.ChartDataLabels) Chart.register(window.ChartDataLabels);
   Chart.defaults.font.family='Arial';
@@ -3037,16 +3088,11 @@ function pintarGraficos(){
     }
   });
 
-  // Slide 7 – líneas backups (todo 100%)
-  const cien = SISTEMAS_CI.map(()=>100);
+  // Slide 7 – líneas backups. La serie sale del store; sin insumo queda vacía.
+  const bk = serieBackups();
   chartBackups = new Chart(document.getElementById('chartBackups'),{
     type:'line',
-    data:{ labels:SISTEMAS_CI,
-      datasets:[
-        {label:'abr-26',data:cien,borderColor:'#B02FA0',backgroundColor:'#B02FA0',tension:0},
-        {label:'may-26',data:cien,borderColor:'#59A14F',backgroundColor:'#59A14F',tension:0},
-        {label:'jun-26',data:cien,borderColor:'#1F3864',backgroundColor:'#1F3864',tension:0}
-      ]},
+    data:{ labels:bk.labels, datasets:bk.datasets },
     options:{ animation:false, responsive:true, maintainAspectRatio:false,
       plugins:{
         title:{display:true,text:'Ejecución de Backups',color:'#404040',font:{size:15}},
@@ -3270,10 +3316,139 @@ async function exportarPDF(){
 }
 
 /* ============================================================
+   EXPORTAR HTML INTERACTIVO (entregable para el cliente)
+
+   Produce un archivo único y offline con el informe navegable, pero sin la capa
+   de autoría: ni barra superior, ni panel de carga, ni rótulos de slide, ni
+   edición de textos.
+
+   Por qué se clona el DOM en vez de generar una plantilla limpia: los textos que
+   se escriben con «Editar datos» viven solo en el DOM, no en el store, y un
+   informe reconstruido desde el store los perdería.
+
+   Por qué además se inyecta el store: los mini-dashboards no existen en el DOM
+   hasta que se abren —el bloque «dashboards-detalle» los construye en runtime y
+   lee todo de window.REPORTE—, así que un clon sin store llegaría al cliente sin
+   un solo modal. Los <canvas> de Chart.js tampoco sobreviven a la serialización
+   y se repintan en destino.
+   ============================================================ */
+
+/* Scripts que solo sirven para la autoría. SheetJS lee los .xlsx (624 KB);
+   jsPDF y html2canvas generan el PDF (549 KB), que el exportado no ofrece. */
+const LIBS_SOLO_AUTORIA=['xlsx.js','jspdf','html2canvas'];
+
+/* Estado que viaja al exportado. Se sanea a propósito: `fuente` guarda nombres de
+   archivo y hojas de origen («glpi (20).xlsx», filas de encabezado) que no se
+   muestran en ninguna vista, pero que sí viajarían dentro del JSON embebido y
+   serían legibles con «Ver código fuente». Lo mismo con casos.datos.mesEnCurso. */
+function snapshotEstado(){
+  const dominios={};
+  DOMINIOS.forEach(k=>{
+    const d=REPORTE.d(k);
+    let datos=d.datos;
+    if(k==='casos'&&datos&&typeof datos==='object'){ datos={...datos}; delete datos.mesEnCurso; }
+    // `fuente` se omite, no se pone a null: al rehidratar se completa desde VACIO.
+    dominios[k]={estado:d.estado, datos, notas:d.notas||[]};
+  });
+  return {
+    periodo:REPORTE.periodo,
+    dominios,
+    reconciliaciones:REPORTE.reconciliaciones||[],
+    DATA_CASOS
+  };
+}
+
+/* Serialización segura para incrustar dentro de un bloque de script: una cadena
+   que contenga una etiqueta de cierre de script lo cerraría antes de tiempo y
+   rompería el archivo. Por eso se escapan también «<» y «>», y de paso los
+   separadores de línea U+2028/U+2029, que JSON deja crudos y JavaScript no
+   admite dentro de una cadena. */
+function jsonEmbebible(v){
+  return JSON.stringify(v)
+    .replace(/</g,'\\u003c').replace(/>/g,'\\u003e')
+    .replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');
+}
+
+/* Quita del clon todo lo que pertenece a la herramienta, no al informe. */
+function podarClon(doc){
+  doc.querySelector('.topbar')?.remove();
+  doc.getElementById('loadPanel')?.remove();
+  doc.querySelectorAll('.rotulo').forEach(e=>e.remove());
+  // Ningún texto debe quedar editable ni arrastrable en el entregable.
+  doc.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
+  doc.querySelectorAll('.edx,.mov').forEach(e=>e.classList.remove('edx','mov'));
+  doc.body.classList.remove('editar');
+  // Los <canvas> se serializan vacíos; se repintan en destino desde el store.
+  doc.querySelectorAll('canvas').forEach(c=>{c.removeAttribute('width');c.removeAttribute('height');c.removeAttribute('style');});
+  doc.querySelectorAll('script').forEach(s=>{
+    if(s.src) return;
+    const cabeza=s.textContent.slice(0,600).toLowerCase();
+    if(LIBS_SOLO_AUTORIA.some(n=>cabeza.includes(n))) s.remove();
+  });
+  return doc;
+}
+
+async function exportarHTML(){
+  // Misma barrera que el PDF: un informe incompleto no sale hacia el cliente.
+  const {listo}=estadoValidacion();
+  if(!listo){ abrirCarga(); actualizarResumen(); return; }
+  const btn=document.getElementById('btnHtml');
+  btn.disabled=true; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Generando…';
+  if(editando) toggleEditar();
+  try{
+    // Se clona el documento vivo, con los textos y tablas tal como están ahora.
+    const clon=document.documentElement.cloneNode(true);
+    const doc=document.implementation.createHTMLDocument('');
+    doc.replaceChild(doc.importNode(clon,true),doc.documentElement);
+    podarClon(doc);
+
+    // El estado se inyecta antes que cualquier script de la aplicación, para que
+    // el arranque en modo cliente ya lo encuentre publicado.
+    const est=doc.createElement('script');
+    est.id='estado-cliente';
+    est.textContent='window.__INFORME_CLIENTE__=true;window.__ESTADO__='+jsonEmbebible(snapshotEstado())+';';
+    const primero=doc.querySelector('script');
+    primero?primero.parentNode.insertBefore(est,primero):doc.head.appendChild(est);
+
+    const {mes,anio}=periodo();
+    const nombre=`Informe Accion Fiduciaria ${MESES[mes][0].toUpperCase()+MESES[mes].slice(1)} ${anio}.html`;
+    const blob=new Blob(['<!DOCTYPE html>\n'+doc.documentElement.outerHTML],{type:'text/html;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download=nombre; a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),4000);
+  }catch(e){
+    console.error(e); alert('Error al generar el HTML: '+e.message);
+  }finally{
+    btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-file-lines"></i> Exportar HTML';
+  }
+}
+
+/* Arranque del informe exportado: solo render. El store ya quedó rehidratado al
+   evaluarse el script, mucho antes de este evento.
+
+   No registra los listeners del panel de carga (su DOM ya no existe), no abre
+   IndexedDB y no escribe posiciones: abrir el entregable no debe tocar el estado
+   guardado de ninguna sesión de autoría.
+
+   Tampoco llama a aplicarPeriodo(): el clon ya trae los textos del periodo
+   pintados, y esa función los devolvería a «pendiente de cargar». */
+function arranqueCliente(){
+  const logo=document.querySelector('#s8 .logo-esq');
+  if(logo) document.querySelectorAll('.logo-clone').forEach(img=>{img.src=logo.src;});
+  pintarGraficos();
+  ajustarEscala();
+  setTimeout(ajustarEscala,300);
+}
+
+/* ============================================================
    INICIO
    ============================================================ */
 window.addEventListener('load',async()=>{
   try{ if(document.fonts&&document.fonts.ready) await document.fonts.ready; }catch(e){}
+  // El informe exportado no tiene panel de carga: lo que sigue haría
+  // getElementById sobre nodos inexistentes y moriría antes de pintar nada.
+  if(window.__INFORME_CLIENTE__) return arranqueCliente();
   const sel=document.getElementById('periodMonth');
   // Por defecto el informe reporta el mes calendario ya cerrado (el anterior al actual),
   // no un mes fijo: evita que el periodo quede obsoleto con el paso del tiempo.
