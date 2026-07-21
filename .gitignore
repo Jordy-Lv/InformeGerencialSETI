@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Archivos de bloqueo de Excel/Word (se crean al abrir un documento)
+~$*
+
+# Salidas generadas: PDFs del informe, temporales
+output/
+outputs/
+tmp/
+
+# Evidencia de QA: vídeos, capturas y PDFs pesados.
+# Se conserva el informe de resultados, que sí es documentación.
+qa-report/*
+!qa-report/report.md
