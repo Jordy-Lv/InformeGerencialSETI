@@ -1,0 +1,3357 @@
+[[0]] 
+
+
+Yordy Pardo Pajaro
+
+empezó la transcripción
+[[1]] YP
+Yordy Pardo Pajaro
+0 minutos 4 segundos
+0:04
+Yordy Pardo Pajaro 0 minutos 4 segundos
+Yes.
+[[2]] Santiago Amaya Cely
+0 minutos 6 segundos
+0:06
+Santiago Amaya Cely 0 minutos 6 segundos
+Bueno, explícame cómo trabaja.
+[[3]] YP
+Yordy Pardo Pajaro
+0 minutos 9 segundos
+0:09
+Yordy Pardo Pajaro 0 minutos 9 segundos
+Pues se suben los informes igualmente como estado anterior.
+[[4]] Santiago Amaya Cely
+0 minutos 15 segundos
+0:15
+Santiago Amaya Cely 0 minutos 15 segundos
+Hello.
+[[5]] YP
+Yordy Pardo Pajaro
+0 minutos 16 segundos
+0:16
+Yordy Pardo Pajaro 0 minutos 16 segundos
+Selecciona, pues.
+[[6]] Yordy Pardo Pajaro 0 minutos 19 segundos
+De junio.
+[[7]] Yordy Pardo Pajaro 0 minutos 21 segundos
+Selecciono consolido.
+[[8]] Yordy Pardo Pajaro 0 minutos 24 segundos
+Exportación de LPI.
+[[9]] Yordy Pardo Pajaro 0 minutos 28 segundos
+El alermis.
+[[10]] Yordy Pardo Pajaro 0 minutos 30 segundos
+Ya puede leer los logros, así como los manda, creo que Carlos me había dicho, ya los puede leer.
+[[11]] Santiago Amaya Cely
+0 minutos 36 segundos
+0:36
+Santiago Amaya Cely 0 minutos 36 segundos
+Y.
+[[12]] YP
+Yordy Pardo Pajaro
+0 minutos 38 segundos
+0:38
+Yordy Pardo Pajaro 0 minutos 38 segundos
+logros a ver logros clientes junio ya los lee y revisar informe aquí está la línea base como es el contrato las instancias bases de datos la vigencia y una especie ya no sé como que se va llenando a medida
+[[13]] Yordy Pardo Pajaro 0 minutos 57 segundos
+Pasan los días.
+[[14]] Yordy Pardo Pajaro 1 minuto
+luego están los indicadores del periodo que dice el resultado y también pues muestra la meta muestra el margen pues de en este caso de superioridad en contra la meta
+[[15]] Yordy Pardo Pajaro 1 minuto 14 segundos
+Y poco más, dice periodo no junio 2026.
+[[16]] Yordy Pardo Pajaro 1 minuto 19 segundos
+Luego están los casos, muestra los casos del mes pasado.
+[[17]] Yordy Pardo Pajaro 1 minuto 27 segundos
+De abril los 3 y el que se está reportando lo pone en rojito en los alertas, requerimientos inciden.
+[[18]] Santiago Amaya Cely
+1 minuto 34 segundos
+1:34
+Santiago Amaya Cely 1 minuto 34 segundos
+¿Por qué lo pone en rojo? Pregunta.
+[[19]] YP
+Yordy Pardo Pajaro
+1 minuto 37 segundos
+1:37
+Yordy Pardo Pajaro 1 minuto 37 segundos
+¿Por qué lo pone en rojo? Pues era una forma de identificar el periodo actual, pero pues se puede poner de otro.
+[[20]] Santiago Amaya Cely
+1 minuto 45 segundos
+1:45
+Santiago Amaya Cely 1 minuto 45 segundos
+Espérame, a ver, espérame casos registrados, junio 2026, casos atendidos, 49 alerta cero requerimiento de incidentes registrados en el periodo.
+[[21]] Santiago Amaya Cely 1 minuto 58 segundos
+Y tengo alerta requerimientos incidentes incidente.
+[[22]] Santiago Amaya Cely 2 minutos 3 segundos
+Eso sí.
+[[23]] Santiago Amaya Cely 2 minutos 5 segundos
+Pero.
+[[24]] Santiago Amaya Cely 2 minutos 9 segundos
+Sí, yo le cambiaría, yo le cambiaría el colorcito rojo, porque eso me da a miedo pensar que estamos algo mal ahí.
+[[25]] YP
+Yordy Pardo Pajaro
+2 minutos 16 segundos
+2:16
+Yordy Pardo Pajaro 2 minutos 16 segundos
+Sí, tiene razón.
+[[26]] Santiago Amaya Cely
+2 minutos 18 segundos
+2:18
+Santiago Amaya Cely 2 minutos 18 segundos
+Pues yo le dejaría, no, yo le dejaría el.
+[[27]] Santiago Amaya Cely 2 minutos 22 segundos
+Algo que no sea rojo, pues cómo lo cómo estaba el otro. El otro creo que tenía colores diferentes por cada mes. Lo podemos dejar con otro, o sea, esos 3 los podemos dejar.
+[[28]] YP
+Yordy Pardo Pajaro
+2 minutos 31 segundos
+2:31
+Yordy Pardo Pajaro 2 minutos 31 segundos
+Mhm.
+[[29]] Santiago Amaya Cely
+2 minutos 37 segundos
+2:37
+Santiago Amaya Cely 2 minutos 37 segundos
+¿Es que por qué me sale? ¿Por qué me aparece un espacio?
+[[30]] Santiago Amaya Cely 2 minutos 42 segundos
+Bueno, evolución mensual total de registros del periodo del reporte. Entonces en abril tuvimos 58 casos, en mayo 36 y en junio 49, sí.
+[[31]] YP
+Yordy Pardo Pajaro
+2 minutos 51 segundos
+2:51
+Yordy Pardo Pajaro 2 minutos 51 segundos
+Yeah, perfect.
+[[32]] Santiago Amaya Cely
+2 minutos 52 segundos
+2:52
+Santiago Amaya Cely 2 minutos 52 segundos
+De los cuales 49 fueron alertas.
+[[33]] Santiago Amaya Cely 2 minutos 56 segundos
+Cero requerimientos y cero incidentes. ¿Entonces yo qué? ¿Yo qué le quitaría ahí para que se vea mejor? Es como el sombreado de la línea, porque yo cómo lo veo así según mi análisis es que.
+[[34]] YP
+Yordy Pardo Pajaro
+3 minutos 4 segundos
+3:04
+Yordy Pardo Pajaro 3 minutos 4 segundos
+Mhm.
+[[35]] Santiago Amaya Cely
+3 minutos 14 segundos
+3:14
+Santiago Amaya Cely 3 minutos 14 segundos
+En el mes de abril llegamos a 58 casos y mi de 58 casos, sí, y mi meta de 58 casos. Ese sombreado me hace pensar, por ejemplo, mira en mayo 36 casos, o sea.
+[[36]] Santiago Amaya Cely 3 minutos 29 segundos
+Si es que lo relleno y lo sombreado, es como si yo tuviera una meta para llegar a casos.
+[[37]] YP
+Yordy Pardo Pajaro
+3 minutos 36 segundos
+3:36
+Yordy Pardo Pajaro 3 minutos 36 segundos
+Sí, tiene todo el sentido, sí, claro.
+[[38]] Santiago Amaya Cely
+3 minutos 39 segundos
+3:39
+Santiago Amaya Cely 3 minutos 39 segundos
+¿Entonces, claro, cuánto me faltan para llegar a los 36? No, eso no es lo que queremos.
+[[39]] Santiago Amaya Cely 3 minutos 45 segundos
+Mostrarse o no, entonces lo que yo le quitaría sería ese sombreado y dejamos solamente en un lado 58, en un lado 36 y en el otro 49. Y de pronto le combinaría 3 colorcitos. Esos 3 colores va van siendo los mismos. Ay, Dios mío, espérame.
+[[40]] YP
+Yordy Pardo Pajaro
+3 minutos 46 segundos
+3:46
+Yordy Pardo Pajaro 3 minutos 46 segundos
+Sí, sí, sí.
+[[41]] Yordy Pardo Pajaro 3 minutos 53 segundos
+Uh, is.
+[[42]] Yordy Pardo Pajaro 4 minutos 3 segundos
+OKOK.
+[[43]] Santiago Amaya Cely
+4 minutos 17 segundos
+4:17
+Santiago Amaya Cely 4 minutos 17 segundos
+Espérame un segundos.
+[[44]] YP
+Yordy Pardo Pajaro
+4 minutos 19 segundos
+4:19
+Yordy Pardo Pajaro 4 minutos 19 segundos
+Hale.
+[[45]] Santiago Amaya Cely
+5 minutos 8 segundos
+5:08
+Santiago Amaya Cely 5 minutos 8 segundos
+Listo, perdón, me estaban escribiendo. Entonces esos colorcitos, pues va a identificar el tercer mes, el segundo mes y el primer mes, o sea, el primer mes en el que es en el que estamos. Sí, pues no sé, puede ser amarillo, azul y verde, no sé, algo que no sea rojo.
+[[46]] YP
+Yordy Pardo Pajaro
+5 minutos 11 segundos
+5:11
+Yordy Pardo Pajaro 5 minutos 11 segundos
+Okay.
+[[47]] Yordy Pardo Pajaro 5 minutos 20 segundos
+Mm.
+[[48]] Yordy Pardo Pajaro 5 minutos 22 segundos
+Okay.
+[[49]] Santiago Amaya Cely
+5 minutos 26 segundos
+5:26
+Santiago Amaya Cely 5 minutos 26 segundos
+Vale, porque el rojo me da una alerta.
+[[50]] YP
+Yordy Pardo Pajaro
+5 minutos 28 segundos
+5:28
+Yordy Pardo Pajaro 5 minutos 28 segundos
+Bueno, representa como peligro, sí, exacto.
+[[51]] Santiago Amaya Cely
+5 minutos 30 segundos
+5:30
+Santiago Amaya Cely 5 minutos 30 segundos
+Sí, exacto, entonces, bueno.
+[[52]] YP
+Yordy Pardo Pajaro
+5 minutos 33 segundos
+5:33
+Yordy Pardo Pajaro 5 minutos 33 segundos
+Miss.
+[[53]] Santiago Amaya Cely
+5 minutos 36 segundos
+5:36
+Santiago Amaya Cely 5 minutos 36 segundos
+Entonces alertas, 49 registros, porcentaje total de casos, 100% estado registrado. Para mí es esa columna de estado yo la quitaría.
+[[54]] YP
+Yordy Pardo Pajaro
+5 minutos 48 segundos
+5:48
+Yordy Pardo Pajaro 5 minutos 48 segundos
+Okay, listo, estado fuera.
+[[55]] Santiago Amaya Cely
+5 minutos 51 segundos
+5:51
+Santiago Amaya Cely 5 minutos 51 segundos
+Sí, porque arriba decimos incidentes, yo quisiera que se mostrara que fuera un poquito más grande el incidentes atribuibles a seti.
+[[56]] YP
+Yordy Pardo Pajaro
+6 minutos 1 segundo
+6:01
+Yordy Pardo Pajaro 6 minutos 1 segundo
+Que fuera más notable, okay, please.
+[[57]] Santiago Amaya Cely
+6 minutos 3 segundos
+6:03
+Santiago Amaya Cely 6 minutos 3 segundos
+¿Por ejemplo, qué cómo? O sea, la forma está bien, lo que pasa es que sea muy pequeño. ¿Yo qué haría? No sé algo parecido a al otro que te.
+[[58]] Santiago Amaya Cely 6 minutos 15 segundos
+Que te mencioné, 49 casos atendidos y al lado cero casos atribuiles, perdón, atribuibles a Seti, sí.
+[[59]] YP
+Yordy Pardo Pajaro
+6 minutos 25 segundos
+6:25
+Yordy Pardo Pajaro 6 minutos 25 segundos
+Mhm, OKOK.
+[[60]] Santiago Amaya Cely
+6 minutos 27 segundos
+6:27
+Santiago Amaya Cely 6 minutos 27 segundos
+Con eso identificamos bien.
+[[61]] Santiago Amaya Cely 6 minutos 30 segundos
+O sea, que se vea esa parte, porque la idea es que mostremos nuestra gestión también, sí.
+[[62]] YP
+Yordy Pardo Pajaro
+6 minutos 37 segundos
+6:37
+Yordy Pardo Pajaro 6 minutos 37 segundos
+Yes, it is.
+[[63]] Santiago Amaya Cely
+6 minutos 38 segundos
+6:38
+Santiago Amaya Cely 6 minutos 38 segundos
+Listo de resto, yo lo veo bien.
+[[64]] YP
+Yordy Pardo Pajaro
+6 minutos 38 segundos
+6:38
+Yordy Pardo Pajaro 6 minutos 38 segundos
+This.
+[[65]] Yordy Pardo Pajaro 6 minutos 42 segundos
+Ok, pasamos a la disponibilidad global.
+[[66]] Yordy Pardo Pajaro 6 minutos 47 segundos
+En la que muestra.
+[[67]] Santiago Amaya Cely
+6 minutos 49 segundos
+6:49
+Santiago Amaya Cely 6 minutos 49 segundos
+Disponibilidad global 100%, esa es la suma de todos los meses, ¿no?
+[[68]] Santiago Amaya Cely 6 minutos 54 segundos
+Resultado del corte a junio, 100% disponibilidad CETI 0,7 PP por encima de la meta contractual, como así cero puntos porcentuales. ¿Significa eso?
+[[69]] YP
+Yordy Pardo Pajaro
+6 minutos 54 segundos
+6:54
+Yordy Pardo Pajaro 6 minutos 54 segundos
+Sí.
+[[70]] Yordy Pardo Pajaro 7 minutos 6 segundos
+Sí, con 2 porcentrales.
+[[71]] Santiago Amaya Cely
+7 minutos 11 segundos
+7:11
+Santiago Amaya Cely 7 minutos 11 segundos
+Yo dejaría en vez de Pepe, yo colocaría un porcentaje 0,7% por encima de la meta contractual ya.
+[[72]] YP
+Yordy Pardo Pajaro
+7 minutos 16 segundos
+7:16
+Yordy Pardo Pajaro 7 minutos 16 segundos
+Okay, see, Elise.
+[[73]] Santiago Amaya Cely
+7 minutos 19 segundos
+7:19
+Santiago Amaya Cely 7 minutos 19 segundos
+listo meta 99,3 motores motores entonces ahí en motores al lado yo colocaría motores disponibles no motores evaluados o motores o motores
+[[74]] YP
+Yordy Pardo Pajaro
+7 minutos 20 segundos
+7:20
+Yordy Pardo Pajaro 7 minutos 20 segundos
+Hey.
+[[75]] Santiago Amaya Cely
+7 minutos 39 segundos
+7:39
+Santiago Amaya Cely 7 minutos 39 segundos
+O disponibilidad motores, cuatro y no.
+[[76]] Santiago Amaya Cely 7 minutos 45 segundos
+Motores, es que me no me queda muy ambiguo, pero no sé qué más, o sea, cómo identificarlo, porque si le coloco motores evaluados, cuatro y el resto.
+[[77]] YP
+Yordy Pardo Pajaro
+7 minutos 56 segundos
+7:56
+Yordy Pardo Pajaro 7 minutos 56 segundos
+Yeah.
+[[78]] Santiago Amaya Cely
+7 minutos 56 segundos
+7:56
+Santiago Amaya Cely 7 minutos 56 segundos
+¿Tenemos más o no tenemos más? ¿Cuáles son esos motores? Si yo quisiera ver cuáles forman esos motores.
+[[79]] YP
+Yordy Pardo Pajaro
+8 minutos
+8:00
+Yordy Pardo Pajaro 8 minutos
+A ver, vas a revisar las la disponible en el informe.
+[[80]] Yordy Pardo Pajaro 8 minutos 5 segundos
+Tienes acá en julio.
+[[81]] Yordy Pardo Pajaro 8 minutos 9 segundos
+Con mi vida consolidado hoy.
+[[82]] Yordy Pardo Pajaro 8 minutos 13 segundos
+That is all.
+[[83]] Yordy Pardo Pajaro 8 minutos 20 segundos
+Mi mal no estoy.
+[[84]] Yordy Pardo Pajaro 8 minutos 23 segundos
+Son.
+[[85]] Yordy Pardo Pajaro 8 minutos 25 segundos
+Creo que esos motores.
+[[86]] Yordy Pardo Pajaro 8 minutos 28 segundos
+Siqual my siqual.
+[[87]] Santiago Amaya Cely
+8 minutos 28 segundos
+8:28
+Santiago Amaya Cely 8 minutos 28 segundos
+¿Sí, son esos motores, pero cómo le colocamos ahí?
+[[88]] Santiago Amaya Cely 8 minutos 34 segundos
+Mhm.
+[[89]] YP
+Yordy Pardo Pajaro
+8 minutos 36 segundos
+8:36
+Yordy Pardo Pajaro 8 minutos 36 segundos
+A ver, pues un entre paréntesis con los diferentes nombres, no sé.
+[[90]] Santiago Amaya Cely
+8 minutos 41 segundos
+8:41
+Santiago Amaya Cely 8 minutos 41 segundos
+Y no, mira, cámbialo, porfa. ¿Qué pasa si yo quiero saber la disponibilidad por motor? ¿Lo puedo hacer, no?
+[[91]] YP
+Yordy Pardo Pajaro
+8 minutos 48 segundos
+8:48
+Yordy Pardo Pajaro 8 minutos 48 segundos
+A ver, sí, a ver, no, esas son las bases de datos.
+[[92]] Yordy Pardo Pajaro 8 minutos 54 segundos
+No hay un una tarjeta para saber la disponibilidad por motor.
+[[93]] Santiago Amaya Cely
+9 minutos 1 segundo
+9:01
+Santiago Amaya Cely 9 minutos 1 segundo
+¿Qué es lo que queremos saber cuando ven salte ahí un momento, por favor?
+[[94]] Santiago Amaya Cely 9 minutos 7 segundos
+¿En dónde vamos?
+[[95]] YP
+Yordy Pardo Pajaro
+9 minutos 9 segundos
+9:09
+Yordy Pardo Pajaro 9 minutos 9 segundos
+What's for disponible?
+[[96]] Santiago Amaya Cely
+9 minutos 9 segundos
+9:09
+Santiago Amaya Cely 9 minutos 9 segundos
+En disponibilidad global, sí o no, entonces espérame.
+[[97]] YP
+Yordy Pardo Pajaro
+9 minutos 15 segundos
+9:15
+Yordy Pardo Pajaro 9 minutos 15 segundos
+Sí.
+[[98]] Santiago Amaya Cely
+9 minutos 18 segundos
+9:18
+Santiago Amaya Cely 9 minutos 18 segundos
+Entonces, disponibilidad global 100% cliente 100% CETI 100%.
+[[99]] Santiago Amaya Cely 9 minutos 24 segundos
+Cumple.
+[[100]] Santiago Amaya Cely 9 minutos 29 segundos
+M.
+[[101]] Santiago Amaya Cely 9 minutos 31 segundos
+Abre la tarjeta, dale clic ahí en la tarjeta.
+[[102]] YP
+Yordy Pardo Pajaro
+9 minutos 33 segundos
+9:33
+Yordy Pardo Pajaro 9 minutos 33 segundos
+Right.
+[[103]] Yordy Pardo Pajaro 9 minutos 36 segundos
+Yeah.
+[[104]] Santiago Amaya Cely
+9 minutos 37 segundos
+9:37
+Santiago Amaya Cely 9 minutos 37 segundos
+Disponibilidad global, listo setti, entonces serie de disponibilidad setti, promedio mensual de los motores monitoreados.
+[[105]] Santiago Amaya Cely 9 minutos 49 segundos
+Disponibilidad Seti Meta Contract.
+[[106]] Santiago Amaya Cely 9 minutos 53 segundos
+When?
+[[107]] Santiago Amaya Cely 9 minutos 55 segundos
+¿Pero de cuánto es esa meta? ¿Dónde yo la voy allá meta 93,3?
+[[108]] Santiago Amaya Cely 10 minutos 8 segundos
+Dice cliente frente a meta 88,3.
+[[109]] YP
+Yordy Pardo Pajaro
+10 minutos 16 segundos
+10:16
+Yordy Pardo Pajaro 10 minutos 16 segundos
+Pues.
+[[110]] Yordy Pardo Pajaro 10 minutos 17 segundos
+La.
+[[111]] Santiago Amaya Cely
+10 minutos 17 segundos
+10:17
+Santiago Amaya Cely 10 minutos 17 segundos
+¿Por qué?
+[[112]] YP
+Yordy Pardo Pajaro
+10 minutos 20 segundos
+10:20
+Yordy Pardo Pajaro 10 minutos 20 segundos
+O sea, frente a la meta.
+[[113]] Yordy Pardo Pajaro 10 minutos 23 segundos
+De 99,3.
+[[114]] Yordy Pardo Pajaro 10 minutos 25 segundos
+Que con este cliente, pues el.
+[[115]] Santiago Amaya Cely
+10 minutos 26 segundos
+10:26
+Santiago Amaya Cely 10 minutos 26 segundos
+Ahí dice 99, es que se ve súper chiquitico.
+[[116]] YP
+Yordy Pardo Pajaro
+10 minutos 28 segundos
+10:28
+Yordy Pardo Pajaro 10 minutos 28 segundos
+99, 99,3 sí.
+[[117]] Santiago Amaya Cely
+10 minutos 32 segundos
+10:32
+Santiago Amaya Cely 10 minutos 32 segundos
+Yeah.
+[[118]] Santiago Amaya Cely 10 minutos 35 segundos
+A ver a mí.
+[[119]] Santiago Amaya Cely 10 minutos 37 segundos
+Esto me gusta.
+[[120]] Santiago Amaya Cely 10 minutos 41 segundos
+Solo que me falta, me falta esa ese de los motores.
+[[121]] YP
+Yordy Pardo Pajaro
+10 minutos 47 segundos
+10:47
+Yordy Pardo Pajaro 10 minutos 47 segundos
+Lo de los motores, okey.
+[[122]] Santiago Amaya Cely
+10 minutos 47 segundos
+10:47
+Santiago Amaya Cely 10 minutos 47 segundos
+Yo aquí digo la disponibilidad global, voy al 100%, tengo un 0.7% por encima de la meta contractual, o sea, voy bien.
+[[123]] YP
+Yordy Pardo Pajaro
+10 minutos 56 segundos
+10:56
+Yordy Pardo Pajaro 10 minutos 56 segundos
+Mhm.
+[[124]] Santiago Amaya Cely
+10 minutos 56 segundos
+10:56
+Santiago Amaya Cely 10 minutos 56 segundos
+Cierto, mi meta es 99,3 frente al 100% bien, ahora yo le muestro una gráfica.
+[[125]] Santiago Amaya Cely 11 minutos 5 segundos
+De la meta.
+[[126]] Santiago Amaya Cely 11 minutos 7 segundos
+¿Versus la disponibilidad SETI, sí o no? ¿La meta cuál es esa línea rojita que está versus la disponibilidad SETI que está al 100?
+[[127]] YP
+Yordy Pardo Pajaro
+11 minutos 8 segundos
+11:08
+Yordy Pardo Pajaro 11 minutos 8 segundos
+Mhm.
+[[128]] Yordy Pardo Pajaro 11 minutos 10 segundos
+Yes.
+[[129]] Yordy Pardo Pajaro 11 minutos 17 segundos
+Exacto.
+[[130]] Santiago Amaya Cely
+11 minutos 18 segundos
+11:18
+Santiago Amaya Cely 11 minutos 18 segundos
+Listo, ahí está la disponibilidad del cliente, la disponibilidad CETI y el estado actual que cumplimos. Está bien, a mí me gusta. Solo me faltas esa parte de los motores. ¿Cómo lo podemos visualizar?
+[[131]] YP
+Yordy Pardo Pajaro
+11 minutos 28 segundos
+11:28
+Yordy Pardo Pajaro 11 minutos 28 segundos
+Okay.
+[[132]] Yordy Pardo Pajaro 11 minutos 30 segundos
+Los motores listos.
+[[133]] Yordy Pardo Pajaro 11 minutos 34 segundos
+O K, serían otra tarjetita diferentes motores.
+[[134]] Yordy Pardo Pajaro 11 minutos 39 segundos
+Voy a poner por acá en la operación.
+[[135]] Santiago Amaya Cely
+11 minutos 43 segundos
+11:43
+Santiago Amaya Cely 11 minutos 43 segundos
+Y cuando yo abra esa disponibilidad global no cabría, por ejemplo, abre por favor disponibilidad global nuevamente.
+[[136]] YP
+Yordy Pardo Pajaro
+11 minutos 49 segundos
+11:49
+Yordy Pardo Pajaro 11 minutos 49 segundos
+Okay.
+[[137]] Santiago Amaya Cely
+11 minutos 52 segundos
+11:52
+Santiago Amaya Cely 11 minutos 52 segundos
+No, pero ya quedaría muy cargado colocar eso ahí.
+[[138]] YP
+Yordy Pardo Pajaro
+11 minutos 56 segundos
+11:56
+Yordy Pardo Pajaro 11 minutos 56 segundos
+Mhm.
+[[139]] Santiago Amaya Cely
+12 minutos
+12:00
+Santiago Amaya Cely 12 minutos
+Yo que entonces.
+[[140]] Santiago Amaya Cely 12 minutos 2 segundos
+Ay, el tema es que.
+[[141]] Santiago Amaya Cely 12 minutos 5 segundos
+Enero, febrero, marzo, abril, mayo, junio.
+[[142]] Santiago Amaya Cely 12 minutos 10 segundos
+Solo está desde enero.
+[[143]] YP
+Yordy Pardo Pajaro
+12 minutos 10 segundos
+12:10
+Yordy Pardo Pajaro 12 minutos 10 segundos
+Okay.
+[[144]] Yordy Pardo Pajaro 12 minutos 12 segundos
+A ver, se supone que toma los datos desde acá.
+[[145]] Yordy Pardo Pajaro 12 minutos 16 segundos
+Sí, porque como aquí escanea desde enero a junio, pues.
+[[146]] Santiago Amaya Cely
+12 minutos 19 segundos
+12:19
+Santiago Amaya Cely 12 minutos 19 segundos
+¿Sabes por qué mira?
+[[147]] YP
+Yordy Pardo Pajaro
+12 minutos 21 segundos
+12:21
+Yordy Pardo Pajaro 12 minutos 21 segundos
+Okay.
+[[148]] Santiago Amaya Cely
+12 minutos 21 segundos
+12:21
+Santiago Amaya Cely 12 minutos 21 segundos
+Dale, selecciona la columna cyq las 2.
+[[149]] YP
+Yordy Pardo Pajaro
+12 minutos 25 segundos
+12:25
+Yordy Pardo Pajaro 12 minutos 25 segundos
+¿En dónde?
+[[150]] Yordy Pardo Pajaro 12 minutos 28 segundos
+Pico, a ver cómo selecciono la cosa, okay, ya.
+[[151]] Santiago Amaya Cely
+12 minutos 32 segundos
+12:32
+Santiago Amaya Cely 12 minutos 32 segundos
+Solamente es a eso así y dale clic derecho.
+[[152]] YP
+Yordy Pardo Pajaro
+12 minutos 36 segundos
+12:36
+Yordy Pardo Pajaro 12 minutos 36 segundos
+Click derecho.
+[[153]] Santiago Amaya Cely
+12 minutos 38 segundos
+12:38
+Santiago Amaya Cely 12 minutos 38 segundos
+Mostrar abajo la última.
+[[154]] YP
+Yordy Pardo Pajaro
+12 minutos 40 segundos
+12:40
+Yordy Pardo Pajaro 12 minutos 40 segundos
+Mostra.
+[[155]] Yordy Pardo Pajaro 12 minutos 42 segundos
+Oh, sure.
+[[156]] Yordy Pardo Pajaro 12 minutos 46 segundos
+No, no muestra la audio. A ver, muestra.
+[[157]] Yordy Pardo Pajaro 12 minutos 50 segundos
+No.
+[[158]] Santiago Amaya Cely
+12 minutos 53 segundos
+12:53
+Santiago Amaya Cely 12 minutos 53 segundos
+Tú puedes editar en ese archivo, sí.
+[[159]] YP
+Yordy Pardo Pajaro
+12 minutos 56 segundos
+12:56
+Yordy Pardo Pajaro 12 minutos 56 segundos
+Sí, porque está descargado, no es el.
+[[160]] Santiago Amaya Cely
+12 minutos 58 segundos
+12:58
+Santiago Amaya Cely 12 minutos 58 segundos
+Dale, Dale entre la mitad del de la CIEQ, o sea, eso voy a arrastrar hacia la derecha.
+[[161]] YP
+Yordy Pardo Pajaro
+13 minutos 6 segundos
+13:06
+Yordy Pardo Pajaro 13 minutos 6 segundos
+Okay.
+[[162]] Santiago Amaya Cely
+13 minutos 7 segundos
+13:07
+Santiago Amaya Cely 13 minutos 7 segundos
+Es que eso así dale el click.
+[[163]] YP
+Yordy Pardo Pajaro
+13 minutos 11 segundos
+13:11
+Yordy Pardo Pajaro 13 minutos 11 segundos
+Okay, pero que ya solo este es el.
+[[164]] Yordy Pardo Pajaro 13 minutos 14 segundos
+El maximum.
+[[165]] Santiago Amaya Cely
+13 minutos 16 segundos
+13:16
+Santiago Amaya Cely 13 minutos 16 segundos
+No, ahí hay más, ahí hay más, sí, ahí hay más.
+[[166]] YP
+Yordy Pardo Pajaro
+13 minutos 17 segundos
+13:17
+Yordy Pardo Pajaro 13 minutos 17 segundos
+I know I much.
+[[167]] Yordy Pardo Pajaro 13 minutos 19 segundos
+Okay, I know I can, uff, bastante.
+[[168]] Santiago Amaya Cely
+13 minutos 23 segundos
+13:23
+Santiago Amaya Cely 13 minutos 23 segundos
+Listo, entonces espera entonces ahí para un momento. Entonces diciembre, enero nosotros estamos desde ese que cliente es acción, no estamos desde agosto.
+[[169]] YP
+Yordy Pardo Pajaro
+13 minutos 24 segundos
+13:24
+Yordy Pardo Pajaro 13 minutos 24 segundos
+Good.
+[[170]] Yordy Pardo Pajaro 13 minutos 31 segundos
+Thank you.
+[[171]] Yordy Pardo Pajaro 13 minutos 33 segundos
+Disassed.
+[[172]] Santiago Amaya Cely
+13 minutos 35 segundos
+13:35
+Santiago Amaya Cely 13 minutos 35 segundos
+Entonces oculta desde diciembre del 2024 hasta julio del 2025, o sea, selecciona desde la e.
+[[173]] YP
+Yordy Pardo Pajaro
+13 minutos 38 segundos
+13:38
+Yordy Pardo Pajaro 13 minutos 38 segundos
+Oculto.
+[[174]] Yordy Pardo Pajaro 13 minutos 43 segundos
+Well, you.
+[[175]] Yordy Pardo Pajaro 13 minutos 46 segundos
+Desde la E, a ver, dónde está la E que no la veo, la F.
+[[176]] Santiago Amaya Cely
+13 minutos 49 segundos
+13:49
+Santiago Amaya Cely 13 minutos 49 segundos
+Life, Life.
+[[177]] Santiago Amaya Cely 13 minutos 52 segundos
+Selecciónalo hasta julio del 2025.
+[[178]] YP
+Yordy Pardo Pajaro
+13 minutos 56 segundos
+13:56
+Yordy Pardo Pajaro 13 minutos 56 segundos
+Only 2000.
+[[179]] Santiago Amaya Cely
+13 minutos 56 segundos
+13:56
+Santiago Amaya Cely 13 minutos 56 segundos
+Si quieres eso.
+[[180]] YP
+Yordy Pardo Pajaro
+13 minutos 59 segundos
+13:59
+Yordy Pardo Pajaro 13 minutos 59 segundos
+Dice.
+[[181]] Santiago Amaya Cely
+13 minutos 59 segundos
+13:59
+Santiago Amaya Cely 13 minutos 59 segundos
+Hasta ahí dale clic derecho, ocultar.
+[[182]] YP
+Yordy Pardo Pajaro
+14 minutos 2 segundos
+14:02
+Yordy Pardo Pajaro 14 minutos 2 segundos
+Ocultar, ocultar.
+[[183]] Santiago Amaya Cely
+14 minutos 4 segundos
+14:04
+Santiago Amaya Cely 14 minutos 4 segundos
+Listo, ahora guarda el archivo y cargalo.
+[[184]] Santiago Amaya Cely 14 minutos 9 segundos
+Quiero ver como arroja la a ver si si arroja la disponibilidad bien.
+[[185]] YP
+Yordy Pardo Pajaro
+14 minutos 9 segundos
+14:09
+Yordy Pardo Pajaro 14 minutos 9 segundos
+Oh, sorry.
+[[186]] Santiago Amaya Cely
+14 minutos 13 segundos
+14:13
+Santiago Amaya Cely 14 minutos 13 segundos
+No es que esté mal, sino que si la roja completa.
+[[187]] YP
+Yordy Pardo Pajaro
+14 minutos 14 segundos
+14:14
+Yordy Pardo Pajaro 14 minutos 14 segundos
+Hey.
+[[188]] Yordy Pardo Pajaro 14 minutos 17 segundos
+Sí, vamos a ver si es un escaneo sería, creo que junio, junio.
+[[189]] Yordy Pardo Pajaro 14 minutos 25 segundos
+Actualizado, sí.
+[[190]] Yordy Pardo Pajaro 14 minutos 29 segundos
+No está viendo.
+[[191]] Santiago Amaya Cely
+14 minutos 31 segundos
+14:31
+Santiago Amaya Cely 14 minutos 31 segundos
+¿Exacto, entonces hay algo para que revises, vale?
+[[192]] YP
+Yordy Pardo Pajaro
+14 minutos 33 segundos
+14:33
+Yordy Pardo Pajaro 14 minutos 33 segundos
+O K, sí, ya ya le voy a mejorar, sí.
+[[193]] Yordy Pardo Pajaro 14 minutos 37 segundos
+Tienes razón.
+[[194]] Santiago Amaya Cely
+14 minutos 39 segundos
+14:39
+Santiago Amaya Cely 14 minutos 39 segundos
+¿Listo, entonces qué vamos a hacer? Vamos a colocar.
+[[195]] Santiago Amaya Cely 14 minutos 45 segundos
+Los motores.
+[[196]] Santiago Amaya Cely 14 minutos 48 segundos
+Yo creo que ahí cabe, ahí sí cabe ahí debajo del 0,7 ahí donde dice motores.
+[[197]] YP
+Yordy Pardo Pajaro
+14 minutos 54 segundos
+14:54
+Yordy Pardo Pajaro 14 minutos 54 segundos
+Acá, OK, eres apartado.
+[[198]] Santiago Amaya Cely
+14 minutos 55 segundos
+14:55
+Santiago Amaya Cely 14 minutos 55 segundos
+Pero es que con eso está ahí solamente coloca, no ahí donde dice motores, ajusta los nombres de los motores, o sea, en vez de agregar cuatro, coloca SQLY toda esa vaina, sí.
+[[199]] YP
+Yordy Pardo Pajaro
+15 minutos 1 segundo
+15:01
+Yordy Pardo Pajaro 15 minutos 1 segundo
+Oh.
+[[200]] Yordy Pardo Pajaro 15 minutos 4 segundos
+Okay.
+[[201]] Yordy Pardo Pajaro 15 minutos 9 segundos
+¿Aprovecho el espacio que está acá y pongo los botones, por qué?
+[[202]] Santiago Amaya Cely
+15 minutos 13 segundos
+15:13
+Santiago Amaya Cely 15 minutos 13 segundos
+Sí, pone los motores y ya, entonces ya hay varias. Esas pruebas son las que yo necesito que tú hagas antes de sacar a producción algo, ¿vale?
+[[203]] YP
+Yordy Pardo Pajaro
+15 minutos 24 segundos
+15:24
+Yordy Pardo Pajaro 15 minutos 24 segundos
+BCT mi Roger.
+[[204]] Santiago Amaya Cely
+15 minutos 24 segundos
+15:24
+Santiago Amaya Cely 15 minutos 24 segundos
+Sí, la idea es que en pruebas es para eso son estos espacios para que revisemos y tú puedas también, pues saber qué es lo que es probar, o sea, cuando tú subes un aplicativo o lo que sea en desarrollo.
+[[205]] Santiago Amaya Cely 15 minutos 39 segundos
+Antes debes probar las funcionalidades, vale como las pruebas, como si tú fueras el usuario final.
+[[206]] YP
+Yordy Pardo Pajaro
+15 minutos 39 segundos
+15:39
+Yordy Pardo Pajaro 15 minutos 39 segundos
+Sí.
+[[207]] Santiago Amaya Cely
+15 minutos 46 segundos
+15:46
+Santiago Amaya Cely 15 minutos 46 segundos
+Y sobre eso empiezas a corregir lo que te hace falta listo.
+[[208]] YP
+Yordy Pardo Pajaro
+15 minutos 46 segundos
+15:46
+Yordy Pardo Pajaro 15 minutos 46 segundos
+Claro.
+[[209]] Yordy Pardo Pajaro 15 minutos 50 segundos
+Yes, yes.
+[[210]] Santiago Amaya Cely
+15 minutos 51 segundos
+15:51
+Santiago Amaya Cely 15 minutos 51 segundos
+Listo, entonces ya tenemos esa parte ahí, yo no le corregiría más. Prueba entonces lo de la tablita. Listo, sigamos gestión de backups.
+[[211]] YP
+Yordy Pardo Pajaro
+15 minutos 52 segundos
+15:52
+Yordy Pardo Pajaro 15 minutos 52 segundos
+Todo claro.
+[[212]] Yordy Pardo Pajaro 15 minutos 58 segundos
+Hey.
+[[213]] Santiago Amaya Cely
+16 minutos
+16:00
+Santiago Amaya Cely 16 minutos
+A ver, ejecución completa en todas las instancias con dato, verificación por instancia, registro de ejecución correspondiente a junio. 14 de 14 instancias verificadas, PMP, PMPWP, así que PMPPWP o K sin tareas pendientes ni fallas reportadas en el último corte. Bien.
+[[214]] YP
+Yordy Pardo Pajaro
+16 minutos 1 segundo
+16:01
+Yordy Pardo Pajaro 16 minutos 1 segundo
+The new cops.
+[[215]] Santiago Amaya Cely
+16 minutos 20 segundos
+16:20
+Santiago Amaya Cely 16 minutos 20 segundos
+A mí esa me gusta, muestre, muéstrame la tarjetica, que es lo que dice al principio en la tarjetica, o sea, cierra eso.
+[[216]] YP
+Yordy Pardo Pajaro
+16 minutos 26 segundos
+16:26
+Yordy Pardo Pajaro 16 minutos 26 segundos
+Lo que dice.
+[[217]] Santiago Amaya Cely
+16 minutos 29 segundos
+16:29
+Santiago Amaya Cely 16 minutos 29 segundos
+Gestión de backup 100% o K, sí, bien, a mí no me gusta.
+[[218]] YP
+Yordy Pardo Pajaro
+16 minutos 29 segundos
+16:29
+Yordy Pardo Pajaro 16 minutos 29 segundos
+Okay.
+[[219]] Yordy Pardo Pajaro 16 minutos 35 segundos
+Okay, please.
+[[220]] Santiago Amaya Cely
+16 minutos 35 segundos
+16:35
+Santiago Amaya Cely 16 minutos 35 segundos
+Listo, ahora seguimiento del servicio, lo esperando no le presiones todavía, logros del servicio, un logro identificados para acción fiduciaria. Listo, ábrela.
+[[221]] YP
+Yordy Pardo Pajaro
+16 minutos 46 segundos
+16:46
+Yordy Pardo Pajaro 16 minutos 46 segundos
+Where?
+[[222]] Santiago Amaya Cely
+16 minutos 49 segundos
+16:49
+Santiago Amaya Cely 16 minutos 49 segundos
+Action fiduciaria, verificación.
+[[223]] Santiago Amaya Cely 16 minutos 54 segundos
+De la estabilidad de las cuentas privilegiadas, usuarios con rol DBA, sin altas ni bajas respecto al periodo anterior. Privilegios SIS DBA, si soper restringidos al usuario SIS en todas las bases de datos. Listo, ahí yo que haría en pruebas, esa me gusta, dejémosla así quieta, está bien.
+[[224]] YP
+Yordy Pardo Pajaro
+17 minutos 13 segundos
+17:13
+Yordy Pardo Pajaro 17 minutos 13 segundos
+Mhm.
+[[225]] Santiago Amaya Cely
+17 minutos 16 segundos
+17:16
+Santiago Amaya Cely 17 minutos 16 segundos
+Cerremos ahí en la X.
+[[226]] YP
+Yordy Pardo Pajaro
+17 minutos 19 segundos
+17:19
+Yordy Pardo Pajaro 17 minutos 19 segundos
+Yeah.
+[[227]] Santiago Amaya Cely
+17 minutos 21 segundos
+17:21
+Santiago Amaya Cely 17 minutos 21 segundos
+Ya te digo que vamos a hacer mitigaciones y riesgos gestionados, dale ahí, ábrela, por favor.
+[[228]] Santiago Amaya Cely 17 minutos 28 segundos
+Reducción sostenida de la ocupación, ampliación preventiva, planificación de las oye, a mí me gusta esa. También está bien, listo, ciérrala, yo no le cambiaría nada.
+[[229]] YP
+Yordy Pardo Pajaro
+17 minutos 37 segundos
+17:37
+Yordy Pardo Pajaro 17 minutos 37 segundos
+Hmm.
+[[230]] Yordy Pardo Pajaro 17 minutos 39 segundos
+Cierro.
+[[231]] Yordy Pardo Pajaro 17 minutos 41 segundos
+Esta sí es un tema que le iba a preguntar si agregamos una fuente aquí para cargar el insumo de horas disponibles y pues que nos muestre aquí las horas disponibles y nos muestre. Okay, listo ya.
+[[232]] Santiago Amaya Cely
+17 minutos 57 segundos
+17:57
+Santiago Amaya Cely 17 minutos 57 segundos
+Hazlo así, solo que en el texto que diga lo que lo que está en la en el otro lado, no la imagen. O sea, olvídate de la forma que está en el otro lado. Si te das cuenta, nosotros aquí cambiamos la forma totalmente. Sí, esto es algo nuevo que vamos a.
+[[233]] YP
+Yordy Pardo Pajaro
+18 minutos 4 segundos
+18:04
+Yordy Pardo Pajaro 18 minutos 4 segundos
+Sí, sí, okay.
+[[234]] Yordy Pardo Pajaro 18 minutos 12 segundos
+sí, claro.
+[[235]] Santiago Amaya Cely
+18 minutos 16 segundos
+18:16
+Santiago Amaya Cely 18 minutos 16 segundos
+Que yo le tengo que presentar a mi jefe, sí, como parte de la innovación que estamos haciendo contigo. Y adicional, pues la idea es que cambiemos pues todo lo que tenemos. Sí, esa parte de la imagen muy bonita ahí con la muchacha y todo. Pero si tú lo ves, que lo podemos colocar en una tablita acá más sencilla que también sea bonita, sí, solo que si.
+[[236]] YP
+Yordy Pardo Pajaro
+18 minutos 19 segundos
+18:19
+Yordy Pardo Pajaro 18 minutos 19 segundos
+Okay.
+[[237]] Yordy Pardo Pajaro 18 minutos 22 segundos
+Okay.
+[[238]] Yordy Pardo Pajaro 18 minutos 35 segundos
+Yeah.
+[[239]] Yordy Pardo Pajaro 18 minutos 40 segundos
+Sí, claro.
+[[240]] Santiago Amaya Cely
+18 minutos 41 segundos
+18:41
+Santiago Amaya Cely 18 minutos 41 segundos
+Y el texto me interesa. ¿Qué me interesa? Pues que me diga cuántas horas consumí en el mes, cuántas horas tengo totales de la bolsa y cuántas me quedan.
+[[241]] YP
+Yordy Pardo Pajaro
+18 minutos 43 segundos
+18:43
+Yordy Pardo Pajaro 18 minutos 43 segundos
+T.
+[[242]] Yordy Pardo Pajaro 18 minutos 52 segundos
+Okay.
+[[243]] Yordy Pardo Pajaro 18 minutos 54 segundos
+Exacto, sí, exacto.
+[[244]] Santiago Amaya Cely
+18 minutos 54 segundos
+18:54
+Santiago Amaya Cely 18 minutos 54 segundos
+De ese total con las que usé. Sí, como tú lo muestres acá, así como me estás mostrando que has cambiado varias cosas, digamos que la lo bonito, yo lo miro después de que me funcione. Cuando a mí me funciona algo, yo ya después lo pongo bonito, sí.
+[[245]] YP
+Yordy Pardo Pajaro
+18 minutos 57 segundos
+18:57
+Yordy Pardo Pajaro 18 minutos 57 segundos
+Yeah.
+[[246]] Yordy Pardo Pajaro 19 minutos 1 segundo
+Okay.
+[[247]] Yordy Pardo Pajaro 19 minutos 9 segundos
+Exacto, sí.
+[[248]] Santiago Amaya Cely
+19 minutos 10 segundos
+19:10
+Santiago Amaya Cely 19 minutos 10 segundos
+Pero si te funciona y lo puedes poner bonito de una vez, lo revisamos y si algo te cambiémosle color o cambiémosle cualquier cosita, pero por el momento hagámoslo así, listo.
+[[249]] YP
+Yordy Pardo Pajaro
+19 minutos 19 segundos
+19:19
+Yordy Pardo Pajaro 19 minutos 19 segundos
+Okay, listo. Perfecto.
+[[250]] Santiago Amaya Cely
+19 minutos 21 segundos
+19:21
+Santiago Amaya Cely 19 minutos 21 segundos
+Entonces sí, la respuesta es sí, coloca el archivo para que yo pueda adjuntar el archivo y que me salga ahí la data.
+[[251]] YP
+Yordy Pardo Pajaro
+19 minutos 27 segundos
+19:27
+Yordy Pardo Pajaro 19 minutos 27 segundos
+Okey, listo y ahora viene disponibilidad por eso ahí.
+[[252]] Santiago Amaya Cely
+19 minutos 29 segundos
+19:29
+Santiago Amaya Cely 19 minutos 29 segundos
+Listo.
+[[253]] Santiago Amaya Cely 19 minutos 31 segundos
+¿Disponibilidad por seguir nuestra nevera, eso qué es?
+[[254]] YP
+Yordy Pardo Pajaro
+19 minutos 36 segundos
+19:36
+Yordy Pardo Pajaro 19 minutos 36 segundos
+Mi idea por base de datos.
+[[255]] Santiago Amaya Cely
+19 minutos 39 segundos
+19:39
+Santiago Amaya Cely 19 minutos 39 segundos
+Pero eso no es lo mismo que tenemos en el otro lado.
+[[256]] YP
+Yordy Pardo Pajaro
+19 minutos 42 segundos
+19:42
+Yordy Pardo Pajaro 19 minutos 42 segundos
+Pues aquí sería por motores.
+[[257]] Yordy Pardo Pajaro 19 minutos 45 segundos
+Y aquí por bases de datos como tal.
+[[258]] Santiago Amaya Cely
+19 minutos 48 segundos
+19:48
+Santiago Amaya Cely 19 minutos 48 segundos
+No, ahí hay otra.
+[[259]] Santiago Amaya Cely 19 minutos 50 segundos
+Cierra ahí esa.
+[[260]] YP
+Yordy Pardo Pajaro
+19 minutos 50 segundos
+19:50
+Yordy Pardo Pajaro 19 minutos 50 segundos
+One.
+[[261]] Yordy Pardo Pajaro 19 minutos 53 segundos
+Esta.
+[[262]] Santiago Amaya Cely
+19 minutos 53 segundos
+19:53
+Santiago Amaya Cely 19 minutos 53 segundos
+Esos son los backups.
+[[263]] YP
+Yordy Pardo Pajaro
+19 minutos 58 segundos
+19:58
+Yordy Pardo Pajaro 19 minutos 58 segundos
+Sí.
+[[264]] Santiago Amaya Cely
+19 minutos 59 segundos
+19:59
+Santiago Amaya Cely 19 minutos 59 segundos
+No, si bien serán 14 backups de 14 bases de datos, si listo, muéstrame entonces otra vez la disponibilidad por seis.
+[[265]] YP
+Yordy Pardo Pajaro
+20 minutos 6 segundos
+20:06
+Yordy Pardo Pajaro 20 minutos 6 segundos
+Mhm.
+[[266]] Santiago Amaya Cely
+20 minutos 8 segundos
+20:08
+Santiago Amaya Cely 20 minutos 8 segundos
+Meta 99 meses visibles, 5 porque 5?
+[[267]] YP
+Yordy Pardo Pajaro
+20 minutos 13 segundos
+20:13
+Yordy Pardo Pajaro 20 minutos 13 segundos
+A ver, veamos por qué 5 a ver qué sería indicadores.
+[[268]] Yordy Pardo Pajaro 20 minutos 19 segundos
+Disponibilidad.
+[[269]] Yordy Pardo Pajaro 20 minutos 22 segundos
+Entonces aquí hay 12345 meses y acá hay 5 meses. Entonces tendríamos que hacer la misma prueba.
+[[270]] Santiago Amaya Cely
+20 minutos 30 segundos
+20:30
+Santiago Amaya Cely 20 minutos 30 segundos
+Set.
+[[271]] Santiago Amaya Cely 20 minutos 32 segundos
+Sí, a la qué pasa si yo coloco 12 meses, la tabla me va a quedar un chorro. A ver, hay varias formas. Muéstrame la tabla, porfa.
+[[272]] YP
+Yordy Pardo Pajaro
+20 minutos 44 segundos
+20:44
+Yordy Pardo Pajaro 20 minutos 44 segundos
+Okay, right?
+[[273]] Yordy Pardo Pajaro 20 minutos 46 segundos
+Yeah, care.
+[[274]] Santiago Amaya Cely
+20 minutos 50 segundos
+20:50
+Santiago Amaya Cely 20 minutos 50 segundos
+Esa tabla.
+[[275]] Santiago Amaya Cely 20 minutos 54 segundos
+Está bien, sí, digo que no.
+[[276]] Santiago Amaya Cely 20 minutos 57 segundos
+Solo que qué pasa si yo si yo meto todo el año, por ejemplo.
+[[277]] YP
+Yordy Pardo Pajaro
+21 minutos 2 segundos
+21:02
+Yordy Pardo Pajaro 21 minutos 2 segundos
+Se va a poner más pequeño, sí.
+[[278]] Santiago Amaya Cely
+21 minutos 3 segundos
+21:03
+Santiago Amaya Cely 21 minutos 3 segundos
+Sí.
+[[279]] Santiago Amaya Cely 21 minutos 5 segundos
+Exacto.
+[[280]] Santiago Amaya Cely 21 minutos 7 segundos
+Posiblemente a mí me sirva más.
+[[281]] Santiago Amaya Cely 21 minutos 12 segundos
+Una gráfica.
+[[282]] YP
+Yordy Pardo Pajaro
+21 minutos 14 segundos
+21:14
+Yordy Pardo Pajaro 21 minutos 14 segundos
+O.K.
+[[283]] Santiago Amaya Cely
+21 minutos 14 segundos
+21:14
+Santiago Amaya Cely 21 minutos 14 segundos
+Como la que Como la gráfica que teníamos arriba, eso depende como se vea, sí.
+[[284]] YP
+Yordy Pardo Pajaro
+21 minutos 19 segundos
+21:19
+Yordy Pardo Pajaro 21 minutos 19 segundos
+OKOK.
+[[285]] Santiago Amaya Cely
+21 minutos 20 segundos
+21:20
+Santiago Amaya Cely 21 minutos 20 segundos
+Déjame ver la otra gráfica, por favor.
+[[286]] YP
+Yordy Pardo Pajaro
+21 minutos 23 segundos
+21:23
+Yordy Pardo Pajaro 21 minutos 23 segundos
+Está.
+[[287]] Yordy Pardo Pajaro 21 minutos 26 segundos
+Darkops.
+[[288]] Santiago Amaya Cely
+21 minutos 27 segundos
+21:27
+Santiago Amaya Cely 21 minutos 27 segundos
+No, esa no, la de arriba de los casos.
+[[289]] YP
+Yordy Pardo Pajaro
+21 minutos 30 segundos
+21:30
+Yordy Pardo Pajaro 21 minutos 30 segundos
+Esta.
+[[290]] Santiago Amaya Cely
+21 minutos 33 segundos
+21:33
+Santiago Amaya Cely 21 minutos 33 segundos
+No.
+[[291]] YP
+Yordy Pardo Pajaro
+21 minutos 35 segundos
+21:35
+Yordy Pardo Pajaro 21 minutos 35 segundos
+Stop.
+[[292]] Santiago Amaya Cely
+21 minutos 37 segundos
+21:37
+Santiago Amaya Cely 21 minutos 37 segundos
+Oye, esa no la vemos ahorita, no tampoco.
+[[293]] YP
+Yordy Pardo Pajaro
+21 minutos 41 segundos
+21:41
+Yordy Pardo Pajaro 21 minutos 41 segundos
+A ver casas, no, familia global.
+[[294]] Santiago Amaya Cely
+21 minutos 43 segundos
+21:43
+Santiago Amaya Cely 21 minutos 43 segundos
+¿Dónde se ve la grave esa?
+[[295]] YP
+Yordy Pardo Pajaro
+21 minutos 46 segundos
+21:46
+Yordy Pardo Pajaro 21 minutos 46 segundos
+O.K.
+[[296]] Santiago Amaya Cely
+21 minutos 47 segundos
+21:47
+Santiago Amaya Cely 21 minutos 47 segundos
+Entonces mira, fíjate que ahí yo tengo enero, febrero, marzo, tengo todos los meses. El problema es que yo cómo voy a interpretar.
+[[297]] YP
+Yordy Pardo Pajaro
+21 minutos 48 segundos
+21:48
+Yordy Pardo Pajaro 21 minutos 48 segundos
+Yes.
+[[298]] Yordy Pardo Pajaro 21 minutos 52 segundos
+Mhm.
+[[299]] Santiago Amaya Cely
+21 minutos 55 segundos
+21:55
+Santiago Amaya Cely 21 minutos 55 segundos
+Esa otra tabla.
+[[300]] Santiago Amaya Cely 21 minutos 57 segundos
+En una gráfica, sí, tengo muchas bases de datos de varios meses, sí.
+[[301]] YP
+Yordy Pardo Pajaro
+22 minutos 2 segundos
+22:02
+Yordy Pardo Pajaro 22 minutos 2 segundos
+Y sí, exacto.
+[[302]] Santiago Amaya Cely
+22 minutos 6 segundos
+22:06
+Santiago Amaya Cely 22 minutos 6 segundos
+Es la gran pregunta, cómo yo lo vería si yo quiero, por ejemplo, yo al final del contrato tengo yo siempre cuando uno cierra un contrato o finaliza un proyecto, yo siempre tengo que mostrar la totalidad, tengo que mostrar cómo no fue en el año y normalmente eso se hace en el último informe.
+[[303]] YP
+Yordy Pardo Pajaro
+22 minutos 6 segundos
+22:06
+Yordy Pardo Pajaro 22 minutos 6 segundos
+Exacto.
+[[304]] Yordy Pardo Pajaro 22 minutos 17 segundos
+Mhm.
+[[305]] Yordy Pardo Pajaro 22 minutos 25 segundos
+Yeah.
+[[306]] Yordy Pardo Pajaro 22 minutos 27 segundos
+Okay.
+[[307]] Santiago Amaya Cely
+22 minutos 27 segundos
+22:27
+Santiago Amaya Cely 22 minutos 27 segundos
+Sí.
+[[308]] Santiago Amaya Cely 22 minutos 29 segundos
+Entonces yo como muestro todo eso que tengo allá en una gráfica así sencillita.
+[[309]] Santiago Amaya Cely 22 minutos 35 segundos
+Donde yo vea el comportamiento de todas mis bases de datos.
+[[310]] YP
+Yordy Pardo Pajaro
+22 minutos 36 segundos
+22:36
+Yordy Pardo Pajaro 22 minutos 36 segundos
+Okay.
+[[311]] Santiago Amaya Cely
+22 minutos 40 segundos
+22:40
+Santiago Amaya Cely 22 minutos 40 segundos
+Por meses, esa es, eso es lo complejo, sí.
+[[312]] YP
+Yordy Pardo Pajaro
+22 minutos 40 segundos
+22:40
+Yordy Pardo Pajaro 22 minutos 40 segundos
+OKOK.
+[[313]] Yordy Pardo Pajaro 22 minutos 44 segundos
+claro, como son 14.
+[[314]] Santiago Amaya Cely
+22 minutos 46 segundos
+22:46
+Santiago Amaya Cely 22 minutos 46 segundos
+Porque adicional, pues yo tengo que mostrar, ven, déjame salte de ahí, porfa y déjame ver la tarjeta nomás.
+[[315]] YP
+Yordy Pardo Pajaro
+22 minutos 52 segundos
+22:52
+Yordy Pardo Pajaro 22 minutos 52 segundos
+La tarjeta.
+[[316]] Santiago Amaya Cely
+22 minutos 54 segundos
+22:54
+Santiago Amaya Cely 22 minutos 54 segundos
+Fíjate que hay que me falta en la disponibilidad por CI, yo estoy evaluando 14 sistemas.
+[[317]] YP
+Yordy Pardo Pajaro
+23 minutos
+23:00
+Yordy Pardo Pajaro 23 minutos
+Y.
+[[318]] Santiago Amaya Cely
+23 minutos
+23:00
+Santiago Amaya Cely 23 minutos
+Pero yo no tengo ahí en la tarjeta, la idea es que se vea.
+[[319]] Santiago Amaya Cely 23 minutos 5 segundos
+Pues el porcentaje por cada como la disponibilidad global voy al 100% sí, pero la disponibilidad, la disponibilidad de los sistemas en cuanto va según mi meta, claro que mi meta es 90,3.
+[[320]] YP
+Yordy Pardo Pajaro
+23 minutos 12 segundos
+23:12
+Yordy Pardo Pajaro 23 minutos 12 segundos
+Oh, claro, claro.
+[[321]] Yordy Pardo Pajaro 23 minutos 20 segundos
+Okay.
+[[322]] Santiago Amaya Cely
+23 minutos 22 segundos
+23:22
+Santiago Amaya Cely 23 minutos 22 segundos
+Y eso es algo que me estoy dando cuenta que me hace faltan las otras tarjetas también sí.
+[[323]] YP
+Yordy Pardo Pajaro
+23 minutos 28 segundos
+23:28
+Yordy Pardo Pajaro 23 minutos 28 segundos
+Okay.
+[[324]] Santiago Amaya Cely
+23 minutos 30 segundos
+23:30
+Santiago Amaya Cely 23 minutos 30 segundos
+¿Yo qué yo qué mostraría?
+[[325]] Santiago Amaya Cely 23 minutos 33 segundos
+No es un cambio, no sé si sea muy grande, pero a ver, tengo arriba unos indicadores del periodo del 100% en disponibilidad, tiempos de ejecución del 100% entregables del 100%. Esos son mis indicadores.
+[[326]] YP
+Yordy Pardo Pajaro
+23 minutos 46 segundos
+23:46
+Yordy Pardo Pajaro 23 minutos 46 segundos
+Fish.
+[[327]] Santiago Amaya Cely
+23 minutos 47 segundos
+23:47
+Santiago Amaya Cely 23 minutos 47 segundos
+Y no del periodo, sino yo le cambiaría el nombre de periodo y le colocaría indicadores de contrato.
+[[328]] YP
+Yordy Pardo Pajaro
+23 minutos 47 segundos
+23:47
+Yordy Pardo Pajaro 23 minutos 47 segundos
+Yeah.
+[[329]] Yordy Pardo Pajaro 23 minutos 52 segundos
+Del contrato, please.
+[[330]] Santiago Amaya Cely
+23 minutos 55 segundos
+23:55
+Santiago Amaya Cely 23 minutos 55 segundos
+O indicadores del servicio, dejémoslo como indicadores del servicio, esos 3 indicadores va disponibilidad.
+[[331]] YP
+Yordy Pardo Pajaro
+23 minutos 55 segundos
+23:55
+Yordy Pardo Pajaro 23 minutos 55 segundos
+Cash.
+[[332]] Yordy Pardo Pajaro 23 minutos 59 segundos
+The card is a foolish.
+[[333]] Santiago Amaya Cely
+24 minutos 4 segundos
+24:04
+Santiago Amaya Cely 24 minutos 4 segundos
+Tiempo de solución y entregables.
+[[334]] YP
+Yordy Pardo Pajaro
+24 minutos 8 segundos
+24:08
+Yordy Pardo Pajaro 24 minutos 8 segundos
+Hey.
+[[335]] Santiago Amaya Cely
+24 minutos 8 segundos
+24:08
+Santiago Amaya Cely 24 minutos 8 segundos
+Entonces, en la operación del periodo yo atendido 49 casos.
+[[336]] Santiago Amaya Cely 24 minutos 14 segundos
+O K, ese no se cambia porque yo no tengo un porcentaje así, pero mis tiempos de solución ya están arriba. Abajo está más específico. Abre la tarjeta de arriba, indicadores del periodo, porfa.
+[[337]] YP
+Yordy Pardo Pajaro
+24 minutos 27 segundos
+24:27
+Yordy Pardo Pajaro 24 minutos 27 segundos
+Okay.
+[[338]] Santiago Amaya Cely
+24 minutos 44 segundos
+24:44
+Santiago Amaya Cely 24 minutos 44 segundos
+Yo también le cambiaría ese sombreadito, listo ahí también.
+[[339]] YP
+Yordy Pardo Pajaro
+24 minutos 48 segundos
+24:48
+Yordy Pardo Pajaro 24 minutos 48 segundos
+OK, this is something.
+[[340]] Santiago Amaya Cely
+24 minutos 50 segundos
+24:50
+Santiago Amaya Cely 24 minutos 50 segundos
+Pero yo aquí que quiero mostrar, yo aquí quiero mostrar.
+[[341]] YP
+Yordy Pardo Pajaro
+24 minutos 51 segundos
+24:51
+Yordy Pardo Pajaro 24 minutos 51 segundos
+Okay.
+[[342]] Santiago Amaya Cely
+24 minutos 56 segundos
+24:56
+Santiago Amaya Cely 24 minutos 56 segundos
+Es que yo aquí estoy mostrando lo mismo de afuera.
+[[343]] Santiago Amaya Cely 25 minutos
+Cierra esa, por favor.
+[[344]] YP
+Yordy Pardo Pajaro
+25 minutos 2 segundos
+25:02
+Yordy Pardo Pajaro 25 minutos 2 segundos
+Muy.
+[[345]] Santiago Amaya Cely
+25 minutos 4 segundos
+25:04
+Santiago Amaya Cely 25 minutos 4 segundos
+Mira, si tú abres esa tarjeta, yo lo que yo estoy viendo lo mismo que estoy viendo ahí afuera.
+[[346]] YP
+Yordy Pardo Pajaro
+25 minutos 11 segundos
+25:11
+Yordy Pardo Pajaro 25 minutos 11 segundos
+That's you.
+[[347]] Santiago Amaya Cely
+25 minutos 12 segundos
+25:12
+Santiago Amaya Cely 25 minutos 12 segundos
+Dale clic, abre la disponibilidad 100% meta tanto mira disponibilidad 100% meta tanto.
+[[348]] YP
+Yordy Pardo Pajaro
+25 minutos 21 segundos
+25:21
+Yordy Pardo Pajaro 25 minutos 21 segundos
+Claro.
+[[349]] Santiago Amaya Cely
+25 minutos 21 segundos
+25:21
+Santiago Amaya Cely 25 minutos 21 segundos
+Yo que necesito ver en esta tarjeta es.
+[[350]] Santiago Amaya Cely 25 minutos 24 segundos
+Lo mismo que las otras, venga, como voy.
+[[351]] Santiago Amaya Cely 25 minutos 29 segundos
+A lo largo del tiempo, cierto, lo específico, yo ya muestro afuera lo general, adentro muestro lo específico. ¿Qué es lo específico? Abre, por favor, el Excel.
+[[352]] YP
+Yordy Pardo Pajaro
+25 minutos 39 segundos
+25:39
+Yordy Pardo Pajaro 25 minutos 39 segundos
+Excel.
+[[353]] Santiago Amaya Cely
+25 minutos 40 segundos
+25:40
+Santiago Amaya Cely 25 minutos 40 segundos
+Y vete a la disponibilidad en indicadores, creo que es.
+[[354]] YP
+Yordy Pardo Pajaro
+25 minutos 44 segundos
+25:44
+Yordy Pardo Pajaro 25 minutos 44 segundos
+Indicator orders.
+[[355]] Santiago Amaya Cely
+25 minutos 46 segundos
+25:46
+Santiago Amaya Cely 25 minutos 46 segundos
+Es eso lo mismo. Yo ahí oculté las de ahí para atrás, pero yo estoy desde agosto en ese proyecto, sí.
+[[356]] YP
+Yordy Pardo Pajaro
+25 minutos 53 segundos
+25:53
+Yordy Pardo Pajaro 25 minutos 53 segundos
+There's 2 OKOK.
+[[357]] Santiago Amaya Cely
+25 minutos 54 segundos
+25:54
+Santiago Amaya Cely 25 minutos 54 segundos
+Fíjate que arriba está la C y la ky debería ser a Bcdfghijk, sí.
+[[358]] YP
+Yordy Pardo Pajaro
+26 minutos
+26:00
+Yordy Pardo Pajaro 26 minutos
+Sí, claro.
+[[359]] Santiago Amaya Cely
+26 minutos 1 segundo
+26:01
+Santiago Amaya Cely 26 minutos 1 segundo
+Entonces, de ahí pa atrás está oculto lo otro.
+[[360]] Santiago Amaya Cely 26 minutos 4 segundos
+Pues porque cuando yo sacaba solamente los últimos 3 meses, pues me tocaba ocultarlas para que no se diera sí o no.
+[[361]] YP
+Yordy Pardo Pajaro
+26 minutos 10 segundos
+26:10
+Yordy Pardo Pajaro 26 minutos 10 segundos
+Sí, claro.
+[[362]] Santiago Amaya Cely
+26 minutos 12 segundos
+26:12
+Santiago Amaya Cely 26 minutos 12 segundos
+Entonces yo quisiera ver una grafiquita igual que la otra.
+[[363]] YP
+Yordy Pardo Pajaro
+26 minutos 16 segundos
+26:16
+Yordy Pardo Pajaro 26 minutos 16 segundos
+Okay.
+[[364]] Santiago Amaya Cely
+26 minutos 17 segundos
+26:17
+Santiago Amaya Cely 26 minutos 17 segundos
+Que la que estábamos viendo ahorita.
+[[365]] YP
+Yordy Pardo Pajaro
+26 minutos 20 segundos
+26:20
+Yordy Pardo Pajaro 26 minutos 20 segundos
+Igual que.
+[[366]] Yordy Pardo Pajaro 26 minutos 22 segundos
+Que creo que esta no.
+[[367]] Santiago Amaya Cely
+26 minutos 24 segundos
+26:24
+Santiago Amaya Cely 26 minutos 24 segundos
+Esa una gráfica digo o de barras o esa o de barras como tú quieras. Podría ser de barras también para pues como para mezclar entre esas 2. Sí, para variar, pero pues si las pones así todas también estaría bien como para que no te mates.
+[[368]] YP
+Yordy Pardo Pajaro
+26 minutos 28 segundos
+26:28
+Yordy Pardo Pajaro 26 minutos 28 segundos
+O.K.
+[[369]] Yordy Pardo Pajaro 26 minutos 34 segundos
+Para variar, o k.
+[[370]] Yordy Pardo Pajaro 26 minutos 42 segundos
+Okay.
+[[371]] Yordy Pardo Pajaro 26 minutos 44 segundos
+Listo.
+[[372]] Santiago Amaya Cely
+26 minutos 44 segundos
+26:44
+Santiago Amaya Cely 26 minutos 44 segundos
+¿Listo, entonces?
+[[373]] YP
+Yordy Pardo Pajaro
+26 minutos 46 segundos
+26:46
+Yordy Pardo Pajaro 26 minutos 46 segundos
+Sí, claro.
+[[374]] Santiago Amaya Cely
+26 minutos 49 segundos
+26:49
+Santiago Amaya Cely 26 minutos 49 segundos
+En.
+[[375]] Santiago Amaya Cely 26 minutos 52 segundos
+Cierra ahí, porfa.
+[[376]] YP
+Yordy Pardo Pajaro
+26 minutos 54 segundos
+26:54
+Yordy Pardo Pajaro 26 minutos 54 segundos
+Okay.
+[[377]] Santiago Amaya Cely
+26 minutos 57 segundos
+26:57
+Santiago Amaya Cely 26 minutos 57 segundos
+Entonces, cuando yo abra esa disponibilidad a tiempos de solución entregable, la idea es que se abra una gráfica, dale clic.
+[[378]] YP
+Yordy Pardo Pajaro
+27 minutos 5 segundos
+27:05
+Yordy Pardo Pajaro 27 minutos 5 segundos
+Lisa.
+[[379]] Santiago Amaya Cely
+27 minutos 7 segundos
+27:07
+Santiago Amaya Cely 27 minutos 7 segundos
+Es que se habla en una gráfica y en la gráfica.
+[[380]] Santiago Amaya Cely 27 minutos 11 segundos
+Pues ya básicamente como la otra estructura, ya me muestra la grafiquita, la tendencia, la sí, y un análisis de esa tendencia de esa gráfica.
+[[381]] YP
+Yordy Pardo Pajaro
+27 minutos 17 segundos
+27:17
+Yordy Pardo Pajaro 27 minutos 17 segundos
+You see.
+[[382]] Yordy Pardo Pajaro 27 minutos 19 segundos
+K.
+[[383]] Santiago Amaya Cely
+27 minutos 21 segundos
+27:21
+Santiago Amaya Cely 27 minutos 21 segundos
+Acuérdate que la última vez la última vez habíamos hablado, me acuerdo, es de esos análisis que vamos a hacerle a las tablas, listo.
+[[384]] YP
+Yordy Pardo Pajaro
+27 minutos 21 segundos
+27:21
+Yordy Pardo Pajaro 27 minutos 21 segundos
+Okay.
+[[385]] Yordy Pardo Pajaro 27 minutos 29 segundos
+Okey, tengo un campo de texto.
+[[386]] Santiago Amaya Cely
+27 minutos 30 segundos
+27:30
+Santiago Amaya Cely 27 minutos 30 segundos
+Entonces cierra ahí, cierra ahí, porfa.
+[[387]] YP
+Yordy Pardo Pajaro
+27 minutos 33 segundos
+27:33
+Yordy Pardo Pajaro 27 minutos 33 segundos
+K.
+[[388]] Santiago Amaya Cely
+27 minutos 35 segundos
+27:35
+Santiago Amaya Cely 27 minutos 35 segundos
+Listo, entonces eso a los casos atendidos, abre los casos atendidos, por favor, otra vez ponme un repaso.
+[[389]] Santiago Amaya Cely 27 minutos 45 segundos
+Y yo que quisiera ver ahí, mira.
+[[390]] Santiago Amaya Cely 27 minutos 48 segundos
+Porcentaje total de casos, la parte de arriba.
+[[391]] Santiago Amaya Cely 27 minutos 53 segundos
+Me gusta.
+[[392]] YP
+Yordy Pardo Pajaro
+27 minutos 55 segundos
+27:55
+Yordy Pardo Pajaro 27 minutos 55 segundos
+Sí.
+[[393]] Yordy Pardo Pajaro 28 minutos 5 segundos
+Okay, okay, see.
+
+[[394]] Santiago Amaya Cely
+28 minutos 6 segundos
+28:06
+Santiago Amaya Cely 28 minutos 6 segundos
+Me gusta esa grafiquita, solo quitarle el sombreado, ahí está perfecto, pero mira que en la parte de abajo yo estoy diciendo lo mismo que estoy diciendo arriba, sí.
+[[395]] YP
+Yordy Pardo Pajaro
+28 minutos 15 segundos
+28:15
+Yordy Pardo Pajaro 28 minutos 15 segundos
+It's like to see, yes.
+[[396]] Santiago Amaya Cely
+28 minutos 16 segundos
+28:16
+Santiago Amaya Cely 28 minutos 16 segundos
+¿Ahora yo qué haría ahí en esa parte? Yo quitaría esa tabla de abajo porque es que el detalle me lo está dando arriba 49 alertas, cero requerimientos y cero incidentes. Ahí me está diciendo lo mismo que abajo.
+[[397]] Santiago Amaya Cely 28 minutos 28 segundos
+Ahora el porcentaje total de casos, porcentaje total de casos.
+[[398]] YP
+Yordy Pardo Pajaro
+28 minutos 28 segundos
+28:28
+Yordy Pardo Pajaro 28 minutos 28 segundos
+Facebook.
+[[399]] Santiago Amaya Cely
+28 minutos 34 segundos
+28:34
+Santiago Amaya Cely 28 minutos 34 segundos
+Ahí acuérdate que ya me acordé, ahí habíamos hablado sobre el tema del.
+[[400]] Santiago Amaya Cely 28 minutos 40 segundos
+De cumplimiento, ¿te acuerdas? Creo que habíamos visto esa parte, bueno, si no.
+[[401]] Santiago Amaya Cely 28 minutos 46 segundos
+Is.
+[[402]] YP
+Yordy Pardo Pajaro
+28 minutos 46 segundos
+28:46
+Yordy Pardo Pajaro 28 minutos 46 segundos
+Concrete.
+[[403]] Santiago Amaya Cely
+28 minutos 47 segundos
+28:47
+Santiago Amaya Cely 28 minutos 47 segundos
+Que si no me acuerdo, se me viene a la mente algo de lo que hemos hablado de esa parte, pero si no, más bien hagámosle un análisis de lo que vemos arriba, cierto.
+[[404]] YP
+Yordy Pardo Pajaro
+28 minutos 57 segundos
+28:57
+Yordy Pardo Pajaro 28 minutos 57 segundos
+Okay, easy.
+[[405]] Yordy Pardo Pajaro 29 minutos
+Entiendo.
+[[406]] Santiago Amaya Cely
+29 minutos 1 segundo
+29:01
+Santiago Amaya Cely 29 minutos 1 segundo
+Entonces quitemos esa tabla debajo y hagamos u pongamos ahí al en el HTML que haga un análisis.
+[[407]] YP
+Yordy Pardo Pajaro
+29 minutos 8 segundos
+29:08
+Yordy Pardo Pajaro 29 minutos 8 segundos
+Vale, vale.
+[[408]] Santiago Amaya Cely
+29 minutos 10 segundos
+29:10
+Santiago Amaya Cely 29 minutos 10 segundos
+De lo que se evidencia ahí, listo y de resto lo dejaría así tal cual. Listo, cierra esa. Estamos haciendo un repaso 1:1, listo, disponibilidad global 100%.
+[[409]] YP
+Yordy Pardo Pajaro
+29 minutos 12 segundos
+29:12
+Yordy Pardo Pajaro 29 minutos 12 segundos
+Two.
+[[410]] Yordy Pardo Pajaro 29 minutos 15 segundos
+Okay.
+[[411]] Yordy Pardo Pajaro 29 minutos 17 segundos
+Vale.
+[[412]] Yordy Pardo Pajaro 29 minutos 21 segundos
+Hey.
+[[413]] Santiago Amaya Cely
+29 minutos 23 segundos
+29:23
+Santiago Amaya Cely 29 minutos 23 segundos
+Sí, esa me gusta lo que te dije, lo de los motores, nada más.
+[[414]] YP
+Yordy Pardo Pajaro
+29 minutos 27 segundos
+29:27
+Yordy Pardo Pajaro 29 minutos 27 segundos
+Los motores o K.
+[[415]] Santiago Amaya Cely
+29 minutos 28 segundos
+29:28
+Santiago Amaya Cely 29 minutos 28 segundos
+Mhm.
+[[416]] YP
+Yordy Pardo Pajaro
+29 minutos 30 segundos
+29:30
+Yordy Pardo Pajaro 29 minutos 30 segundos
+Vale.
+[[417]] Yordy Pardo Pajaro 29 minutos 31 segundos
+La cierra.
+[[418]] Santiago Amaya Cely
+29 minutos 32 segundos
+29:32
+Santiago Amaya Cely 29 minutos 32 segundos
+Sí, se habla.
+[[419]] YP
+Yordy Pardo Pajaro
+29 minutos 34 segundos
+29:34
+Yordy Pardo Pajaro 29 minutos 34 segundos
+Okay.
+[[420]] Santiago Amaya Cely
+29 minutos 35 segundos
+29:35
+Santiago Amaya Cely 29 minutos 35 segundos
+Cumple listo, gestión de backups abre la sala. Le dijimos que la dejamos quieta, pero pegámosle una repasadita 100% dónde está la meta, por ejemplo, esos backups.
+[[421]] YP
+Yordy Pardo Pajaro
+29 minutos 47 segundos
+29:47
+Yordy Pardo Pajaro 29 minutos 47 segundos
+La mitad de los backups.
+[[422]] Santiago Amaya Cely
+29 minutos 49 segundos
+29:49
+Santiago Amaya Cely 29 minutos 49 segundos
+Creo que no está, cierra esa, por favor.
+[[423]] YP
+Yordy Pardo Pajaro
+29 minutos 54 segundos
+29:54
+Yordy Pardo Pajaro 29 minutos 54 segundos
+Eso tenía.
+[[424]] Santiago Amaya Cely
+29 minutos 54 segundos
+29:54
+Santiago Amaya Cely 29 minutos 54 segundos
+Fíjate que ahí en la tarjeta, ahí en la tarjeta debería ser la misma que la izquierda, bueno, en la izquierda hace falta la meta.
+[[425]] Santiago Amaya Cely 30 minutos 2 segundos
+La meta está en la disponibilidad global, ábrela.
+[[426]] YP
+Yordy Pardo Pajaro
+30 minutos 3 segundos
+30:03
+Yordy Pardo Pajaro 30 minutos 3 segundos
+Hey.
+[[427]] Santiago Amaya Cely
+30 minutos 8 segundos
+30:08
+Santiago Amaya Cely 30 minutos 8 segundos
+Sí, la meta está que deberíamos colocar la meta también en los backups. Mírate si en el Excel está la meta.
+[[428]] YP
+Yordy Pardo Pajaro
+30 minutos 9 segundos
+30:09
+Yordy Pardo Pajaro 30 minutos 9 segundos
+Sí, 99,3%.
+[[429]] Yordy Pardo Pajaro 30 minutos 13 segundos
+Okay.
+[[430]] Yordy Pardo Pajaro 30 minutos 16 segundos
+A ver, just from my cups.
+[[431]] Yordy Pardo Pajaro 30 minutos 20 segundos
+La meta.
+[[432]] Santiago Amaya Cely
+30 minutos 22 segundos
+30:22
+Santiago Amaya Cely 30 minutos 22 segundos
+Abre eso también cogí y abre todo lo que hay.
+[[433]] YP
+Yordy Pardo Pajaro
+30 minutos 26 segundos
+30:26
+Yordy Pardo Pajaro 30 minutos 26 segundos
+Okay.
+[[434]] Yordy Pardo Pajaro 30 minutos 36 segundos
+Okay, yeah, so you can.
+[[435]] Santiago Amaya Cely
+30 minutos 36 segundos
+30:36
+Santiago Amaya Cely 30 minutos 36 segundos
+No hay más, no hay una meta, no hay, y esa tampoco está dentro del contrato. Entonces esa la podemos dejar así. Cambia, porfa, muéstrame la HTML.
+[[436]] YP
+Yordy Pardo Pajaro
+30 minutos 40 segundos
+30:40
+Yordy Pardo Pajaro 30 minutos 40 segundos
+No.
+[[437]] Yordy Pardo Pajaro 30 minutos 46 segundos
+Boy.
+[[438]] Santiago Amaya Cely
+30 minutos 52 segundos
+30:52
+Santiago Amaya Cely 30 minutos 52 segundos
+¿Entonces, yo cómo sé si cumplo?
+[[439]] Santiago Amaya Cely 30 minutos 55 segundos
+Pues la meta en la disponibilidad es la misma 99,3.
+[[440]] YP
+Yordy Pardo Pajaro
+31 minutos 1 segundo
+31:01
+Yordy Pardo Pajaro 31 minutos 1 segundo
+Okay.
+[[441]] Santiago Amaya Cely
+31 minutos 2 segundos
+31:02
+Santiago Amaya Cely 31 minutos 2 segundos
+Es la misma.
+[[442]] Santiago Amaya Cely 31 minutos 4 segundos
+Es la misma porque es mi porcentaje de disponibilidad también en backups entonces.
+[[443]] YP
+Yordy Pardo Pajaro
+31 minutos 4 segundos
+31:04
+Yordy Pardo Pajaro 31 minutos 4 segundos
+Okay, listen.
+[[444]] Santiago Amaya Cely
+31 minutos 10 segundos
+31:10
+Santiago Amaya Cely 31 minutos 10 segundos
+Yo que colocaría en la en las 2 tarjeticas de afuera, colocaría.
+[[445]] Santiago Amaya Cely 31 minutos 16 segundos
+La meta también ahí y que cuando yo abra ya me mande lo específico, que qué es el análisis por meses. Esas 2, esas 2 tarjetitas irían casi que iguales. Ahí yo lo que le cambiaría sería una grafiquita. Abre esa gestión de backups, porfa.
+[[446]] YP
+Yordy Pardo Pajaro
+31 minutos 18 segundos
+31:18
+Yordy Pardo Pajaro 31 minutos 18 segundos
+Met OK.
+[[447]] Yordy Pardo Pajaro 31 minutos 25 segundos
+Close.
+[[448]] Santiago Amaya Cely
+31 minutos 39 segundos
+31:39
+Santiago Amaya Cely 31 minutos 39 segundos
+Es que aquí está específico, no, pero yo le cambiaría a bueno, es que esa tablita bueno también podría ser.
+[[449]] Santiago Amaya Cely 31 minutos 47 segundos
+Es que está al 100.
+[[450]] Santiago Amaya Cely 31 minutos 53 segundos
+¿Qué pasas?
+[[451]] Santiago Amaya Cely 31 minutos 56 segundos
+¿Qué pasa si yo me bajo ahí si toca cambiarle la lógica? ¿Porque qué pasa si yo me bajo del 93 del 99,3?
+[[452]] Santiago Amaya Cely 32 minutos 4 segundos
+Ahí, en alguna de esas bases de datos, me debería aparecer una X, por ejemplo, sí.
+[[453]] YP
+Yordy Pardo Pajaro
+32 minutos 5 segundos
+32:05
+Yordy Pardo Pajaro 32 minutos 5 segundos
+In fact.
+[[454]] Yordy Pardo Pajaro 32 minutos 9 segundos
+Sí, perfecto, debería.
+[[455]] Santiago Amaya Cely
+32 minutos 13 segundos
+32:13
+Santiago Amaya Cely 32 minutos 13 segundos
+¿O podríamos dejar una gráfica de barras?
+[[456]] Santiago Amaya Cely 32 minutos 17 segundos
+Igual a la a la aclaro que acá.
+[[457]] YP
+Yordy Pardo Pajaro
+32 minutos 17 segundos
+32:17
+Yordy Pardo Pajaro 32 minutos 17 segundos
+Uh-huh.
+[[458]] Santiago Amaya Cely
+32 minutos 21 segundos
+32:21
+Santiago Amaya Cely 32 minutos 21 segundos
+Ay, aquí viene el tema, porque lo que te digo.
+[[459]] Santiago Amaya Cely 32 minutos 25 segundos
+¿Cómo eso sería lo mismo? ¿Cómo podemos dejar la gráfica la tabla por meses? Sí.
+[[460]] Santiago Amaya Cely 32 minutos 32 segundos
+Porque aquí solamente está junio. ¿Cómo miro yo el detalle por lo menos de los últimos 3 meses? ¿Ahora yo cómo saco un consolidado de todos los meses de todo el contrato? ¿Sí me entiendes?
+[[461]] YP
+Yordy Pardo Pajaro
+32 minutos 32 segundos
+32:32
+Yordy Pardo Pajaro 32 minutos 32 segundos
+Okay.
+[[462]] Yordy Pardo Pajaro 32 minutos 45 segundos
+Claro.
+[[463]] Santiago Amaya Cely
+32 minutos 47 segundos
+32:47
+Santiago Amaya Cely 32 minutos 47 segundos
+O sea, cómo lo hay que la vida te ayude.
+[[464]] YP
+Yordy Pardo Pajaro
+32 minutos 51 segundos
+32:51
+Yordy Pardo Pajaro 32 minutos 51 segundos
+Vale, vale.
+[[465]] Santiago Amaya Cely
+32 minutos 53 segundos
+32:53
+Santiago Amaya Cely 32 minutos 53 segundos
+Porque yo no sabría cómo mostrarlo, por lo que son tantas bases de datos.
+[[466]] YP
+Yordy Pardo Pajaro
+32 minutos 58 segundos
+32:58
+Yordy Pardo Pajaro 32 minutos 58 segundos
+He hoped.
+[[467]] Santiago Amaya Cely
+32 minutos 58 segundos
+32:58
+Santiago Amaya Cely 32 minutos 58 segundos
+A menos de que se consolide, mira, puede ser algo.
+[[468]] Santiago Amaya Cely 33 minutos 3 segundos
+Que se consolide, va a compartir pantalla rápidamente.
+[[469]] YP
+Yordy Pardo Pajaro
+33 minutos 7 segundos
+33:07
+Yordy Pardo Pajaro 33 minutos 7 segundos
+Okay.
+[[470]] Yordy Pardo Pajaro 33 minutos 10 segundos
+All right.
+[[471]] Yordy Pardo Pajaro 33 minutos 15 segundos
+Okay, please.
+[[472]] Santiago Amaya Cely
+33 minutos 26 segundos
+33:26
+Santiago Amaya Cely 33 minutos 26 segundos
+Mira, ahí ves, ahí ya ves la pantalla, sí.
+[[473]] YP
+Yordy Pardo Pajaro
+33 minutos 28 segundos
+33:28
+Yordy Pardo Pajaro 33 minutos 28 segundos
+sí.
+[[474]] Santiago Amaya Cely
+33 minutos 29 segundos
+33:29
+Santiago Amaya Cely 33 minutos 29 segundos
+Entonces tengo mi gráfica, perdón los dibujos, pero sí, entonces.
+[[475]] YP
+Yordy Pardo Pajaro
+33 minutos 33 segundos
+33:33
+Yordy Pardo Pajaro 33 minutos 33 segundos
+Thank you.
+[[476]] Santiago Amaya Cely
+33 minutos 36 segundos
+33:36
+Santiago Amaya Cely 33 minutos 36 segundos
+Tengo.
+[[477]] Santiago Amaya Cely 33 minutos 38 segundos
+Muy como madres.
+[[478]] Santiago Amaya Cely 33 minutos 46 segundos
+Podría ser los meses enero.
+[[479]] YP
+Yordy Pardo Pajaro
+33 minutos 49 segundos
+33:49
+Yordy Pardo Pajaro 33 minutos 49 segundos
+Yeah.
+[[480]] Santiago Amaya Cely
+33 minutos 51 segundos
+33:51
+Santiago Amaya Cely 33 minutos 51 segundos
+Febrero.
+[[481]] Santiago Amaya Cely 33 minutos 53 segundos
+Marzo, digamos, sí.
+[[482]] YP
+Yordy Pardo Pajaro
+33 minutos 55 segundos
+33:55
+Yordy Pardo Pajaro 33 minutos 55 segundos
+Good.
+[[483]] Santiago Amaya Cely
+33 minutos 55 segundos
+33:55
+Santiago Amaya Cely 33 minutos 55 segundos
+Entonces yo en enero, si lo mando como un código de barras, aquí tengo mi la lo punteado era 93, ¿no?
+[[484]] Santiago Amaya Cely 34 minutos 3 segundos
+¿Qué es la meta, cierto?
+[[485]] YP
+Yordy Pardo Pajaro
+34 minutos 3 segundos
+34:03
+Yordy Pardo Pajaro 34 minutos 3 segundos
+Perfect.
+[[486]] Santiago Amaya Cely
+34 minutos 5 segundos
+34:05
+Santiago Amaya Cely 34 minutos 5 segundos
+¿Y dónde voy yo? Sobre el 100, pero esta sí era así.
+[[487]] Santiago Amaya Cely 34 minutos 11 segundos
+Cierto.
+[[488]] YP
+Yordy Pardo Pajaro
+34 minutos 12 segundos
+34:12
+Yordy Pardo Pajaro 34 minutos 12 segundos
+Okay, sí, sí, perfecto.
+[[489]] Santiago Amaya Cely
+34 minutos 14 segundos
+34:14
+Santiago Amaya Cely 34 minutos 14 segundos
+Entonces, esto es la meta.
+[[490]] Santiago Amaya Cely 34 minutos 16 segundos
+Y esto es lo que voy.
+[[491]] Santiago Amaya Cely 34 minutos 20 segundos
+Hoy lo que voy hasta hoy.
+[[492]] Santiago Amaya Cely 34 minutos 23 segundos
+Entonces mi en enero.
+[[493]] Santiago Amaya Cely 34 minutos 29 segundos
+¿Qué haría yo?
+[[494]] Santiago Amaya Cely 34 minutos 31 segundos
+Podría ser de la siguiente manera, si vamos así, vale y digamos que estábamos bajita, ¿cierto? Entonces yo digo, oiga, pero es que en marzo yo estoy bajito. ¿Qué bases de datos fueron las que me fallaron? Entonces una de 2 o yo puedo pasar aquí el mouse cierto y que se me despliegue.
+[[495]] YP
+Yordy Pardo Pajaro
+34 minutos 33 segundos
+34:33
+Yordy Pardo Pajaro 34 minutos 33 segundos
+N.
+[[496]] Yordy Pardo Pajaro 34 minutos 48 segundos
+Oh.
+[[497]] Santiago Amaya Cely
+34 minutos 50 segundos
+34:50
+Santiago Amaya Cely 34 minutos 50 segundos
+Un consolidado las bases de datos, así como en un cuadrito, cierto, trin trin trin trin trin y me diga cuál está en X.
+[[498]] YP
+Yordy Pardo Pajaro
+34 minutos 54 segundos
+34:54
+Yordy Pardo Pajaro 34 minutos 54 segundos
+Claro.
+[[499]] Yordy Pardo Pajaro 34 minutos 58 segundos
+Claro, claro.
+[[500]] Santiago Amaya Cely
+34 minutos 59 segundos
+34:59
+Santiago Amaya Cely 34 minutos 59 segundos
+O bien, yo puedo, yo puedo pasar aquí el mouse y darle clic aquí sobre esto y me despliega el consolidado.
+[[501]] YP
+Yordy Pardo Pajaro
+35 minutos 9 segundos
+35:09
+Yordy Pardo Pajaro 35 minutos 9 segundos
+Exacto.
+[[502]] Santiago Amaya Cely
+35 minutos 9 segundos
+35:09
+Santiago Amaya Cely 35 minutos 9 segundos
+De ese mes puede ser de ese mes. Sí, es lo que yo me imagino. No sé dentro de lo que yo he podido visualizar. Ahora, cómo está el HTML que yo te que yo te mostré ese día, que ya ni sé dónde está.
+[[503]] Santiago Amaya Cely 35 minutos 23 segundos
+HTML.
+[[504]] YP
+Yordy Pardo Pajaro
+35 minutos 26 segundos
+35:26
+Yordy Pardo Pajaro 35 minutos 26 segundos
+Good.
+[[505]] Santiago Amaya Cely
+35 minutos 29 segundos
+35:29
+Santiago Amaya Cely 35 minutos 29 segundos
+Pero quiero este.
+[[506]] Santiago Amaya Cely 35 minutos 31 segundos
+Still.
+[[507]] YP
+Yordy Pardo Pajaro
+35 minutos 32 segundos
+35:32
+Yordy Pardo Pajaro 35 minutos 32 segundos
+Pero el Index 2 creo que era.
+[[508]] Santiago Amaya Cely
+35 minutos 34 segundos
+35:34
+Santiago Amaya Cely 35 minutos 34 segundos
+Ya no me acuerdo.
+[[509]] YP
+Yordy Pardo Pajaro
+35 minutos 36 segundos
+35:36
+Yordy Pardo Pajaro 35 minutos 36 segundos
+Era el index 2, creo que era el index o estoy seguro que.
+[[510]] Santiago Amaya Cely
+35 minutos 41 segundos
+35:41
+Santiago Amaya Cely 35 minutos 41 segundos
+Este era este, eso.
+[[511]] YP
+Yordy Pardo Pajaro
+35 minutos 41 segundos
+35:41
+Yordy Pardo Pajaro 35 minutos 41 segundos
+Mhm.
+[[512]] Yordy Pardo Pajaro 35 minutos 43 segundos
+Yes, too.
+[[513]] Santiago Amaya Cely
+35 minutos 47 segundos
+35:47
+Santiago Amaya Cely 35 minutos 47 segundos
+Cumplimiento de vulnerabilidades.
+[[514]] Santiago Amaya Cely 35 minutos 55 segundos
+Ah.
+[[515]] Santiago Amaya Cely 35 minutos 56 segundos
+Ajá.
+[[516]] Santiago Amaya Cely 36 minutos 4 segundos
+Stitch sega por meses.
+[[517]] Santiago Amaya Cely 36 minutos 11 segundos
+No, este está bien así como tú lo tienes.
+[[518]] Santiago Amaya Cely 36 minutos 25 segundos
+Give you here.
+[[519]] Santiago Amaya Cely 36 minutos 31 segundos
+¿Cómo son tantas bases de datos?
+[[520]] YP
+Yordy Pardo Pajaro
+36 minutos 34 segundos
+36:34
+Yordy Pardo Pajaro 36 minutos 34 segundos
+Sí, son bastantes.
+[[521]] Santiago Amaya Cely
+36 minutos 42 segundos
+36:42
+Santiago Amaya Cely 36 minutos 42 segundos
+Stone.
+[[522]] Santiago Amaya Cely 36 minutos 51 segundos
+Gestión de eventos.
+[[523]] Santiago Amaya Cely 36 minutos 55 segundos
+Cláticos.
+[[524]] Santiago Amaya Cely 37 minutos 1 segundo
+Mira, top 5 en origen.
+[[525]] YP
+Yordy Pardo Pajaro
+37 minutos 6 segundos
+37:06
+Yordy Pardo Pajaro 37 minutos 6 segundos
+Mhm.
+[[526]] Santiago Amaya Cely
+37 minutos 7 segundos
+37:07
+Santiago Amaya Cely 37 minutos 7 segundos
+Aquí me están dando la disponibilidad por lo o la efectividad.
+[[527]] Santiago Amaya Cely 37 minutos 12 segundos
+Mira, podría ser una, pero es que la gráfica sí.
+[[528]] Santiago Amaya Cely 37 minutos 24 segundos
+O lo otro podría ser así como lo tienes en el Excel.
+[[529]] YP
+Yordy Pardo Pajaro
+37 minutos 29 segundos
+37:29
+Yordy Pardo Pajaro 37 minutos 29 segundos
+Por favor.
+[[530]] Santiago Amaya Cely
+37 minutos 32 segundos
+37:32
+Santiago Amaya Cely 37 minutos 32 segundos
+Muéstrame el lección nuevamente, porfa, muéstrame comparte mi cuenta.
+[[531]] YP
+Yordy Pardo Pajaro
+37 minutos 36 segundos
+37:36
+Yordy Pardo Pajaro 37 minutos 36 segundos
+Okay, Leonardo, Italia.
+[[532]] Santiago Amaya Cely
+37 minutos 39 segundos
+37:39
+Santiago Amaya Cely 37 minutos 39 segundos
+I.
+[[533]] YP
+Yordy Pardo Pajaro
+37 minutos 40 segundos
+37:40
+Yordy Pardo Pajaro 37 minutos 40 segundos
+Me looks.
+[[534]] Santiago Amaya Cely
+37 minutos 46 segundos
+37:46
+Santiago Amaya Cely 37 minutos 46 segundos
+Yo cargo todo lo del año, cierto, lo que tengo con el cliente.
+[[535]] Santiago Amaya Cely 37 minutos 51 segundos
+Pero el sistema me debería cargar los últimos 3 meses de la disponibilidad, sí.
+[[536]] YP
+Yordy Pardo Pajaro
+37 minutos 51 segundos
+37:51
+Yordy Pardo Pajaro 37 minutos 51 segundos
+Uh-huh.
+[[537]] Yordy Pardo Pajaro 37 minutos 58 segundos
+It.
+[[538]] Santiago Amaya Cely
+37 minutos 58 segundos
+37:58
+Santiago Amaya Cely 37 minutos 58 segundos
+Ahora, si yo quiero ver los otros 3 meses o los o el resto de los meses, podríamos habilitar un botoncito para que te diga mostrar detalle de meses.
+[[539]] YP
+Yordy Pardo Pajaro
+38 minutos 10 segundos
+38:10
+Yordy Pardo Pajaro 38 minutos 10 segundos
+O poner un desde tal fecha hasta tal fecha.
+[[540]] Santiago Amaya Cely
+38 minutos 15 segundos
+38:15
+Santiago Amaya Cely 38 minutos 15 segundos
+También puede ser, sí, eso puede ser también un filtro, un filtro.
+[[541]] YP
+Yordy Pardo Pajaro
+38 minutos 17 segundos
+38:17
+Yordy Pardo Pajaro 38 minutos 17 segundos
+Okay.
+[[542]] Yordy Pardo Pajaro 38 minutos 19 segundos
+Okay, un filter.
+[[543]] Santiago Amaya Cely
+38 minutos 20 segundos
+38:20
+Santiago Amaya Cely 38 minutos 20 segundos
+Entonces yo coloco la fecha y él me trae, pues desde donde tiene sí o no, y me podría mostrar la tabla así como está. Claro que es que mírate esa ejecución, mira esa tabla de al lado, podría ser así como está esa tabla, así está bien.
+[[544]] YP
+Yordy Pardo Pajaro
+38 minutos 25 segundos
+38:25
+Yordy Pardo Pajaro 38 minutos 25 segundos
+Okay.
+[[545]] Yordy Pardo Pajaro 38 minutos 36 segundos
+Claro.
+[[546]] Santiago Amaya Cely
+38 minutos 37 segundos
+38:37
+Santiago Amaya Cely 38 minutos 37 segundos
+Mira que lo que pasa es que arriba la línea se ve como oscura, es porque todos los colores se unifican arriba, sí.
+[[547]] YP
+Yordy Pardo Pajaro
+38 minutos 44 segundos
+38:44
+Yordy Pardo Pajaro 38 minutos 44 segundos
+Okay.
+[[548]] Santiago Amaya Cely
+38 minutos 45 segundos
+38:45
+Santiago Amaya Cely 38 minutos 45 segundos
+Pero si yo digamos, vete a diciembre.
+[[549]] YP
+Yordy Pardo Pajaro
+38 minutos 48 segundos
+38:48
+Yordy Pardo Pajaro 38 minutos 48 segundos
+Diciembre.
+[[550]] Santiago Amaya Cely
+38 minutos 48 segundos
+38:48
+Santiago Amaya Cely 38 minutos 48 segundos
+Es de diciembre del 2025 y cámbiale el resultado a 50% cualquiera de esos.
+[[551]] YP
+Yordy Pardo Pajaro
+38 minutos 53 segundos
+38:53
+Yordy Pardo Pajaro 38 minutos 53 segundos
+Okay.
+[[552]] Yordy Pardo Pajaro 38 minutos 57 segundos
+Vamos a cambiarle a este 50%.
+[[553]] Santiago Amaya Cely
+39 minutos 1 segundo
+39:01
+Santiago Amaya Cely 39 minutos 1 segundo
+Mira, él ya me genera una tendencia de que en diciembre.
+[[554]] YP
+Yordy Pardo Pajaro
+39 minutos 2 segundos
+39:02
+Yordy Pardo Pajaro 39 minutos 2 segundos
+Yeah.
+[[555]] Santiago Amaya Cely
+39 minutos 8 segundos
+39:08
+Santiago Amaya Cely 39 minutos 8 segundos
+¿Dónde está el color de diciembre? Míralo, ese colorcito. Yo tuve inversión, la tuve al 50%. Ahora pásale el mouse sobre la línea.
+[[556]] YP
+Yordy Pardo Pajaro
+39 minutos 19 segundos
+39:19
+Yordy Pardo Pajaro 39 minutos 19 segundos
+Sobre la línea.
+[[557]] Santiago Amaya Cely
+39 minutos 19 segundos
+39:19
+Santiago Amaya Cely 39 minutos 19 segundos
+Sobre la línea de tendencia, la de ejecución de backups.
+[[558]] YP
+Yordy Pardo Pajaro
+39 minutos 22 segundos
+39:22
+Yordy Pardo Pajaro 39 minutos 22 segundos
+Depending.
+[[559]] Yordy Pardo Pajaro 39 minutos 24 segundos
+Hey.
+[[560]] Santiago Amaya Cely
+39 minutos 25 segundos
+39:25
+Santiago Amaya Cely 39 minutos 25 segundos
+Mira, ahí te baja.
+[[561]] Santiago Amaya Cely 39 minutos 28 segundos
+La línea, mira, ahí te dice serie 25 de diciembre, ¿qué hice?
+[[562]] YP
+Yordy Pardo Pajaro
+39 minutos 28 segundos
+39:28
+Yordy Pardo Pajaro 39 minutos 28 segundos
+Hey.
+[[563]] Yordy Pardo Pajaro 39 minutos 35 segundos
+Dice serie diciembre 25 punto.
+[[564]] Santiago Amaya Cely
+39 minutos 38 segundos
+39:38
+Santiago Amaya Cely 39 minutos 38 segundos
+Punto, pero ese no, vete más para abajo hasta donde inicia la línea. Mírala, ahí te dice, si tú vas subiendo, él te va diciendo, te va cambiando según el porcentaje, te va diciendo cuál base de datos es. Sí, pero fíjate que, por ejemplo, a mí cuál me interesa saber ahí, no, pues liberación qué pasó al 50% quedó, sí.
+[[565]] YP
+Yordy Pardo Pajaro
+39 minutos 43 segundos
+39:43
+Yordy Pardo Pajaro 39 minutos 43 segundos
+Okay, okay.
+[[566]] Yordy Pardo Pajaro 39 minutos 54 segundos
+Okay.
+[[567]] Santiago Amaya Cely
+40 minutos 1 segundo
+40:01
+Santiago Amaya Cely 40 minutos 1 segundo
+Porque queda el 50%, eso ya es un análisis que uno le hace, sí.
+[[568]] YP
+Yordy Pardo Pajaro
+40 minutos 1 segundo
+40:01
+Yordy Pardo Pajaro 40 minutos 1 segundo
+Okay.
+[[569]] Yordy Pardo Pajaro 40 minutos 6 segundos
+Claro.
+[[570]] Yordy Pardo Pajaro 40 minutos 12 segundos
+Okay.
+[[571]] Santiago Amaya Cely
+40 minutos 13 segundos
+40:13
+Santiago Amaya Cely 40 minutos 13 segundos
+¿Listo, entonces?
+[[572]] Santiago Amaya Cely 40 minutos 16 segundos
+Ahí empezamos a validar ya el punto, pero fíjate que esa misma tabla la podemos meter allá al otro lado para que no hagas esa otra tabla. Y así se ve diciembre, enero, desde donde yo le diga, si quieres, mira, coge la tabla, dale clic.
+[[573]] YP
+Yordy Pardo Pajaro
+40 minutos 30 segundos
+40:30
+Yordy Pardo Pajaro 40 minutos 30 segundos
+Three.
+[[574]] Santiago Amaya Cely
+40 minutos 32 segundos
+40:32
+Santiago Amaya Cely 40 minutos 32 segundos
+Dale arriba en el filtro.
+[[575]] YP
+Yordy Pardo Pajaro
+40 minutos 35 segundos
+40:35
+Yordy Pardo Pajaro 40 minutos 35 segundos
+Filtro.
+[[576]] Santiago Amaya Cely
+40 minutos 36 segundos
+40:36
+Santiago Amaya Cely 40 minutos 36 segundos
+Abajo, abajo, en el la cosita del filtro, es mira, ahí baja.
+[[577]] YP
+Yordy Pardo Pajaro
+40 minutos 38 segundos
+40:38
+Yordy Pardo Pajaro 40 minutos 38 segundos
+Ay este, ok, ok, listo. A ver, ahora sí.
+[[578]] Santiago Amaya Cely
+40 minutos 43 segundos
+40:43
+Santiago Amaya Cely 40 minutos 43 segundos
+Gracias, mira, arriba tenemos sube, sube, sube, sube como un filtro desde que coges de diciembre del 2025.
+[[579]] YP
+Yordy Pardo Pajaro
+40 minutos 53 segundos
+40:53
+Yordy Pardo Pajaro 40 minutos 53 segundos
+A.
+[[580]] Santiago Amaya Cely
+40 minutos 53 segundos
+40:53
+Santiago Amaya Cely 40 minutos 53 segundos
+Si te das cuenta, si yo selecciono la tabla.
+[[581]] YP
+Yordy Pardo Pajaro
+40 minutos 54 segundos
+40:54
+Yordy Pardo Pajaro 40 minutos 54 segundos
+Sí.
+[[582]] Santiago Amaya Cely
+40 minutos 58 segundos
+40:58
+Santiago Amaya Cely 40 minutos 58 segundos
+Y arrastro más meses, o sea, dale clic a la tabla por fuera, o sea, por en lo blanco, por fuera.
+[[583]] YP
+Yordy Pardo Pajaro
+41 minutos 4 segundos
+41:04
+Yordy Pardo Pajaro 41 minutos 4 segundos
+Es lo blanco aquí.
+[[584]] Santiago Amaya Cely
+41 minutos 6 segundos
+41:06
+Santiago Amaya Cely 41 minutos 6 segundos
+Eso ahí, dale click.
+[[585]] Santiago Amaya Cely 41 minutos 8 segundos
+Eso, si ves que se te sombrea desde diciembre hasta junio, ahora vete a la línea al principio, a la línea sombreada a mano izquierda de la tabla.
+[[586]] YP
+Yordy Pardo Pajaro
+41 minutos 8 segundos
+41:08
+Yordy Pardo Pajaro 41 minutos 8 segundos
+Uh-huh.
+[[587]] Yordy Pardo Pajaro 41 minutos 12 segundos
+P.O.K.
+[[588]] Yordy Pardo Pajaro 41 minutos 20 segundos
+Esta.
+[[589]] Santiago Amaya Cely
+41 minutos 21 segundos
+41:21
+Santiago Amaya Cely 41 minutos 21 segundos
+No, la azul, la azul, la azul.
+[[590]] YP
+Yordy Pardo Pajaro
+41 minutos 24 segundos
+41:24
+Yordy Pardo Pajaro 41 minutos 24 segundos
+La azul es.
+[[591]] Santiago Amaya Cely
+41 minutos 26 segundos
+41:26
+Santiago Amaya Cely 41 minutos 26 segundos
+Como al bordecito, eso se le eso, ahí dale click y selecciónala desde julio 2025, o sea, arrástrala.
+[[592]] YP
+Yordy Pardo Pajaro
+41 minutos 34 segundos
+41:34
+Yordy Pardo Pajaro 41 minutos 34 segundos
+En julio de 2025.
+[[593]] Santiago Amaya Cely
+41 minutos 39 segundos
+41:39
+Santiago Amaya Cely 41 minutos 39 segundos
+No te deja, no te deja más, espera, no, espera, suéltala, suéltala.
+[[594]] YP
+Yordy Pardo Pajaro
+41 minutos 43 segundos
+41:43
+Yordy Pardo Pajaro 41 minutos 43 segundos
+Ya resulta, sí.
+[[595]] Santiago Amaya Cely
+41 minutos 44 segundos
+41:44
+Santiago Amaya Cely 41 minutos 44 segundos
+Es ahora en la esquina superior inferior, perdón derecha, si es que hay un cuadrito entre la unión esa, ahí sí arrastra la mano derecha hasta junio.
+[[596]] YP
+Yordy Pardo Pajaro
+41 minutos 52 segundos
+41:52
+Yordy Pardo Pajaro 41 minutos 52 segundos
+Ajá.
+[[597]] Yordy Pardo Pajaro 41 minutos 55 segundos
+Mano derecha hasta junio.
+[[598]] Yordy Pardo Pajaro 41 minutos 59 segundos
+A ver.
+[[599]] Santiago Amaya Cely
+42 minutos 1 segundo
+42:01
+Santiago Amaya Cely 42 minutos 1 segundo
+Eso suelta, mira, ves, ahí te agrego ya todos los meses.
+[[600]] YP
+Yordy Pardo Pajaro
+42 minutos 1 segundo
+42:01
+Yordy Pardo Pajaro 42 minutos 1 segundo
+Yes.
+[[601]] Yordy Pardo Pajaro 42 minutos 3 segundos
+Uy.
+[[602]] Santiago Amaya Cely
+42 minutos 6 segundos
+42:06
+Santiago Amaya Cely 42 minutos 6 segundos
+Y ahí sí se cambió el color, pero pues eso es porque él va aumentando y cambiando el color. Pero fíjate que ahí seguimos todo en 100 menos inveración. Si ves, entonces yo tengo la opción, pues de colocar más meses, cierto.
+[[603]] YP
+Yordy Pardo Pajaro
+42 minutos 6 segundos
+42:06
+Yordy Pardo Pajaro 42 minutos 6 segundos
+Pero cool.
+[[604]] Yordy Pardo Pajaro 42 minutos 16 segundos
+Okay.
+[[605]] Yordy Pardo Pajaro 42 minutos 21 segundos
+Claro, claro.
+[[606]] Santiago Amaya Cely
+42 minutos 22 segundos
+42:22
+Santiago Amaya Cely 42 minutos 22 segundos
+Entonces ya ahí no se me ve saturada. A mí esa gráfica me gusta para eso porque no se ve saturado.
+[[607]] YP
+Yordy Pardo Pajaro
+42 minutos 28 segundos
+42:28
+Yordy Pardo Pajaro 42 minutos 28 segundos
+Eso sí, sirve para muchas, demasiado así.
+[[608]] Santiago Amaya Cely
+42 minutos 31 segundos
+42:31
+Santiago Amaya Cely 42 minutos 31 segundos
+Exacto, entonces a ellos ya le meto todos los 12 meses del contrato y ya yo ya al final, de hecho, al final cuando yo de mi informe final le digo, mire, todo el tiempo estuvimos así, listo.
+[[609]] YP
+Yordy Pardo Pajaro
+42 minutos 41 segundos
+42:41
+Yordy Pardo Pajaro 42 minutos 41 segundos
+Claro, claro.
+[[610]] Yordy Pardo Pajaro 42 minutos 49 segundos
+Sí.
+[[611]] Santiago Amaya Cely
+42 minutos 50 segundos
+42:50
+Santiago Amaya Cely 42 minutos 50 segundos
+Cuando como es un informe mensual, pues la idea es que me muestre los últimos 3 meses, cierto, y que me haga el análisis de la comparación. Abre el HTML, porfa.
+[[612]] YP
+Yordy Pardo Pajaro
+43 minutos 1 segundo
+43:01
+Yordy Pardo Pajaro 43 minutos 1 segundo
+Me uno.
+[[613]] Santiago Amaya Cely
+43 minutos 6 segundos
+43:06
+Santiago Amaya Cely 43 minutos 6 segundos
+¿Estamos hablando de esta, no? Entonces ahí cambiaría esa partecita, le colocaría esa gráfica, una gráfica parecida a la otra, donde cuando yo la abra solamente me muestre los 3, los 3 meses, cierto, los 3 últimos meses, o sea que si yo saco el informe en septiembre de agosto.
+[[614]] YP
+Yordy Pardo Pajaro
+43 minutos 9 segundos
+43:09
+Yordy Pardo Pajaro 43 minutos 9 segundos
+Sí.
+[[615]] Yordy Pardo Pajaro 43 minutos 23 segundos
+Ohh.
+[[616]] Santiago Amaya Cely
+43 minutos 28 segundos
+43:28
+Santiago Amaya Cely 43 minutos 28 segundos
+A mí ya no me debería mostrar.
+[[617]] YP
+Yordy Pardo Pajaro
+43 minutos 29 segundos
+43:29
+Yordy Pardo Pajaro 43 minutos 29 segundos
+Sí.
+[[618]] Santiago Amaya Cely
+43 minutos 32 segundos
+43:32
+Santiago Amaya Cely 43 minutos 32 segundos
+En enero, marzo, abril, mayo, junio, julio, agosto. A mí ya no me debería mostrar mayo, sino me debería mostrar junio, julio y agosto, cierto.
+[[619]] YP
+Yordy Pardo Pajaro
+43 minutos 42 segundos
+43:42
+Yordy Pardo Pajaro 43 minutos 42 segundos
+OKOK.
+[[620]] Santiago Amaya Cely
+43 minutos 42 segundos
+43:42
+Santiago Amaya Cely 43 minutos 42 segundos
+Entonces, si yo hago en octubre el informe de septiembre, pues a mí me ya no me debería dar arrojar junio, sino me debería arrojar julio, agosto y septiembre, sí o no.
+[[621]] YP
+Yordy Pardo Pajaro
+43 minutos 56 segundos
+43:56
+Yordy Pardo Pajaro 43 minutos 56 segundos
+Claro, okay.
+[[622]] Santiago Amaya Cely
+43 minutos 57 segundos
+43:57
+Santiago Amaya Cely 43 minutos 57 segundos
+¿Pero qué pasa lo que tú dices? Ay, venga, es que yo quiero saber todo el año cómo vamos. Ay, venga, yo coloco un filtro y en el filtro coloco cuándo fue mi fecha inicial. A mi fecha inicial fue en agosto del 2025. Aquí estamos hoy a julio del 2025.
+[[623]] Santiago Amaya Cely 44 minutos 16 segundos
+Digamos que hoy es septiembre. Sí, yo ya envié el informe. Entonces él puede ver hasta julio del 2025, le da click y la gráfica se actualiza.
+[[624]] YP
+Yordy Pardo Pajaro
+44 minutos 26 segundos
+44:26
+Yordy Pardo Pajaro 44 minutos 26 segundos
+Yeah.
+[[625]] Santiago Amaya Cely
+44 minutos 30 segundos
+44:30
+Santiago Amaya Cely 44 minutos 30 segundos
+Eso podría ser para todos los que tengan esa gráfica. Entonces cierra esa ya de gestión de backup. Ya quedamos claro qué es lo que tienes que hacer para poder avanzar. Listo, la disponibilidad global muestra la otra vez, qué pena.
+[[626]] YP
+Yordy Pardo Pajaro
+44 minutos 30 segundos
+44:30
+Yordy Pardo Pajaro 44 minutos 30 segundos
+A cooler.
+[[627]] Yordy Pardo Pajaro 44 minutos 38 segundos
+Okay.
+[[628]] Yordy Pardo Pajaro 44 minutos 42 segundos
+La disponibilidad global.
+[[629]] Santiago Amaya Cely
+44 minutos 42 segundos
+44:42
+Santiago Amaya Cely 44 minutos 42 segundos
+A ver si tenemos que hacer lo mismo.
+[[630]] YP
+Yordy Pardo Pajaro
+44 minutos 46 segundos
+44:46
+Yordy Pardo Pajaro 44 minutos 46 segundos
+Pues.
+[[631]] Santiago Amaya Cely
+44 minutos 47 segundos
+44:47
+Santiago Amaya Cely 44 minutos 47 segundos
+no la de abajo, la que estaba al lado de los backups.
+[[632]] YP
+Yordy Pardo Pajaro
+44 minutos 51 segundos
+44:51
+Yordy Pardo Pajaro 44 minutos 51 segundos
+A ver, esperen que yo le muestro.
+[[633]] Yordy Pardo Pajaro 44 minutos 55 segundos
+Esta, esta es la cosa.
+[[634]] Santiago Amaya Cely
+44 minutos 57 segundos
+44:57
+Santiago Amaya Cely 44 minutos 57 segundos
+Esa entonces mira que esa está bien los meses, ¿ves? Lo que pasa es que esta no tiene tanta vaina, solamente me dice la disponibilidad mes a mes. También yo debería poder ver desde cuándo tenemos desde cuándo, no sé, desde agosto del 2025. Yo debería poder ver con el filtrico que esa tablita se me actualice ahí.
+[[635]] Santiago Amaya Cely 45 minutos 17 segundos
+De dónde se basa la información del último archivo que yo le subí donde tiene toda la disponibilidad todos los meses.
+[[636]] YP
+Yordy Pardo Pajaro
+45 minutos 24 segundos
+45:24
+Yordy Pardo Pajaro 45 minutos 24 segundos
+Claro.
+[[637]] Yordy Pardo Pajaro 45 minutos 26 segundos
+Okay.
+[[638]] Santiago Amaya Cely
+45 minutos 27 segundos
+45:27
+Santiago Amaya Cely 45 minutos 27 segundos
+¿Listo?
+[[639]] YP
+Yordy Pardo Pajaro
+45 minutos 28 segundos
+45:28
+Yordy Pardo Pajaro 45 minutos 28 segundos
+Perfecto, perfecto.
+[[640]] Santiago Amaya Cely
+45 minutos 36 segundos
+45:36
+Santiago Amaya Cely 45 minutos 36 segundos
+Listo.
+[[641]] Santiago Amaya Cely 45 minutos 37 segundos
+Avisámonos de ahí, vea, mira que van saliendo más cositas cada vez que uno va revisando un logro, el servicio, mitigaciones y riesgos, bolsa de horas.
+[[642]] YP
+Yordy Pardo Pajaro
+45 minutos 41 segundos
+45:41
+Yordy Pardo Pajaro 45 minutos 41 segundos
+Two.
+[[643]] Yordy Pardo Pajaro 45 minutos 49 segundos
+Mhm.
+[[644]] Santiago Amaya Cely
+45 minutos 51 segundos
+45:51
+Santiago Amaya Cely 45 minutos 51 segundos
+Ay, a ver para los logros.
+[[645]] Santiago Amaya Cely 45 minutos 59 segundos
+Los logros y dejé malos así.
+[[646]] YP
+Yordy Pardo Pajaro
+46 minutos 1 segundo
+46:01
+Yordy Pardo Pajaro 46 minutos 1 segundo
+Good.
+[[647]] Santiago Amaya Cely
+46 minutos 2 segundos
+46:02
+Santiago Amaya Cely 46 minutos 2 segundos
+Porque es que al final, al final del año no salgamos primero con lo de las gráficas y después miramos una opción que tengo para lo del tema de los logros y las mitigaciones, o más que todo que los logros, que es que cuando yo voy a renovar un contrato, a mí me piden todos los logros que hemos hecho a lo largo del año. Entonces me toca coger informe por informe.
+[[648]] YP
+Yordy Pardo Pajaro
+46 minutos 13 segundos
+46:13
+Yordy Pardo Pajaro 46 minutos 13 segundos
+Okay, okay, okay.
+[[649]] Yordy Pardo Pajaro 46 minutos 17 segundos
+Yes.
+[[650]] Yordy Pardo Pajaro 46 minutos 21 segundos
+No.
+[[651]] Santiago Amaya Cely
+46 minutos 22 segundos
+46:22
+Santiago Amaya Cely 46 minutos 22 segundos
+Copiar, pegar, copiar, pegar en un Excel y mandarle toda la comercial. Entonces me demoro más, pero si yo puedo empezar a guardar o no sé, o si tengo que colocarlos en el Excel.
+[[652]] YP
+Yordy Pardo Pajaro
+46 minutos 24 segundos
+46:24
+Yordy Pardo Pajaro 46 minutos 24 segundos
+Mm.
+[[653]] Yordy Pardo Pajaro 46 minutos 27 segundos
+Y claro.
+[[654]] Santiago Amaya Cely
+46 minutos 34 segundos
+46:34
+Santiago Amaya Cely 46 minutos 34 segundos
+Por meses, pues lo colocamos, no importa. Bueno, no hay lío en lo de la bolsa de obras, listo, lo de arriba, lo de los indicadores del periodo listo y lo del contrato. Dale clic en el contrato, por favor.
+[[655]] YP
+Yordy Pardo Pajaro
+46 minutos 38 segundos
+46:38
+Yordy Pardo Pajaro 46 minutos 38 segundos
+Okay.
+[[656]] Yordy Pardo Pajaro 46 minutos 46 segundos
+Contrato, sí.
+[[657]] Santiago Amaya Cely
+46 minutos 50 segundos
+46:50
+Santiago Amaya Cely 46 minutos 50 segundos
+Ese me parece perfecto, ese está bien.
+[[658]] YP
+Yordy Pardo Pajaro
+46 minutos 53 segundos
+46:53
+Yordy Pardo Pajaro 46 minutos 53 segundos
+Okay.
+[[659]] Santiago Amaya Cely
+46 minutos 59 segundos
+46:59
+Santiago Amaya Cely 46 minutos 59 segundos
+Listo, yo lo dejaría así, me gusta como queda, o sea, mira todo lo que redujimos y te diste cuenta. Al final tenemos un 360 de todo ese chorrero de diapositivas y yo al final pues le envío al cliente esta información. Ya yo le envío el HTML y el bailo abre, supongo yo.
+[[660]] YP
+Yordy Pardo Pajaro
+47 minutos 8 segundos
+47:08
+Yordy Pardo Pajaro 47 minutos 8 segundos
+Sí, claro.
+[[661]] Yordy Pardo Pajaro 47 minutos 14 segundos
+De Clara Chismas.
+[[662]] Santiago Amaya Cely
+47 minutos 20 segundos
+47:20
+Santiago Amaya Cely 47 minutos 20 segundos
+¿O eso nos hace falta definirlo, no?
+[[663]] YP
+Yordy Pardo Pajaro
+47 minutos 24 segundos
+47:24
+Yordy Pardo Pajaro 47 minutos 24 segundos
+Sí, de hecho, bueno, aquí abre el HTML, aquí abre la opción de exportar HTML, pero también está la opción de exportar PDF a las 2 opciones.
+[[664]] Santiago Amaya Cely
+47 minutos 25 segundos
+47:25
+Santiago Amaya Cely 47 minutos 25 segundos
+¿De cómo lo vamos a mostrar?
+[[665]] Santiago Amaya Cely 47 minutos 33 segundos
+¿Lo que pasa es que el PDF me quita el resto de funcionalidades, no? O como me lo muestran bien exportarlo.
+[[666]] YP
+Yordy Pardo Pajaro
+47 minutos 38 segundos
+47:38
+Yordy Pardo Pajaro 47 minutos 38 segundos
+Le muestra, ay, lo envió las puertas.
+[[667]] Yordy Pardo Pajaro 47 minutos 43 segundos
+A ver, eso pues voy a mostrar por eso ese detalle.
+[[668]] Santiago Amaya Cely
+47 minutos 47 segundos
+47:47
+Santiago Amaya Cely 47 minutos 47 segundos
+Él muestra el detalle.
+[[669]] YP
+Yordy Pardo Pajaro
+47 minutos 49 segundos
+47:49
+Yordy Pardo Pajaro 47 minutos 49 segundos
+Y lo muestra ese.
+[[670]] Santiago Amaya Cely
+47 minutos 50 segundos
+47:50
+Santiago Amaya Cely 47 minutos 50 segundos
+Hello.
+[[671]] YP
+Yordy Pardo Pajaro
+47 minutos 52 segundos
+47:52
+Yordy Pardo Pajaro 47 minutos 52 segundos
+Eso resumen de tarjetas.
+[[672]] Santiago Amaya Cely
+47 minutos 52 segundos
+47:52
+Santiago Amaya Cely 47 minutos 52 segundos
+Vea, pues está interesante, ábrelo.
+[[673]] YP
+Yordy Pardo Pajaro
+47 minutos 57 segundos
+47:57
+Yordy Pardo Pajaro 47 minutos 57 segundos
+In a car.
+[[674]] Santiago Amaya Cely
+47 minutos 57 segundos
+47:57
+Santiago Amaya Cely 47 minutos 57 segundos
+Ahh.
+[[675]] YP
+Yordy Pardo Pajaro
+48 minutos 3 segundos
+48:03
+Yordy Pardo Pajaro 48 minutos 3 segundos
+Esa de país, sí.
+[[676]] Santiago Amaya Cely
+48 minutos 8 segundos
+48:08
+Santiago Amaya Cely 48 minutos 8 segundos
+Eso me gusta.
+[[677]] YP
+Yordy Pardo Pajaro
+48 minutos 10 segundos
+48:10
+Yordy Pardo Pajaro 48 minutos 10 segundos
+Exact.
+[[678]] Yordy Pardo Pajaro 48 minutos 12 segundos
+Y luego, pues en HTML también está la opción, pues si le envía, le envía el cliente, pues ya para que pueda interactuar acá.
+[[679]] Yordy Pardo Pajaro 48 minutos 27 segundos
+Sí, tal cual.
+[[680]] Santiago Amaya Cely
+48 minutos 32 segundos
+48:32
+Santiago Amaya Cely 48 minutos 32 segundos
+A mí me gusta bastante, la verdad, me gusta mucho.
+[[681]] YP
+Yordy Pardo Pajaro
+48 minutos 37 segundos
+48:37
+Yordy Pardo Pajaro 48 minutos 37 segundos
+Okay.
+[[682]] Santiago Amaya Cely
+48 minutos 41 segundos
+48:41
+Santiago Amaya Cely 48 minutos 41 segundos
+¿Yo haría esos cambios que te mencioné y cuándo, para cuándo los tendrías y volvemos a revisar?
+[[683]] YP
+Yordy Pardo Pajaro
+48 minutos 43 segundos
+48:43
+Yordy Pardo Pajaro 48 minutos 43 segundos
+Sí, claro.
+[[684]] Yordy Pardo Pajaro 48 minutos 48 segundos
+2 días, 2 días, yo ahora estamos a 21, 20 y qué.
+[[685]] Yordy Pardo Pajaro 48 minutos 54 segundos
+21, martes, miércoles.
+[[686]] Yordy Pardo Pajaro 48 minutos 59 segundos
+¿El jueves, no?
+[[687]] Santiago Amaya Cely
+48 minutos 59 segundos
+48:59
+Santiago Amaya Cely 48 minutos 59 segundos
+Grate la reunión para el jueves, entonces sí.
+[[688]] YP
+Yordy Pardo Pajaro
+49 minutos 1 segundo
+49:01
+Yordy Pardo Pajaro 49 minutos 1 segundo
+El jueves, el jueves, sí.
+[[689]] Santiago Amaya Cely
+49 minutos 3 segundos
+49:03
+Santiago Amaya Cely 49 minutos 3 segundos
+Feliz jueves mirémoslo a las 10:30.
+[[690]] YP
+Yordy Pardo Pajaro
+49 minutos 6 segundos
+49:06
+Yordy Pardo Pajaro 49 minutos 6 segundos
+Pues a las 10:30 vamos a hacer nada.
+[[691]] Santiago Amaya Cely
+49 minutos 8 segundos
+49:08
+Santiago Amaya Cely 49 minutos 8 segundos
+O sea, a mí me gusta muchísimo, me gusta porque.
+[[692]] Santiago Amaya Cely 49 minutos 15 segundos
+Se está la base para el resto de informes.
+[[693]] YP
+Yordy Pardo Pajaro
+49 minutos 18 segundos
+49:18
+Yordy Pardo Pajaro 49 minutos 18 segundos
+Sí, exacto, exacto, así es.
+[[694]] Santiago Amaya Cely
+49 minutos 21 segundos
+49:21
+Santiago Amaya Cely 49 minutos 21 segundos
+Y el de el de Bancoldex lo seguimos dejando así.
+[[695]] YP
+Yordy Pardo Pajaro
+49 minutos 21 segundos
+49:21
+Yordy Pardo Pajaro 49 minutos 21 segundos
+Ya todo se hace más fácil.
+[[696]] Santiago Amaya Cely
+49 minutos 26 segundos
+49:26
+Santiago Amaya Cely 49 minutos 26 segundos
+Ya no, yo no lo cambiaría, yo lo dejaría así mientras tanto, porque sería transformarlo también al a algo así, sí.
+[[697]] YP
+Yordy Pardo Pajaro
+49 minutos 34 segundos
+49:34
+Yordy Pardo Pajaro 49 minutos 34 segundos
+Okay, exacto.
+[[698]] Santiago Amaya Cely
+49 minutos 35 segundos
+49:35
+Santiago Amaya Cely 49 minutos 35 segundos
+Pero por el momento lo dejamos así.
+[[699]] YP
+Yordy Pardo Pajaro
+49 minutos 37 segundos
+49:37
+Yordy Pardo Pajaro 49 minutos 37 segundos
+On this.
+[[700]] Yordy Pardo Pajaro 49 minutos 42 segundos
+Yeah.
+[[701]] Yordy Pardo Pajaro 49 minutos 52 segundos
+Yeah.
+[[702]] Yordy Pardo Pajaro 49 minutos 56 segundos
+And.
+[[703]] Yordy Pardo Pajaro 49 minutos 57 segundos
+Yeah.
+[[704]] Yordy Pardo Pajaro 49 minutos 59 segundos
+El jueves 23.
+[[705]] Yordy Pardo Pajaro 50 minutos 1 segundo
+Yes.
+[[706]] Yordy Pardo Pajaro 50 minutos 3 segundos
+Nico.
+[[707]] Santiago Amaya Cely
+50 minutos 4 segundos
+50:04
+Santiago Amaya Cely 50 minutos 4 segundos
+El jueves 23, listo.
+[[708]] YP
+Yordy Pardo Pajaro
+50 minutos 7 segundos
+50:07
+Yordy Pardo Pajaro 50 minutos 7 segundos
+Mhm.
+[[709]] Santiago Amaya Cely
+50 minutos 10 segundos
+50:10
+Santiago Amaya Cely 50 minutos 10 segundos
+Avances, informes, acción fiduciaria.
+[[710]] Santiago Amaya Cely 50 minutos 13 segundos
+Esos informes aquí listo, bien Jordi, me anima estas cosas porque es algo que va a generar valor.
+[[711]] Santiago Amaya Cely 50 minutos 23 segundos
+Si te soy sincero a nivel de informes y esto lo podemos replicar en los otros clientes.
+[[712]] YP
+Yordy Pardo Pajaro
+50 minutos 23 segundos
+50:23
+Yordy Pardo Pajaro 50 minutos 23 segundos
+Seeing her to claro.
+[[713]] Yordy Pardo Pajaro 50 minutos 30 segundos
+Y entonces la idea es estándar, con esto estamos haciendo.
+[[714]] Santiago Amaya Cely
+50 minutos 37 segundos
+50:37
+Santiago Amaya Cely 50 minutos 37 segundos
+No hagámosle, si metámosle la ficha, eso me parece muy ganador esto y obvio cuando yo se lo presente a mi jefe.
+[[715]] YP
+Yordy Pardo Pajaro
+50 minutos 43 segundos
+50:43
+Yordy Pardo Pajaro 50 minutos 43 segundos
+That of clip.
+[[716]] Santiago Amaya Cely
+50 minutos 46 segundos
+50:46
+Santiago Amaya Cely 50 minutos 46 segundos
+Me gustaría presentárselo, yo tengo reunión con él, ven te digo cuándo.
+[[717]] YP
+Yordy Pardo Pajaro
+50 minutos 52 segundos
+50:52
+Yordy Pardo Pajaro 50 minutos 52 segundos
+Okay, you here?
+[[718]] Santiago Amaya Cely
+50 minutos 53 segundos
+50:53
+Santiago Amaya Cely 50 minutos 53 segundos
+El lunes a las 3:00 de la tarde tengo reunión con él.
+[[719]] YP
+Yordy Pardo Pajaro
+50 minutos 57 segundos
+50:57
+Yordy Pardo Pajaro 50 minutos 57 segundos
+Lunes a las 3:00 de la tarde, OK.
+[[720]] Santiago Amaya Cely
+50 minutos 59 segundos
+50:59
+Santiago Amaya Cely 50 minutos 59 segundos
+Sí, entonces a mí me gustaría presentárselo, obviamente enfocándolo en tu gestión, porque tú fuiste el que el que lo por debajo has ejecutado todo el tema del desarrollo.
+[[721]] YP
+Yordy Pardo Pajaro
+51 minutos 4 segundos
+51:04
+Yordy Pardo Pajaro 51 minutos 4 segundos
+Hey.
+[[722]] Yordy Pardo Pajaro 51 minutos 14 segundos
+No.
+[[723]] Santiago Amaya Cely
+51 minutos 15 segundos
+51:15
+Santiago Amaya Cely 51 minutos 15 segundos
+Y.
+[[724]] Santiago Amaya Cely 51 minutos 17 segundos
+Obviamente, pues desde mi rol y mi conocimiento.
+[[725]] Santiago Amaya Cely 51 minutos 22 segundos
+Pues te digo las pautas según lo que conozco y lo que necesita el cliente, ¿no?
+[[726]] YP
+Yordy Pardo Pajaro
+51 minutos 26 segundos
+51:26
+Yordy Pardo Pajaro 51 minutos 26 segundos
+Sí.
+[[727]] Yordy Pardo Pajaro 51 minutos 28 segundos
+Así es.
+[[728]] Santiago Amaya Cely
+51 minutos 29 segundos
+51:29
+Santiago Amaya Cely 51 minutos 29 segundos
+Entonces ya con eso, uf, no, hermano, con eso quedaríamos re bien. Yo lo la idea sería presentárselo el lunes a él, ¿vale?
+[[729]] YP
+Yordy Pardo Pajaro
+51 minutos 34 segundos
+51:34
+Yordy Pardo Pajaro 51 minutos 34 segundos
+sí.
+[[730]] Yordy Pardo Pajaro 51 minutos 37 segundos
+bueno, sí, ya para el lunes eso va a estar con todo.
+[[731]] Santiago Amaya Cely
+51 minutos 40 segundos
+51:40
+Santiago Amaya Cely 51 minutos 40 segundos
+Sí, que tengamos todo listo, cosa que si él me dice no, yo le cambiaría esto, yo le cambiaría esto ya sea algo muy mínimo y sobre eso le digo, listo, se lo voy a presentar al cliente porque tengo reunión con él, se lo presento al cliente y ya.
+[[732]] YP
+Yordy Pardo Pajaro
+51 minutos 48 segundos
+51:48
+Yordy Pardo Pajaro 51 minutos 48 segundos
+sí.
+[[733]] Yordy Pardo Pajaro 51 minutos 57 segundos
+claro, así es.
+[[734]] Santiago Amaya Cely
+51 minutos 59 segundos
+51:59
+Santiago Amaya Cely 51 minutos 59 segundos
+Listo, no me parece excelente, vamos bien. ¿Teníamos algo más de eso, no?
+[[735]] YP
+Yordy Pardo Pajaro
+52 minutos 1 segundo
+52:01
+Yordy Pardo Pajaro 52 minutos 1 segundo
+Bueno.
+[[736]] Yordy Pardo Pajaro 52 minutos 5 segundos
+No, Inge, ya eso será todo. Sí, es todo por el momento.
+[[737]] Santiago Amaya Cely
+52 minutos 9 segundos
+52:09
+Santiago Amaya Cely 52 minutos 9 segundos
+Creo que tenemos más cosas, pero es de otro tema, sí de otros temas ya no me acuerdo.
+[[738]] YP
+Yordy Pardo Pajaro
+52 minutos 13 segundos
+52:13
+Yordy Pardo Pajaro 52 minutos 13 segundos
+Pues recapitulando en cuanto a la automatización de los envíos de correos ya está finalizó, ya pues lo de la lo de reporte de dispatcher ya tengo la documentación cargada, también el HTML está cargado a las actividades ahí de Conexus.
+[[739]] Yordy Pardo Pajaro 52 minutos 35 segundos
+¿Y qué otra cosa? Pues ahora trabajando el informe, pues sí, es eso.
+[[740]] Santiago Amaya Cely
+52 minutos 41 segundos
+52:41
+Santiago Amaya Cely 52 minutos 41 segundos
+El viernes quedó, yo por ahí vi los correos y quedaron bien, ¿no? Ya, o sea, ya estamos automatizados por ese lado. También acuérdate de registrar todo eso en.
+[[741]] YP
+Yordy Pardo Pajaro
+52 minutos 47 segundos
+52:47
+Yordy Pardo Pajaro 52 minutos 47 segundos
+Y Carmen.
+[[742]] Yordy Pardo Pajaro 52 minutos 50 segundos
+Okay.
+[[743]] Yordy Pardo Pajaro 52 minutos 52 segundos
+En el Excel, sí, claro.
+[[744]] Santiago Amaya Cely
+52 minutos 53 segundos
+52:53
+Santiago Amaya Cely 52 minutos 53 segundos
+Sí, porque eso yo lo necesito, yo lo necesito, mejor dicho.
+[[745]] YP
+Yordy Pardo Pajaro
+52 minutos 58 segundos
+52:58
+Yordy Pardo Pajaro 52 minutos 58 segundos
+Thank you. You're all for lower, I cannot clear.
+[[746]] Santiago Amaya Cely
+52 minutos 59 segundos
+52:59
+Santiago Amaya Cely 52 minutos 59 segundos
+En.
+[[747]] Santiago Amaya Cely 53 minutos 2 segundos
+Importante, más o menos calculate el tiempo que yo me estaba demorando con esos informes.
+[[748]] YP
+Yordy Pardo Pajaro
+53 minutos 8 segundos
+53:08
+Yordy Pardo Pajaro 53 minutos 8 segundos
+Sí, claro.
+[[749]] Santiago Amaya Cely
+53 minutos 8 segundos
+53:08
+Santiago Amaya Cely 53 minutos 8 segundos
+Ahora recojo, yo necesito sí llenar el Excel, pero yo solamente lo subo a una ruta y pum, me transforma todo lo que antes me demoraba, quite aquí, ponga aquí, o sea, el tiempo del Excel todavía no nos lo hemos quitado, porque pues la información que se trae de ahí básicamente es de las bases de datos, sí.
+[[750]] YP
+Yordy Pardo Pajaro
+53 minutos 16 segundos
+53:16
+Yordy Pardo Pajaro 53 minutos 16 segundos
+La información.
+[[751]] Yordy Pardo Pajaro 53 minutos 19 segundos
+Sí.
+[[752]] Santiago Amaya Cely
+53 minutos 27 segundos
+53:27
+Santiago Amaya Cely 53 minutos 27 segundos
+¿Yo qué puedo? Yo podría coger una conexión hacia las bases de datos de ese cliente, por ejemplo, sí, cómo lo podría hacer desde un Power Bi, por ejemplo, sí.
+[[753]] YP
+Yordy Pardo Pajaro
+53 minutos 27 segundos
+53:27
+Yordy Pardo Pajaro 53 minutos 27 segundos
+Sí, exacto.
+[[754]] Yordy Pardo Pajaro 53 minutos 35 segundos
+Easy.
+[[755]] Yordy Pardo Pajaro 53 minutos 42 segundos
+Hello.
+[[756]] Santiago Amaya Cely
+53 minutos 43 segundos
+53:43
+Santiago Amaya Cely 53 minutos 43 segundos
+Yo me podría conectar hacia las bases de datos que tenemos en Sicoal Server y Oracle.
+[[757]] Santiago Amaya Cely 53 minutos 49 segundos
+Pero eso es un poco más complejo. Ahí tendríamos el permiso. Yo lo podría coger. No, a Grafana nos podríamos mandar por Grafana y en Grafana se podría se podría traer la información. Yo la podría.
+[[758]] YP
+Yordy Pardo Pajaro
+53 minutos 51 segundos
+53:51
+Yordy Pardo Pajaro 53 minutos 51 segundos
+Sí, es completa, sí.
+[[759]] Yordy Pardo Pajaro 53 minutos 59 segundos
+Okay.
+[[760]] Santiago Amaya Cely
+54 minutos 3 segundos
+54:03
+Santiago Amaya Cely 54 minutos 3 segundos
+No en un Power Bi, pero debe haber alguna herramienta, un automate o hay un API. Por allá hay un API. Yo sé porque yo lo he hecho en otras empresas.
+[[761]] YP
+Yordy Pardo Pajaro
+54 minutos 9 segundos
+54:09
+Yordy Pardo Pajaro 54 minutos 9 segundos
+Yeah.
+[[762]] Santiago Amaya Cely
+54 minutos 12 segundos
+54:12
+Santiago Amaya Cely 54 minutos 12 segundos
+Y me conecto a Grafana y solamente desde la herramienta de Microsoft ejecutó un query.
+[[763]] YP
+Yordy Pardo Pajaro
+54 minutos 13 segundos
+54:13
+Yordy Pardo Pajaro 54 minutos 13 segundos
+Claro.
+[[764]] Yordy Pardo Pajaro 54 minutos 20 segundos
+Uh-huh.
+[[765]] Santiago Amaya Cely
+54 minutos 21 segundos
+54:21
+Santiago Amaya Cely 54 minutos 21 segundos
+¿Que me trae la disponibilidad? Sí, o sea, me dice si estuvo en 100% o en menos, y eso ya me lo podría, por ejemplo, la disponibilidad de las bases de datos. Yo ya me quitaría eso porque eso se ejecutaría.
+[[766]] YP
+Yordy Pardo Pajaro
+54 minutos 24 segundos
+54:24
+Yordy Pardo Pajaro 54 minutos 24 segundos
+Okay.
+[[767]] Santiago Amaya Cely
+54 minutos 34 segundos
+54:34
+Santiago Amaya Cely 54 minutos 34 segundos
+Todos los días, básicamente, sí.
+[[768]] YP
+Yordy Pardo Pajaro
+54 minutos 34 segundos
+54:34
+Yordy Pardo Pajaro 54 minutos 34 segundos
+Fifi.
+[[769]] Yordy Pardo Pajaro 54 minutos 36 segundos
+Exacto, claro.
+[[770]] Santiago Amaya Cely
+54 minutos 37 segundos
+54:37
+Santiago Amaya Cely 54 minutos 37 segundos
+O al final del mes el script correría, no sé, el primero de cada mes prune esa vaina ejecuta y ya tengo la disponibilidad de todas esas máquinas que están ahí. Ya me las traería a un lado, no sé, a un a lo que te digo, a un VI o a un Excel y en el y me las trae, me coloca la disponibilidad del mes.
+[[771]] YP
+Yordy Pardo Pajaro
+54 minutos 48 segundos
+54:48
+Yordy Pardo Pajaro 54 minutos 48 segundos
+Mhm.
+[[772]] Santiago Amaya Cely
+54 minutos 58 segundos
+54:58
+Santiago Amaya Cely 54 minutos 58 segundos
+Y ya entonces yo cuando vaya a abrir el archivo, yo digo, yo ya voy a abrir el video, yo ya tengo esto acá.
+[[773]] YP
+Yordy Pardo Pajaro
+54 minutos 59 segundos
+54:59
+Yordy Pardo Pajaro 54 minutos 59 segundos
+Exacto.
+[[774]] Yordy Pardo Pajaro 55 minutos 5 segundos
+O K, no, claro, exacto, así es.
+[[775]] Santiago Amaya Cely
+55 minutos 9 segundos
+55:09
+Santiago Amaya Cely 55 minutos 9 segundos
+Y lo mismo lo de los casos, no venga, es que necesitamos conectarnos a LPI. Bueno, ahí sí tocaría revisar cómo nos podemos conectar para ya traer de las tablas de la base de datos, que eso es complejo, eso con esa señora es complejo.
+[[776]] YP
+Yordy Pardo Pajaro
+55 minutos 22 segundos
+55:22
+Yordy Pardo Pajaro 55 minutos 22 segundos
+Sí, claro, así es.
+[[777]] Santiago Amaya Cely
+55 minutos 23 segundos
+55:23
+Santiago Amaya Cely 55 minutos 23 segundos
+Pero bueno, vamos por partes. Esta parte está súper interesante y está súper chévere como lo estamos mostrando. Entonces nos vemos el juez.
+[[778]] YP
+Yordy Pardo Pajaro
+55 minutos 31 segundos
+55:31
+Yordy Pardo Pajaro 55 minutos 31 segundos
+Bueno, dije, gracias por las observaciones, todo eso.
+[[779]] Santiago Amaya Cely
+55 minutos 34 segundos
+55:34
+Santiago Amaya Cely 55 minutos 34 segundos
+Listo, bien, vamos bien, espero que estés aprendiendo harto.
+[[780]] YP
+Yordy Pardo Pajaro
+55 minutos 38 segundos
+55:38
+Yordy Pardo Pajaro 55 minutos 38 segundos
+No, sí, claro, bien.
+[[781]] Santiago Amaya Cely
+55 minutos 41 segundos
+55:41
+Santiago Amaya Cely 55 minutos 41 segundos
+Listo, Jordi, muchas gracias. Hablamos entonces.
+[[782]] YP
+Yordy Pardo Pajaro
+55 minutos 44 segundos
+55:44
+Yordy Pardo Pajaro 55 minutos 44 segundos
+Buenos días, chao.
+[[783]] Santiago Amaya Cely
+55 minutos 45 segundos
+55:45
+Santiago Amaya Cely 55 minutos 45 segundos
+Chao.
+[[784]]
+
+
+Yordy Pardo Pajaro
+
+detuvo la transcripción
