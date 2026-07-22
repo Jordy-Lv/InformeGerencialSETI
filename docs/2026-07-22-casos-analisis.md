@@ -78,9 +78,55 @@ Con los insumos reales (`Insumos/`), navegador headless servido por HTTP local:
 - **Autopruebas embebidas:** 34 verificaciones, 33 PASA. La única falla (`Portada: estado general no afirma cumplimiento`) es un defecto **preexistente**, no introducido en este cambio — confirmado comparando contra `main`: el chequeo referencia un atributo `data-k="estadoGeneral"` que no existe en ningún lugar del HTML, ni antes ni después de este cambio.
 - **Sintaxis:** los 9 bloques `<script>` pasaron `node --check` después de cada edición.
 
+## Ronda de ajustes tras revisión visual (mismo día)
+
+Con el resultado ya en pantalla, se recibieron cinco correcciones puntuales:
+
+1. **Número recortado.** La etiqueta sobre la barra más alta ("58") quedaba
+   cortada contra el borde superior del lienzo. Causa: `chart()` no reservaba
+   espacio vertical para una etiqueta pegada al máximo del eje. Se agregó
+   `layout.padding.top` en la rama de barras.
+2. **"· mes reportado" redundante.** Se quitó el sufijo del eje: con las
+   barras ahora coloreadas por tipo (punto 3) ya no hacía falta, y el propio
+   orden/etiqueta del mes basta.
+3. **No se distinguía el tipo de caso en la gráfica.** El diseño original
+   (una serie, color por periodo) no permitía saber si una barra era alertas,
+   requerimientos o incidentes. Se cambió a **barras apiladas por tipo**
+   (`apilado:true` en `montarHistorico`, nueva opción), con la misma paleta
+   de `chartCasos` y leyenda. El total por columna se agrega como una serie
+   transparente en el mismo stack (opción `mostrarTotal`) para no superponer
+   tres números pequeños dentro de la barra.
+4. **El modal no cabía sin scroll.** Se eliminó el desglose `.case-breakdown`
+   (redundante con la gráfica apilada) y se comprimieron paddings/márgenes
+   del bloque rojo, la tarjeta del histórico (nuevo modificador
+   `.hist-card--compacto` y opción `alturaChart`, que **no** afectan al
+   modal de Indicadores) y la tarjeta de análisis.
+5. **Badge "Automático" innecesario.** `montarAnalisis` ya no muestra ningún
+   badge cuando el texto es automático; solo aparece "Editado manualmente"
+   cuando corresponde.
+
+**Segunda vuelta:** tras ver la gráfica compacta (110 px), se pidió
+agrandarla porque "no se visualiza bien". Se subió a 160 px, recuperando
+altura de otras zonas ya comprimidas del punto 4. Con esa altura el modal
+vuelve a necesitar un scroll mínimo (~25 px a 1280×720; 0 px a 1280×800) —
+un compromiso consciente entre "gráfica grande y legible" y "todo visible
+sin scroll", priorizando lo primero por ser la instrucción más reciente.
+
+**Tercera vuelta:** se pidió que el tooltip muestre las tres series juntas
+al pasar el cursor por la columna, en vez de tener que recorrer cada
+segmento de color por separado. Se agregó `interaction:{mode:'index',
+intersect:false}` a la configuración base de `chart()` (no solo al gráfico
+de casos — beneficia a cualquier gráfica multi-serie futura) y un `filter`
+en el tooltip de barras para que el dataset fantasma del total no aparezca
+como una fila vacía. Verificado inspeccionando la instancia viva del chart
+(`chart.options.interaction`); no se logró capturar una captura de pantalla
+del tooltip abierto porque el hover sintético del entorno de automatización
+no dispara de forma fiable el hit-testing de canvas de Chart.js — es una
+limitación de la herramienta de prueba, no del código.
+
 ## Archivos tocados
 
-Un único archivo: [`informe-accion-fiduciaria 1.html`](../informe-accion-fiduciaria%201.html) (+486/−43 líneas). Sin cambios en dependencias ni otros archivos del repo.
+Un único archivo: [`informe-accion-fiduciaria 1.html`](../informe-accion-fiduciaria%201.html). Sin cambios en dependencias ni otros archivos del repo.
 
 ## Pendiente / hallazgos fuera de este cambio
 
