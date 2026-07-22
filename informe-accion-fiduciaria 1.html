@@ -682,7 +682,7 @@ body.exportando .ed{background:transparent!important;box-shadow:none!important}
     <span class="tarjeta-kpi__icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
     <span class="tarjeta-kpi__multi-grid">
       <span class="tarjeta-kpi__mini"><span class="tarjeta-kpi__mini-etq">Indicadores del periodo</span></span>
-      <span class="tarjeta-kpi__mini"><span class="tarjeta-kpi__mini-etq">Disponibilidad</span><span class="tarjeta-kpi__mini-val">—</span><span class="tarjeta-kpi__mini-meta">Meta 99,30%</span></span><span class="tarjeta-kpi__mini"><span class="tarjeta-kpi__mini-etq">Tiempos de solución</span><span class="tarjeta-kpi__mini-val">—</span><span class="tarjeta-kpi__mini-meta">Meta 95%</span></span><span class="tarjeta-kpi__mini"><span class="tarjeta-kpi__mini-etq">Entregables</span><span class="tarjeta-kpi__mini-val">—</span><span class="tarjeta-kpi__mini-meta">Meta 90%</span></span>
+      <span class="tarjeta-kpi__mini"><span class="tarjeta-kpi__mini-etq">Disponibilidad</span><span class="tarjeta-kpi__mini-val">—</span><span class="tarjeta-kpi__mini-meta">Meta 99,30%</span></span><span class="tarjeta-kpi__mini"><span class="tarjeta-kpi__mini-etq">Gestión del Servicio</span><span class="tarjeta-kpi__mini-val">—</span><span class="tarjeta-kpi__mini-meta">Meta 95%</span></span><span class="tarjeta-kpi__mini"><span class="tarjeta-kpi__mini-etq">Entregables</span><span class="tarjeta-kpi__mini-val">—</span><span class="tarjeta-kpi__mini-meta">Meta 90%</span></span>
     </span>
     <span class="tarjeta-kpi__chip tarjeta-kpi__chip--warn"><span class="tarjeta-kpi__chip-punto"></span>Sin datos</span>
     <span class="tarjeta-kpi__flecha"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
@@ -703,7 +703,7 @@ body.exportando .ed{background:transparent!important;box-shadow:none!important}
           </tr></thead>
           <tbody>
             <tr><td class="izq">Disponibilidad de la plataforma administrada</td><td class="ed">99,30%</td><td class="ed">100%</td><td class="ed">100%</td><td class="ed">100%</td></tr>
-            <tr><td class="izq">Cumplimiento tiempos de Solución</td><td class="ed">95%</td><td class="ed">100%</td><td class="ed">100%</td><td class="ed">100%</td></tr>
+            <tr><td class="izq">Gestión del Servicio</td><td class="ed">95%</td><td class="ed">100%</td><td class="ed">100%</td><td class="ed">100%</td></tr>
             <tr><td class="izq">Cumplimiento de entregables</td><td class="ed">90%</td><td class="ed">100%</td><td class="ed">100%</td><td class="ed">100%</td></tr>
           </tbody>
         </table>
@@ -1957,6 +1957,21 @@ REPORTE.autopruebas=async function(archivos){
        Number.isFinite(titular)&&Math.abs(titular-serieSeti)<0.1,
        `titular=${titular} serie=${serieSeti}`);
   }
+  // El histórico del modal de indicadores y la tarjeta colapsada deben cerrar
+  // en el mismo número: son dos vistas del mismo último dato, no dos fuentes.
+  const histInd=REPORTE.d('indicadores').datos?.historico;
+  if(histInd?.filas?.length){
+    const valsTarjeta=[...document.querySelectorAll('#tk-c4 .tarjeta-kpi__mini-val')]
+      .map(el=>parseFloat(el.textContent.replace('%','').replace(/\./g,'').replace(',','.')));
+    const desajustes=[];
+    histInd.filas.forEach((f,i)=>{
+      const ultimo=f.valores.at(-1), enTarjeta=valsTarjeta[i];
+      if(!Number.isFinite(ultimo)||!Number.isFinite(enTarjeta)) return;
+      if(Math.abs(ultimo-enTarjeta)>=0.1) desajustes.push(`${f.nombre}: histórico=${ultimo} tarjeta=${enTarjeta}`);
+    });
+    ok('Indicadores: el último punto del histórico coincide con la tarjeta',
+       !desajustes.length, desajustes.join(' | ')||'ninguno');
+  }
 
   /* Cotejo celda a celda contra el insumo. No basta con que los totales cuadren:
      cada valor pintado debe ser el del Excel, no un genérico. */
@@ -2363,6 +2378,21 @@ async function cargarGlpi(file){
   actualizarResumen();
 }
 
+/* Nombres de presentación de los indicadores contractuales. El nombre de la
+   fuente (columna «Indicador» del Excel) no cambia y sigue siendo lo que el
+   parser reconoce; el rótulo es lo que ve el cliente. Único lugar que traduce
+   uno al otro — cualquier consumidor que lea el store ya recibe el nombre
+   correcto sin duplicar este mapa. */
+const ETIQUETA_INDICADOR=[
+  {patron:'disponibilidad',      rotulo:'Disponibilidad de la plataforma administrada'},
+  {patron:'tiempos de solucion', rotulo:'Gestión del Servicio'},
+  {patron:'entregables',         rotulo:'Cumplimiento de entregables'}
+];
+function rotuloIndicador(nombreFuente){
+  const n=norm(nombreFuente);
+  const m=ETIQUETA_INDICADOR.find(e=>n.includes(e.patron));
+  return m?m.rotulo:nombreFuente;
+}
 function cargarIndicadores(wb){
   const sinDato=motivo=>{ REPORTE.publicar('indicadores',{estado:'invalido',notas:[motivo]}); return {filas:0,periodo:false}; };
   const hoja=wb.SheetNames.find(s=>['indicadores','inidcadores'].includes(norm(s)));
@@ -2377,17 +2407,48 @@ function cargarIndicadores(wb){
   datos.slice(0,3).forEach((r,ri)=>{ const cells=tabla.querySelectorAll(`tbody tr:nth-child(${ri+1}) td`); cols.forEach((x,j)=>{if(cells[j+2]) cells[j+2].textContent=pct(r[x.i],0);}); });
   DATA_CASOS.labels=cols.map(x=>etiquetaPeriodo(x.d.getMonth(),x.d.getFullYear()));
   const enPeriodo=cols.some(x=>esPeriodo(x.d,mes,anio));
+  /* Histórico para el modal (evolución del indicador): todas las columnas desde
+     el inicio del contrato hasta el periodo del informe, nunca después. «cols»
+     (3 meses) sigue intacto — de él dependen la tabla del slide s4 y
+     DATA_CASOS.labels, que solo esperan tres posiciones fijas. */
+  const finicioTxt=document.querySelector('[data-k="finicio"]')?.textContent;
+  const inicioContrato=fecha(finicioTxt)||new Date(2025,8,1);
+  const colsHistorico=columnasPeriodo(rows[h],mes,anio,999).filter(x=>x.d>=inicioContrato);
+  const aPctHistorico=v=>{ if(v===null||v===undefined||v==='') return null; const n=Number(v); return Number.isFinite(n)?(Math.abs(n)<=1.01?n*100:n):null; };
+  // Identidad de cada fila (nombre/meta) se resuelve una sola vez y alimenta
+  // tanto «filas» (3 meses, formato heredado) como «historico.filas» (rango
+  // completo) sin repetir rotuloIndicador() ni la lectura de meta por fila.
+  const filasBase=datos.slice(0,3).map(r=>({
+    r,
+    nombre:rotuloIndicador(String(r[cIndicador]??'').trim()),
+    nombreFuente:String(r[cIndicador]??'').trim(),
+    meta:cMeta>=0?r[cMeta]:null
+  }));
+  const historico={
+    periodos:colsHistorico.map(x=>({
+      clave:`${x.d.getFullYear()}-${String(x.d.getMonth()+1).padStart(2,'0')}`,
+      etiqueta:etiquetaPeriodo(x.d.getMonth(),x.d.getFullYear()),
+      mes:x.d.getMonth(), anio:x.d.getFullYear()
+    })),
+    // `meta` va en la misma escala que `valores` (0–100): a diferencia de
+    // `datos.filas[].meta` (legado, crudo), el histórico y su resumen
+    // comparan directamente meta contra cada valor sin normalizar aparte.
+    filas:filasBase.map(({r,nombre,nombreFuente,meta})=>({
+      nombre, nombreFuente, meta:aPctHistorico(meta),
+      valores:colsHistorico.map(x=>aPctHistorico(r[x.i]))
+    }))
+  };
   // Cada indicador conserva su propia meta por fila; no se asume 100 %.
   REPORTE.publicar('indicadores',{
     estado: datos.length&&enPeriodo ? 'valido' : 'sin_registros_confirmado',
     datos:{
       etiquetas:cols.map(x=>etiquetaPeriodo(x.d.getMonth(),x.d.getFullYear())),
-      filas:datos.slice(0,3).map(r=>({
-        nombre:String(r[cIndicador]??'').trim(),
-        meta:cMeta>=0?r[cMeta]:null,
+      filas:filasBase.map(({r,nombre,nombreFuente,meta})=>({
+        nombre, nombreFuente, meta,
         valores:cols.map(x=>r[x.i]),
         resultado:r[cols[cols.length-1].i]
-      }))
+      })),
+      historico
     },
     fuente:REPORTE.procedencia(archivoConsolidado,{
       hoja, filaEncabezado:h, filasLeidas:rows.length-h-1,
@@ -3563,7 +3624,29 @@ function toggleTarjeta(btn){
 .records-total{position:relative;isolation:isolate;overflow:hidden;display:grid;align-content:center;min-height:280px;padding:32px 36px;border-radius:20px;background:linear-gradient(135deg,#12305a,#183d70 58%,#0f2546);color:#fff}.records-total:before{content:"";position:absolute;z-index:-1;right:-70px;bottom:-95px;width:270px;height:270px;border:1px solid #ffffff45;border-radius:50%;box-shadow:0 0 0 34px #ffffff0e,0 0 0 72px #ffffff09}.records-total__eyebrow{color:#9ed9ff;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.records-total strong{display:block;margin:15px 0 2px;font-size:82px;line-height:.85;letter-spacing:-.09em;font-variant-numeric:tabular-nums}.records-total b{font-size:19px;letter-spacing:-.025em}.records-total p{max-width:320px;margin:18px 0 0;color:#c6d6ec;font-size:13px;line-height:1.45}
 .heatmap-wrap{overflow:auto}.heatmap{width:100%;border-collapse:separate;border-spacing:4px;font-size:11px}.heatmap th{padding:4px;color:#64748b;text-align:center;font-size:10px}.heatmap th:first-child{text-align:left}.heatmap td{padding:7px 5px;border-radius:6px;text-align:center;font-weight:800;font-variant-numeric:tabular-nums}.heatmap td:first-child{text-align:left;background:transparent!important;color:#1f3864;white-space:nowrap}.heat-ok{background:#e5f6ec;color:#087f42}.heat-warn{background:#fff1de;color:#a95d00}.heat-bad{background:#fee8e7;color:#b42318}
 .empty-detail{padding:22px;border:1px dashed #cbd5e1;border-radius:12px;background:#fff;color:#64748b;font-size:13px}
-@media(max-width:760px){.dash-layout,.dash-layout--equal{grid-template-columns:1fr}.dashboard-head{flex-direction:column}.gauge-row{min-height:auto;padding-bottom:16px}.chart-box-exec canvas{height:220px!important}}
+/* Histórico reutilizable (§ montarHistorico). Autocontenido: quien lo monta
+   solo pasa un <div> vacío, el componente pone su propia tarjeta. */
+.hist-card{padding:20px 22px 22px;border:1px solid #e8edf3;border-radius:15px;background:#fff;box-shadow:0 5px 16px #1f38640b}
+.hist-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.hist-presets{display:inline-flex;padding:3px;border-radius:11px;background:#eef1f6;gap:2px}
+.hist-preset{border:0;padding:7px 13px;border-radius:8px;background:transparent;color:#526681;font:12px var(--sans,Arial,sans-serif);font-weight:800;letter-spacing:.02em;cursor:pointer;transition:background .15s,color .15s}
+.hist-preset:hover{color:#1f3864}
+.hist-preset.is-activo{background:#fff;color:#1f3864;box-shadow:0 2px 7px #1f38641f}
+.hist-range{display:flex;align-items:center;gap:10px}
+.hist-range label{display:flex;align-items:center;gap:7px;color:#7a8797;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.hist-range select{border:1px solid #dce4ef;border-radius:8px;padding:7px 9px;font:12px var(--sans,Arial,sans-serif);font-weight:700;color:#1f3864;background:#fff}
+.hist-chart{height:270px;padding-top:4px}
+.hist-chart canvas{width:100%!important;height:100%!important}
+.hist-resumen{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:16px}
+.hist-stat{padding:13px 14px;border:1px solid #e8edf3;border-radius:12px;background:#fbfcfe}
+.hist-stat__nombre{display:flex;align-items:center;gap:7px;color:#1f3864;font-size:12px;font-weight:800;line-height:1.25}
+.hist-stat__punto{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+.hist-stat__linea{display:flex;justify-content:space-between;gap:8px;margin-top:8px;color:#64748b;font-size:11px}
+.hist-stat__linea b{color:#1f3864;font-variant-numeric:tabular-nums;white-space:nowrap}
+/* El PDF captura el rango activo (3 meses por defecto); el control de
+   filtro es interactivo y no aporta nada rasterizado en una página estática. */
+body.exportando-pdf .hist-controls{display:none!important}
+@media(max-width:760px){.dash-layout,.dash-layout--equal{grid-template-columns:1fr}.dashboard-head{flex-direction:column}.gauge-row{min-height:auto;padding-bottom:16px}.chart-box-exec canvas{height:220px!important}.hist-controls{flex-direction:column;align-items:stretch}.hist-range{justify-content:space-between}}
 /* Las tarjetas son accesos rápidos; el análisis vive en una ventana enfocada. */
 .tarjeta-kpi__detalle,.tarjeta-kpi.abierta .tarjeta-kpi__detalle{display:none!important}
 .tarjeta-kpi__resumen{transition:background .2s ease,transform .2s ease}.tarjeta-kpi__resumen:hover{background:#fbfcfe}.tarjeta-kpi__resumen:focus-visible{outline:3px solid #e0352b66;outline-offset:-3px}
@@ -3650,42 +3733,187 @@ body.exportando-pdf .dashboard-modal__body .chart-box-exec canvas{height:300px!i
   const stat=(label,value,note='',kind='')=>`<div class="stat-card ${kind}"><span class="stat-card__label">${esc(label)}</span><strong class="stat-card__value">${esc(value)}</strong>${note?`<span class="stat-card__note">${esc(note)}</span>`:''}</div>`;
   const gauge=(label,value,meta)=>{const n=Math.max(0,Math.min(100,pctNum(value)));const good=n>=pctNum(meta);return `<div class="gauge-exec" style="--pct:${n};--gauge-color:${good?'#00b050':'#e0352b'}"><b>${esc(pct(value))}</b><span>${esc(label)} · meta ${esc(pct(meta))}</span></div>`;};
   function make(id,title){const det=document.getElementById('det-'+id);if(!det)return null;let d=document.getElementById('dashboard-'+id);if(!d){d=document.createElement('div');d.className='dashboard-detail';d.id='dashboard-'+id;det.querySelector('.tarjeta-kpi__detalle-inner')?.prepend(d);}d.dataset.title=title;return d;}
-  function chart(id,type,labels,datasets){
+  // Combina objetos de opciones anidados (p.ej. scales.y) sin descartar las
+  // claves que el llamador no menciona. Solo objetos planos se fusionan; los
+  // arreglos y valores simples de `extra` reemplazan a los de `base`.
+  function fusionarProfundo(base,extra){
+    if(!extra) return base;
+    const out={...base};
+    Object.keys(extra).forEach(k=>{
+      const bv=base[k], ev=extra[k];
+      out[k]=(ev&&typeof ev==='object'&&!Array.isArray(ev)&&bv&&typeof bv==='object'&&!Array.isArray(bv))
+        ? fusionarProfundo(bv,ev) : ev;
+    });
+    return out;
+  }
+  /* `opts` (opcional) se fusiona sobre las opciones base: lo usa el histórico
+     reutilizable (§ montarHistorico) para su escala Y dinámica y el tooltip
+     con la meta de cada serie, sin que los charts existentes tengan que
+     pasarlo ni verse afectados. */
+  function chart(id,type,labels,datasets,opts){
     const c=document.getElementById(id);if(!c||!window.Chart)return;
     if(charts[id])charts[id].destroy();
     const percentage=['dash-chart-dispo','dash-chart-indicadores','dash-chart-backups'].includes(id),dark=id==='dash-chart-dispo',ink=dark?'#c7d5ea':'#526681',grid=dark?'#ffffff18':'#edf1f5';
-    charts[id]=new Chart(c,{
-      type,
-      data:{labels,datasets},
-      options:{
-        animation:false,
-        responsive:true,
-        maintainAspectRatio:false,
-        plugins:{legend:{position:'bottom',labels:{boxWidth:10,color:ink,font:{size:10,weight:'600'}}},datalabels:{display:false}},
-        scales:type==='doughnut'?{}:{
-          y:{beginAtZero:!percentage,min:percentage?95:undefined,max:percentage?101:undefined,grid:{color:grid},border:{color:grid},ticks:{color:ink,font:{size:10}}},
-          x:{grid:{display:false},border:{color:grid},ticks:{color:ink,font:{size:10}}}
-        }
+    const base={
+      animation:false,
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{boxWidth:10,color:ink,font:{size:10,weight:'600'}}},datalabels:{display:false}},
+      scales:type==='doughnut'?{}:{
+        y:{beginAtZero:!percentage,min:percentage?95:undefined,max:percentage?101:undefined,grid:{color:grid},border:{color:grid},ticks:{color:ink,font:{size:10}}},
+        x:{grid:{display:false},border:{color:grid},ticks:{color:ink,font:{size:10}}}
       }
-    });
+    };
+    charts[id]=new Chart(c,{type,data:{labels,datasets},options:fusionarProfundo(base,opts)});
   }
   function dataTable(sel){const table=document.querySelector(sel);if(!table)return {heads:[],rows:[]};return {heads:[...table.querySelectorAll('thead th')].map(x=>x.textContent.trim()),rows:[...table.querySelectorAll('tbody tr')].map(tr=>[...tr.children].map(td=>td.textContent.trim()))};}
+
+  /* ============================================================
+     HISTÓRICO REUTILIZABLE
+     Selector de rango + gráfica de línea para cualquier indicador con
+     evolución mensual. Pensado para reutilizarse tal cual en disponibilidad,
+     backups y CI cuando se aborden esos pendientes.
+
+     El rango elegido por el usuario vive fuera del DOM, en `rangosHistorico`
+     (clave = id del indicador). `renderAll()` reconstruye por completo el
+     innerHTML de cada tarjeta en cada apertura de modal y en cada
+     notificación del store, así que sin este estado externo el filtro se
+     olvidaría cada vez que otro dominio publica. Mover el filtro NO llama a
+     renderAll(): solo repinta el propio host (chart + resumen), así los
+     controles no pierden el foco ni el resto del modal se re-renderiza.
+     ============================================================ */
+  const rangosHistorico=new Map();
+  const PRESETS_HISTORICO=[
+    {clave:'3M',meses:3,etiqueta:'3M'},{clave:'6M',meses:6,etiqueta:'6M'},
+    {clave:'12M',meses:12,etiqueta:'12M'},{clave:'TODO',meses:Infinity,etiqueta:'Todo'}
+  ];
+  function rangoDePreset(periodos,presetClave){
+    const ps=PRESETS_HISTORICO.find(p=>p.clave===presetClave)||PRESETS_HISTORICO[0];
+    const n=periodos.length, ini=Math.max(0,n-Math.min(ps.meses,n));
+    return {desde:periodos[ini]?.clave, hasta:periodos[n-1]?.clave, preset:ps.clave};
+  }
+  // Un rango puede venir de un informe anterior con otro conjunto de
+  // periodos (p.ej. tras cargar un consolidado distinto): si la clave ya no
+  // existe, cae al extremo correspondiente en vez de romperse.
+  function indicesDeRango(periodos,rango){
+    let i0=periodos.findIndex(p=>p.clave===rango.desde);
+    let i1=periodos.findIndex(p=>p.clave===rango.hasta);
+    if(i0<0) i0=0;
+    if(i1<0) i1=periodos.length-1;
+    if(i0>i1) [i0,i1]=[i1,i0];
+    return {i0,i1};
+  }
+  /* contenedor: elemento donde se monta el control completo (controles +
+       gráfica + resumen). Se apropia de su propio estilo de tarjeta, así que
+       basta con pasarle un <div> vacío.
+     id: clave de estado — separa el rango de cada indicador entre sí.
+     periodos: [{clave,etiqueta,mes,anio}], ya recortados por el store al
+       inicio del contrato y al periodo del informe — el control nunca puede
+       ofrecer un mes fuera de ese rango porque no está entre las opciones.
+     series: [{nombre,meta,valores,color}], `valores` alineado 1:1 con
+       `periodos` (null = sin dato ese mes).
+     porDefecto: nº de meses que se ven al abrir el modal por primera vez.
+     resumen(periodosVisibles,seriesVisibles): arma el HTML bajo la gráfica,
+       específico de cada indicador; el componente solo le pasa el recorte. */
+  function montarHistorico(contenedor,{id,periodos,series,porDefecto=3,resumen}){
+    const canvasId=`hist-chart-${id}`;
+    if(!periodos.length){
+      contenedor.classList.add('hist-card');
+      contenedor.innerHTML='<div class="empty-detail">No hay periodos históricos disponibles para este rango.</div>';
+      return;
+    }
+    if(!rangosHistorico.has(id)){
+      const presetInicial=PRESETS_HISTORICO.find(p=>p.meses===porDefecto)?.clave||'3M';
+      rangosHistorico.set(id,rangoDePreset(periodos,presetInicial));
+    }
+    const opciones=periodos.map(p=>`<option value="${p.clave}">${esc(p.etiqueta)}</option>`).join('');
+    contenedor.classList.add('hist-card');
+    contenedor.innerHTML=`
+      <div class="hist-controls" role="group" aria-label="Rango del histórico">
+        <div class="hist-presets">${PRESETS_HISTORICO.map(ps=>`<button type="button" class="hist-preset" data-preset="${ps.clave}">${esc(ps.etiqueta)}</button>`).join('')}</div>
+        <div class="hist-range">
+          <label>Desde<select class="hist-desde">${opciones}</select></label>
+          <label>Hasta<select class="hist-hasta">${opciones}</select></label>
+        </div>
+      </div>
+      <div class="hist-chart"><canvas id="${canvasId}"></canvas></div>
+      <div class="hist-resumen"></div>`;
+    const elDesde=contenedor.querySelector('.hist-desde'), elHasta=contenedor.querySelector('.hist-hasta'),
+          elResumen=contenedor.querySelector('.hist-resumen'), botones=[...contenedor.querySelectorAll('.hist-preset')];
+
+    function pintar(){
+      const rango=rangosHistorico.get(id), {i0,i1}=indicesDeRango(periodos,rango);
+      const periodosVisibles=periodos.slice(i0,i1+1);
+      const datasets=series.map(s=>({
+        label:s.nombre, data:s.valores.slice(i0,i1+1),
+        borderColor:s.color, backgroundColor:s.color, spanGaps:true,
+        tension:.3, borderWidth:2.5, pointRadius:3, pointHoverRadius:5, pointBackgroundColor:s.color
+      }));
+      // Escala Y dinámica: con series casi planas cerca del 100 %, un eje
+      // 0–100 fijo aplastaría la variación real. min/max fijos (95–101) se
+      // heredarían de `chart()` para IDs "percentage"; aquí se sobreescriben.
+      const visibles=datasets.flatMap(ds=>ds.data).filter(Number.isFinite);
+      const minV=visibles.length?Math.min(...visibles):90, maxV=visibles.length?Math.max(...visibles):100;
+      const holgura=Math.max(1,(maxV-minV)*0.2);
+      chart(canvasId,'line',periodosVisibles.map(p=>p.etiqueta),datasets,{
+        scales:{y:{beginAtZero:false,min:Math.max(0,Math.floor(minV-holgura)),max:Math.min(100.5,Math.ceil(maxV+holgura))}},
+        plugins:{tooltip:{callbacks:{label:ctx=>{
+          const s=series[ctx.datasetIndex], v=ctx.parsed.y;
+          return `${s.nombre}: ${v==null?'Sin dato':pct(v)}`+(s.meta!=null?` · meta ${pct(s.meta)}`:'');
+        }}}}
+      });
+      elResumen.innerHTML=resumen?resumen(periodosVisibles,series.map(s=>({...s,valores:s.valores.slice(i0,i1+1)}))):'';
+      elDesde.value=periodos[i0].clave; elHasta.value=periodos[i1].clave;
+      botones.forEach(b=>b.classList.toggle('is-activo',rango.preset===b.dataset.preset));
+    }
+
+    botones.forEach(b=>b.addEventListener('click',()=>{ rangosHistorico.set(id,rangoDePreset(periodos,b.dataset.preset)); pintar(); }));
+    const rangoManual=()=>{ rangosHistorico.set(id,{desde:elDesde.value,hasta:elHasta.value,preset:null}); pintar(); };
+    elDesde.addEventListener('change',rangoManual);
+    elHasta.addEventListener('change',rangoManual);
+
+    pintar();
+  }
+
   function renderC3(){const d=make('c3','Línea base del servicio');if(!d)return;const con=text('[data-k="contrato"]')||'21012025',inst=text('[data-k="instancias"]')||'9',bd=text('[data-k="bd"]')||'66';const start=new Date('2025-09-01'),end=new Date('2026-08-31');let now=new Date();try{const p=window.periodo();now=new Date(p.anio,p.mes+1,0);}catch(e){}const total=end-start,elapsed=Math.max(0,Math.min(total,now-start)),progress=Math.round(elapsed/total*100),days=Math.max(0,Math.ceil((end-now)/86400000));d.innerHTML=head('Línea base del servicio','Ficha contractual')+`<div class="stats-grid">${stat('Contrato','CN-'+con,'Servicio administrado')}${stat('Instancias',inst,'Infraestructura cubierta')}${stat('Bases de datos',bd,'Activos monitoreados')}${stat('Vigencia','31 ago 2026','Contrato vigente','stat-card--good')}</div><section class="panel-exec"><h4>Vigencia contractual</h4><div class="progress-track"><i style="width:${progress}%"></i></div><div class="progress-row"><span>Inicio · 01 sep 2025</span><span>${progress}% transcurrido · ${days} días restantes</span><span>Fin · 31 ago 2026</span></div></section>`;}
+  const COLORES_INDICADORES=['#1F77B4','#ED7D31','#2E7D32'];   // misma terna que chartCasos
+  /* Resumen bajo la gráfica: por indicador visible en el rango, promedio,
+     mejor/peor mes y meses bajo meta. Es lo que el modal aporta que la
+     tarjeta colapsada no muestra — antes el modal solo repetía el resultado
+     del mes, meta y margen que ya están en la tarjeta. */
+  function resumenIndicadores(periodosVisibles,seriesVisibles){
+    if(!periodosVisibles.length) return '<div class="empty-detail">Sin periodos en el rango seleccionado.</div>';
+    return seriesVisibles.map(s=>{
+      const vals=s.valores.filter(Number.isFinite);
+      if(!vals.length) return `<div class="hist-stat"><div class="hist-stat__nombre"><i class="hist-stat__punto" style="background:${s.color}"></i>${esc(s.nombre)}</div><div class="hist-stat__linea"><span>Sin dato en el rango</span></div></div>`;
+      const prom=vals.reduce((a,b)=>a+b,0)/vals.length, max=Math.max(...vals), min=Math.min(...vals);
+      const bajoMeta=s.meta!=null?vals.filter(v=>v<s.meta).length:null;
+      return `<div class="hist-stat">
+        <div class="hist-stat__nombre"><i class="hist-stat__punto" style="background:${s.color}"></i>${esc(s.nombre)}</div>
+        <div class="hist-stat__linea"><span>Promedio del rango</span><b>${esc(pct(prom))}</b></div>
+        <div class="hist-stat__linea"><span>Mejor / peor mes</span><b>${esc(pct(max))} / ${esc(pct(min))}</b></div>
+        <div class="hist-stat__linea"><span>Meses bajo meta</span><b>${bajoMeta===null?'Sin meta':`${bajoMeta} de ${vals.length}`}</b></div>
+      </div>`;
+    }).join('');
+  }
   function renderC4(){
     const d=make('c4','Indicadores del periodo'); if(!d) return;
-    if(charts['dash-chart-indicadores']){charts['dash-chart-indicadores'].destroy();delete charts['dash-chart-indicadores'];}
-    if(!hayCifra('indicadores')){ d.innerHTML=head('Indicadores del periodo','Indicadores contractuales')+vacio('indicadores','Carga el consolidado con la hoja «Indicadores».'); return; }
-    // Cada indicador trae su propia meta; el veredicto se calcula, no se afirma.
-    // Un resultado ausente ya no se sustituye por 100 %.
-    const filas=dom('indicadores').datos.filas.map(f=>{
-      const valor=f.resultado, meta=f.meta;
-      const v=(valor===null||valor===undefined||valor==='')?null:pctNum(valor);
-      const m=(meta===null||meta===undefined||meta==='')?null:pctNum(meta);
-      const vn=v===null?null:(Math.abs(v)<=1.01?v*100:v), mn=m===null?null:(Math.abs(m)<=1.01?m*100:m);
-      return {nombre:f.nombre, v:vn, m:mn, delta:(vn===null||mn===null)?null:vn-mn};
+    if(!hayCifra('indicadores')){
+      if(charts['hist-chart-indicadores']){charts['hist-chart-indicadores'].destroy();delete charts['hist-chart-indicadores'];}
+      d.innerHTML=head('Indicadores del periodo','Indicadores contractuales')+vacio('indicadores','Carga el consolidado con la hoja «Indicadores».');
+      return;
+    }
+    // El modal ya no repite tarjeta/meta/margen del mes: eso lo muestra la
+    // tarjeta colapsada. Aquí vive la evolución histórica, con su propio
+    // filtro de rango — mismo componente que usarán disponibilidad, backups
+    // y CI cuando se aborden esos pendientes.
+    const hist=dom('indicadores').datos.historico||{periodos:[],filas:[]};
+    const series=hist.filas.map((f,i)=>({nombre:f.nombre, meta:f.meta, valores:f.valores, color:COLORES_INDICADORES[i%COLORES_INDICADORES.length]}));
+    d.innerHTML=head('Indicadores del periodo','Evolución frente a las metas contractuales')+'<div id="hist-host-indicadores"></div>';
+    montarHistorico(d.querySelector('#hist-host-indicadores'),{
+      id:'indicadores', periodos:hist.periodos, series, porDefecto:3,
+      resumen:resumenIndicadores
     });
-    const signo=n=>`${n>=0?'+':'−'}${Math.abs(n).toFixed(1).replace('.',',')} pp`;
-    d.innerHTML=head('Indicadores del periodo','Indicadores contractuales')+`<div class="signal-stage"><section class="signal-field"><p class="signal-field__eyebrow">Resultados del periodo</p><h4>Cumplimiento frente a las metas contractuales</h4><div class="signal-field__summary"><i></i><span>Periodo evaluado: ${esc(period())}</span></div><div class="contract-metrics">${filas.map(f=>`<article class="contract-row"><div><small>Indicador</small><strong>${esc(f.nombre)}</strong></div><div><small>Resultado</small><b>${f.v===null?'Sin dato':esc(pct(f.v))}</b></div><div><small>Meta</small><strong>${f.m===null?'Sin meta':esc(pct(f.m))}</strong></div><div><small>Margen</small><em>${f.delta===null?'—':esc(signo(f.delta))}</em></div><mark>${f.delta===null?'Sin dato':(f.delta>=0?'Cumple':'No cumple')}</mark></article>`).join('')}</div></section><section class="variance-board"><h4>Margen sobre la meta</h4><p>Diferencia entre el resultado reportado y el mínimo contractual.</p>${filas.map(f=>`<div class="variance-row"><div class="variance-row__top"><span>${esc(f.nombre)}</span><b>${f.delta===null?'Sin dato':esc(signo(f.delta))}</b></div><div class="variance-row__track"><i style="width:${f.delta===null?0:Math.min(100,Math.max(0,f.delta)*9)}%"></i></div></div>`).join('')}</section></div>`;
   }
   function renderC5(){
     const d=make('c5','Total de casos atendidos'); if(!d) return;
