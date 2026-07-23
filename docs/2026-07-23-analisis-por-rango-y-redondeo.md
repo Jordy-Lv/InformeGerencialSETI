@@ -1,7 +1,9 @@
 # Análisis por rango en los modales + cumplimiento juzgado sobre el valor publicado
 
 **Fecha:** 23 de julio de 2026
-**Rama:** `feature/analisis-por-rango` (pendiente de merge a `main`)
+**Rama:** `main` (fusionado el mismo día; `feature/analisis-por-rango` se
+eliminó tras el merge — ver ajustes posteriores en
+[`2026-07-23-sesion-completa.md`, PARTE 7](2026-07-23-sesion-completa.md#parte-7--ajustes-posteriores-mismo-día-tarjeta-compacta-análisis-que-no-calla-variaciones-y-cierre-de-ramas))
 **Origen:** Llamada de revisión del 23/07/2026 con Santiago Amaya Cely
 (`transcript.docx`) y las capturas enviadas después.
 

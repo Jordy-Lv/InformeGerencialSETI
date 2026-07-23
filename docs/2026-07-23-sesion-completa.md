@@ -1,7 +1,10 @@
 # Sesión del 23 de julio de 2026 — contexto completo, hallazgos y cambios
 
-**Rama:** `feature/analisis-por-rango` · **Commit:** `11eee35` (pendiente de merge a `main`)
-**Archivo intervenido:** `informe-accion-fiduciaria 1.html` (+502 / −57 líneas, 34 bloques de cambio)
+**Rama:** `main` · **Commit:** `965726f` (ya fusionado; `feature/analisis-por-rango`
+y las demás ramas `feature/*` se eliminaron el 23/07 tras confirmar que `main`
+las contenía por completo — ver [PARTE 7](#parte-7--ajustes-posteriores-mismo-día-tarjeta-compacta-análisis-que-no-calla-variaciones-y-cierre-de-ramas))
+**Archivo intervenido:** `informe-accion-fiduciaria 1.html` (+502 / −57 líneas en `11eee35`,
+más +28 / −15 líneas adicionales en `965726f`)
 **Documento técnico resumido:** [`2026-07-23-analisis-por-rango-y-redondeo.md`](2026-07-23-analisis-por-rango-y-redondeo.md)
 
 Este documento recoge **todo**: el material de entrada, lo que se encontró al
@@ -464,3 +467,166 @@ Lo que conviene enseñar y confirmar con Santiago:
    aparece en el entregable.
 4. **La conversación sobre la protección del código**: qué se hizo, y por qué no
    existe una protección real de un HTML que se entrega.
+
+---
+
+# PARTE 7 · Ajustes posteriores (mismo día): tarjeta compacta, análisis que no calla variaciones, y cierre de ramas
+
+Ronda corta, en una conversación aparte el mismo 23/07, ya con `11eee35`/`a179e84`
+mergeados en la cabeza de `feature/analisis-por-rango`. Dos pedidos puntuales del
+usuario sobre lo ya construido, más el cierre de todo el árbol de ramas. Commit:
+`965726f`.
+
+## 7.1 — Modal de Disponibilidad global sin scroll
+
+**Pedido:** que el modal se vea completo (incluida la tarjeta de análisis) sin
+que el usuario tenga que hacer scroll, tocando **solo** la tarjeta resumen de
+arriba (`.availability-summary`) — «no tienes permiso a modificar más nada».
+
+**Medición antes de tocar nada** (servidor HTTP local, insumo real
+`Disponibilidad Consolidado Mayo.xlsx` inyectado por `fetch`+`DataTransfer`,
+viewport 1280×800, `scrollHeight - clientHeight` del `.dashboard-modal__body`):
+
+| Pieza | Alto |
+|---|---|
+| Scroll total | **245 px** |
+| `.availability-summary` (con margen) | 156 px |
+| `.hist-chart` (gráfica) | 320 px |
+| `.hist-resumen` | 82 px |
+| `.analisis-host.analisis-card` | 125 px |
+
+**El problema, cuantificado antes de escribir una sola línea:** aun
+**eliminando por completo** la tarjeta resumen (156 px) sobraban 89 px de
+scroll. Reducirla «solo un poco» —la instrucción original— ahorra en la
+práctica ~40–55 px sin dejarla ilegible: muy lejos de los 245 px necesarios.
+Tocar únicamente lo autorizado no alcanzaba el objetivo declarado (0 scroll).
+
+Se expuso la cuenta al usuario en vez de forzar un recorte que no iba a
+funcionar, con `AskUserQuestion`. Primera pregunta — alcance: ¿solo la tarjeta
+(sin llegar a 0), tarjeta + un poco de la gráfica, o solo reportar números y
+decidir después? Eligió **tarjeta + gráfica**. Con ese permiso ampliado se
+probaron en vivo, con overrides de CSS inyectados en el DOM (sin tocar aún el
+archivo), varias combinaciones tarjeta/`alturaChart`, midiendo el scroll
+resultante en cada una:
+
+| Tarjeta | Gráfica | Scroll resultante |
+|---|---|---|
+| 142→104 px | 320→220 px | 103 px |
+| 142→88 px | 320→190 px | 55 px |
+| 142→88 px | 320→160 px | 25 px |
+| 142→88 px | 320→134 px | **0 px** |
+
+0 px exige recortar la gráfica un 58 % (320→134 px), justo lo opuesto a
+«darle protagonismo a la gráfica», la decisión de diseño explícita de la
+ronda del 22/07 (`2026-07-22-disponibilidad-historico.md`, punto 6–7 de la
+sección «Ronda de ajustes»). Segunda pregunta al usuario, ya con captura del
+resultado a 134 px: ¿0 scroll con la gráfica muy reducida, 190 px (el mismo
+tamaño ya validado en el modal de casos) con ~55 px de scroll residual, o
+220 px con ~103 px? Eligió **190 px / 55 px residual** — prioriza que la
+gráfica siga siendo legible sobre el 0 px exacto; el scroll que queda apenas
+roza el botón «Editar análisis», el análisis en sí queda completo.
+
+**Cambios aplicados** en `informe-accion-fiduciaria 1.html`:
+
+- CSS `.availability-summary` y sus descendientes (antes en torno a la línea
+  4035): `min-height` 142→88 px, `margin-bottom` 14→8 px; paddings de
+  `__lead` y `__stat` de `22px …`→`10px …`; número principal (`__lead
+  strong`) 38→24 px; valores secundarios (`__stat b`) 27→18 px; etiquetas
+  11–12 px sin cambio salvo el `min-height` fijo de 29 px en `__stat span`
+  (reservaba espacio para etiquetas de dos líneas), eliminado para que la
+  celda se ajuste a su contenido real.
+- Llamada a `montarHistorico` para `#hist-host-disponibilidad` (renderC6):
+  `alturaChart:320` → `alturaChart:190` — el mismo valor que ya usa el
+  histórico de casos (`c5`), no uno nuevo inventado para este modal.
+
+No se tocó `.hist-resumen`, `.analisis-card` ni ningún otro modal — el
+`alturaChart:190` de casos es una llamada distinta (`#hist-host-casos`), así
+que bajar el de disponibilidad no le afecta.
+
+**Verificación:** con el consolidado real cargado y el modal reabierto desde
+cero (no sobre los overrides de prueba), `scrollHeight - clientHeight` dio
+**55 px** — coincide exactamente con lo probado en vivo. Captura de pantalla
+confirma «Análisis del periodo» completo y legible. Sin errores de consola.
+Los 9 bloques `<script>` pasan `node --check`.
+
+## 7.2 — El análisis no debe callar una variación solo porque cumple meta
+
+**Pedido**, con captura del modal «Indicadores del servicio» en 6M: el
+tooltip de la gráfica muestra que en ene-26 la disponibilidad de la
+plataforma administrada fue 99,9 % (meta 99,3 %), pero el texto generado
+decía «Ningún corte del rango quedó por debajo de la meta» — sin mencionar
+esa variación. El usuario la identificó verbalmente como «Oracle», aunque en
+este modal (a diferencia de Disponibilidad global) las series son los tres
+indicadores contractuales, no los motores; el fondo del pedido —que una
+desviación real no desaparezca del análisis solo por cumplir la meta— aplica
+igual.
+
+**Causa, localizada en `metricasSeries`/`narrarSeries` (línea 4807):** la
+función solo registra un valor como «desviación» cuando **incumple la
+meta** (`bajoMeta`, vía `cumpleMeta`). 99,9 % ≥ 99,3 % cumple, así que nunca
+entraba en `peorGlobal` y la rama `totalBajoMeta===0` imprimía el texto
+genérico sin mirar si hubo variación real dentro del rango. Es la misma
+función que alimenta **Disponibilidad global** (`c6`) además de
+**Indicadores del servicio** (`c4`) — ambas comparten `montarHistorico` con
+series de línea — así que el arreglo beneficia a los dos modales por igual,
+sin tocar el radar de cápsulas (Backups/CI), que ya tenía su propio manejo
+de «cumple pero con brechas» vía `peorEnLimite`.
+
+**Cambio aplicado:**
+
+- `metricasSeries`: cada valor de cada serie ahora también se compara contra
+  el mínimo de su propia serie (`minimo`, sin filtrar por meta). A nivel
+  global se calcula `minimoGlobal` (el punto más bajo de todo el rango,
+  entre todas las series) y `hayVariacion` (hay más de un valor y la
+  diferencia entre el máximo y el mínimo observados supera 0,001 — para no
+  disparar el aviso por ruido de punto flotante cuando en realidad todo es
+  el mismo número).
+- `narrarSeries`: cuando `totalBajoMeta===0` (nadie incumple), si además
+  `hayVariacion` y hay más de un corte visible, la frase pasa de «Ningún
+  corte del rango quedó por debajo de la meta.» a «Ningún corte del rango
+  quedó por debajo de la meta; el valor más bajo fue **{serie}** en
+  **{mes}**, con **{valor}%**.». Con un solo corte visible, o sin variación
+  real (todo en el mismo valor, p. ej. 100 % siempre), el texto no cambia.
+
+**Texto real generado** tras el cambio, con el consolidado cargado, modal
+Indicadores del servicio, rango 6M (ene-26→jun-26):
+
+> Entre ene-26 y jun-26 los tres indicadores contractuales promediaron 100%.
+> Ningún corte del rango quedó por debajo de la meta; el valor más bajo fue
+> Disponibilidad de la plataforma administrada en ene-26, con 99,9%. El
+> corte de jun-26 cierra con los tres en 100%.
+
+**Verificación:** `REPORTE.autopruebas()` con los cuatro insumos reales
+cargados — **42 de 42** pasan, sin fallas nuevas ni regresiones en los casos
+borde ya cubiertos (rango de un solo corte, serie sin datos, todo en cero,
+sin meta declarada, sin periodos). `node --check` sobre los 9 bloques
+`<script>`, sin errores.
+
+## 7.3 — Commit, fusión a `main` y cierre de todas las ramas `feature/*`
+
+El usuario pidió consolidar todo en `main` y borrar el resto del árbol de
+ramas. Antes de borrar nada se verificó, para cada rama, que no tuviera
+ningún commit propio fuera del historial ya alcanzable desde
+`feature/analisis-por-rango` (`git log feature/analisis-por-rango..<rama>`
+vacío en las cuatro) y que `main` fuera ancestro directo de
+`feature/analisis-por-rango` (fast-forward limpio, sin merge commit).
+
+1. `git add` explícito (sin `-A`) de los archivos pendientes: el consolidado
+   de disponibilidad (5 bytes de diferencia, metadata de guardado), el
+   traslado de `Logros_Clientes_Junio_2026_1 (1).xlsx` de la raíz a
+   `Insumos/` (mismo hash de git antes y después — confirmado con
+   `git hash-object`/`git rev-parse`, así que git lo registró como rename,
+   no como borrado+alta), el HTML con los cambios de 7.1/7.2, y
+   `transcript.docx` (nuevo, la transcripción de la llamada del §1.1).
+2. Commit `965726f` en `feature/analisis-por-rango`.
+3. `git checkout main && git merge --ff-only feature/analisis-por-rango` —
+   fast-forward, sin commit de merge.
+4. `git branch -d` (con minúscula, no `-D`: solo borra si ya está fusionado,
+   así que un commit no alcanzable habría abortado el borrado en vez de
+   perderse) sobre `feature/analisis-por-rango`, `feature/casos-analisis`,
+   `feature/disponibilidad-historico`, `feature/indicadores-historico` y
+   `feature/tarjeta-ci-sistemas`.
+
+**Estado final:** una sola rama, `main`, en `965726f`, árbol de trabajo
+limpio. Sin remoto configurado en este repositorio, así que no hubo nada que
+sincronizar ni ramas remotas que limpiar.
