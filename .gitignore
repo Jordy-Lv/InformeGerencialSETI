@@ -13,3 +13,9 @@ tmp/
 # Se conserva el informe de resultados, que sí es documentación.
 qa-report/*
 !qa-report/report.md
+
+# Credenciales de GLPI y respuestas crudas del servidor (traen datos de casos
+# de todos los clientes). Nunca deben salir del equipo donde se ejecutan.
+automatizacion/.env
+automatizacion/salida/
+__pycache__/
