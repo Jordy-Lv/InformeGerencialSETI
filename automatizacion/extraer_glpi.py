@@ -22,11 +22,12 @@ Credenciales: solo desde `.env` o variables de entorno. Ver `.env.ejemplo`.
 
 import argparse
 import csv
+import hashlib
 import io
 import json
 import sys
 from base64 import b64encode
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -206,6 +207,44 @@ def verificar(csv_texto, periodo):
     return problemas
 
 
+def escribir_insumos_js(destino, periodo, csv_bytes, nombre_csv, origen):
+    """Genera el archivo que el informe lee al abrirse.
+
+    No puede ser un `.json` leído con fetch: abierto desde el disco, el
+    navegador bloquea toda petición al sistema de archivos. Un `<script>`
+    vecino sí carga, y es la única puerta que queda abierta sin montar un
+    servidor. Verificado en Chrome.
+
+    Por eso el contenido viaja como datos —base64 y un hash— y nunca como
+    código: el informe comprueba el hash antes de aceptarlo. Si alguien más
+    puede escribir en la carpeta, esto es lo que impide que cuele otra cosa.
+    """
+    anio, mes = periodo.split("-")
+    paquete = {
+        "version": 1,
+        "generado": datetime.now().astimezone().isoformat(timespec="seconds"),
+        "origen": origen,
+        # El informe cuenta los meses desde cero, igual que JavaScript.
+        "periodo": {"mes": int(mes) - 1, "anio": int(anio)},
+        "archivos": {
+            "glpi": {
+                "nombre": nombre_csv,
+                "sha256": hashlib.sha256(csv_bytes).hexdigest(),
+                "contenido": b64encode(csv_bytes).decode(),
+            }
+        },
+    }
+    cuerpo = json.dumps(paquete, ensure_ascii=False, indent=2)
+    destino.write_text(
+        "/* Generado por automatizacion/extraer_glpi.py. No editar a mano.\n"
+        "   Lo lee el informe al abrirse; si este archivo no está, el centro de\n"
+        "   carga funciona como siempre. */\n"
+        f"window.__INSUMOS__ = {cuerpo};\n",
+        encoding="utf-8",
+    )
+    return paquete["archivos"]["glpi"]["sha256"]
+
+
 # --------------------------------------------------------------------------
 
 def main():
@@ -255,17 +294,27 @@ def main():
         contenido = a_csv(filas)
         nombre = f"glpi-{args.periodo}.csv"
         destino = SALIDA / nombre
-        destino.write_text(contenido, encoding="utf-8-sig")
+        bytes_csv = contenido.encode("utf-8-sig")
+        destino.write_bytes(bytes_csv)
+
+        js = SALIDA / "insumos-af.js"
+        huella = escribir_insumos_js(
+            js, args.periodo, bytes_csv, nombre,
+            f"API REST de GLPI · {base}",
+        )
 
         problemas = verificar(contenido, args.periodo)
         print(f"\nArchivo generado: {destino}")
-        print(f"  {len(filas)} casos · {destino.stat().st_size} bytes")
+        print(f"  {len(filas)} casos · {len(bytes_csv)} bytes")
+        print(f"Insumo para el informe: {js}")
+        print(f"  sha256 {huella[:16]}…")
+        print("  Colócalo junto al HTML para que el informe lo cargue solo.")
         if problemas:
             print("\n  Revisar antes de usarlo:")
             for x in problemas:
                 print(f"    · {x}")
         else:
-            print("  Verificación: sin observaciones.")
+            print("\n  Verificación: sin observaciones.")
         return 0
 
     except ErrorGlpi as e:

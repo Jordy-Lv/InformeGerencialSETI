@@ -8,8 +8,38 @@ Diagnóstico completo en [`../docs/2026-07-23-automatizacion-glpi-diagnostico.md
 
 | Archivo | Qué es |
 |---|---|
-| `sonda_glpi.py` | Reconocimiento. Averigua **qué vía de extracción funciona** contra la instancia real y guarda la evidencia. No es todavía el extractor mensual. |
+| `sonda_glpi.py` | Reconocimiento. Averigua **qué vía de extracción funciona** contra la instancia real y guarda la evidencia. |
+| `extraer_glpi.py` | Extrae la sábana por la API REST y genera el CSV y el `insumos-af.js` que lee el informe. |
 | `.env.ejemplo` | Plantilla de credenciales. Cópiala a `.env` (ignorado por git). |
+
+## Cómo se conecta con el informe
+
+```
+extraer_glpi.py  →  salida/glpi-2026-06.csv      la sábana, para archivo y auditoría
+                 →  salida/insumos-af.js         lo que lee el informe
+```
+
+`insumos-af.js` se copia **junto al HTML**. Al abrirlo, el informe lo detecta y
+carga los casos sin que nadie arrastre nada. Si el archivo no está, el centro de
+carga funciona igual que siempre: **la carga manual nunca dejó de existir.**
+
+No puede ser un `.json` leído con `fetch`: abierto desde el disco, el navegador
+bloquea toda petición al sistema de archivos. Un `<script>` vecino sí carga, y
+es la única puerta que queda sin montar un servidor.
+
+Ese archivo se carga sin que nadie lo apruebe, así que el informe lo trata como
+origen no confiable: comprueba formato, periodo declarado y **huella SHA-256**
+del contenido antes de aceptarlo. Si algo no cuadra, avisa y no carga nada.
+
+Verificado en el navegador: la carga automática deja los 8 casos de mayo de 2026
+con su trazabilidad completa y ajusta el periodo del informe al del insumo; un
+contenido alterado se rechaza por la huella y el informe queda en manual.
+
+**Pendiente de comprobar en el equipo donde se use:** si el navegador cachea
+`insumos-af.js` entre aperturas. El informe le añade un sufijo variable para
+evitarlo, pero en el visor de pruebas siguió sirviéndose de caché. Como defensa
+de fondo, el aviso de carga **siempre muestra la fecha de extracción**: si
+apareciera un insumo viejo, la fecha lo delata.
 
 ## Cómo ejecutar la sonda
 

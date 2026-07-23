@@ -19,3 +19,6 @@ qa-report/*
 automatizacion/.env
 automatizacion/salida/
 __pycache__/
+
+# Insumo generado por la extracción automática (datos de casos)
+insumos-af.js
