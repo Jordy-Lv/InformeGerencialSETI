@@ -6,13 +6,17 @@ Reemplaza el trabajo manual de entrar a GLPI, filtrar, exportar y buscar el
 archivo en Descargas. Produce un CSV con las mismas columnas que el informe
 espera, para que `cargarGlpi()` lo lea sin cambiar una línea del HTML.
 
+Filtra en el propio GLPI, no solo por entidad sino también por «Fecha de
+apertura» (searchOption 15) acotada al mes de `--periodo`: el CSV que sale de
+aquí trae solo los casos de ese mes, no el histórico completo de la entidad.
+
 La sonda (`sonda_glpi.py`) confirmó contra la instancia real que la API REST
 está habilitada, y de ahí salieron los searchOption que usa este script. No hay
 ningún ID adivinado: todos vienen de `listSearchOptions/Ticket`.
 
 Uso:
 
-    python3 automatizacion/extraer_glpi.py                 # mes en curso
+    python3 automatizacion/extraer_glpi.py                 # el mes que ya cerró (agosto -> reporta julio)
     python3 automatizacion/extraer_glpi.py --periodo 2026-06
     python3 automatizacion/extraer_glpi.py --sin-filtro-entidad
     python3 automatizacion/extraer_glpi.py --muestra        # 5 casos, para inspeccionar
@@ -21,17 +25,18 @@ Credenciales: solo desde `.env` o variables de entorno. Ver `.env.ejemplo`.
 """
 
 import argparse
+import calendar
 import csv
-import hashlib
 import io
 import json
 import sys
 from base64 import b64encode
-from datetime import date, datetime
+from datetime import date, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from sonda_glpi import Cliente, cargar_env, texto  # noqa: E402
+from insumos_af import archivo_de, cargar_paquete, escribir_paquete, fijar_periodo, mes_cerrado  # noqa: E402
 
 import os  # noqa: E402
 
@@ -87,16 +92,40 @@ def cerrar_sesion(cli, base, token):
         pass
 
 
-def buscar_casos(cli, base, token, entidad=None, limite=None):
-    """Trae los tickets página por página. La API responde 206 mientras queden
-    más resultados y 200 en la última."""
-    criterios = {}
+def rango_del_mes(periodo):
+    """Convierte «AAAA-MM» en (desde, hasta) para acotar «Fecha de apertura»
+    con searchtype morethan/lessthan, que son estrictos (no incluyen el borde):
+    el día anterior al 1.º del mes, y el día siguiente al último. Así el rango
+    cubre el mes completo sin adivinar cómo compara GLPI la hora."""
+    anio, mes = (int(x) for x in periodo.split("-"))
+    inicio = date(anio, mes, 1)
+    ultimo_dia = calendar.monthrange(anio, mes)[1]
+    fin = date(anio, mes, ultimo_dia)
+    return (inicio - timedelta(days=1)).isoformat(), (fin + timedelta(days=1)).isoformat()
+
+
+def buscar_casos(cli, base, token, entidad=None, desde=None, hasta=None, limite=None):
+    """Trae los tickets página por página, filtrando en el propio GLPI por
+    entidad y, si se dan, por rango de «Fecha de apertura» (searchOption 15).
+    La API responde 206 mientras queden más resultados y 200 en la última."""
+    criterios, i = {}, 0
     if entidad:
-        criterios.update({
-            "criteria[0][field]": "80",
-            "criteria[0][searchtype]": "contains",
-            "criteria[0][value]": entidad,
-        })
+        criterios[f"criteria[{i}][field]"] = "80"
+        criterios[f"criteria[{i}][searchtype]"] = "contains"
+        criterios[f"criteria[{i}][value]"] = entidad
+        i += 1
+    if desde:
+        criterios[f"criteria[{i}][link]"] = "AND"
+        criterios[f"criteria[{i}][field]"] = "15"
+        criterios[f"criteria[{i}][searchtype]"] = "morethan"
+        criterios[f"criteria[{i}][value]"] = desde
+        i += 1
+    if hasta:
+        criterios[f"criteria[{i}][link]"] = "AND"
+        criterios[f"criteria[{i}][field]"] = "15"
+        criterios[f"criteria[{i}][searchtype]"] = "lessthan"
+        criterios[f"criteria[{i}][value]"] = hasta
+        i += 1
 
     fijos = {f"forcedisplay[{i}]": ident for i, (ident, _) in enumerate(COLUMNAS)}
     fijos.update(criterios)
@@ -191,57 +220,49 @@ def verificar(csv_texto, periodo):
 
     datos = filas[1:]
     if not datos:
-        problemas.append("Cero casos devueltos. Revisa el filtro de entidad.")
+        problemas.append(
+            f"Cero casos devueltos para {periodo}. El filtro de fecha ya va en la consulta "
+            "a GLPI, así que esto puede ser real (algunos meses no tienen casos, como ya "
+            "pasó en junio de 2026) — no es automáticamente una señal de que el filtro de "
+            "entidad esté mal. Si dudas, compáralo con lo que muestra GLPI a mano."
+        )
         return problemas
 
+    # El filtro de fecha ya va en la consulta a GLPI (ver rango_del_mes()); esto es una
+    # red de seguridad, no el filtro principal — si aparece algo aquí, el rango enviado
+    # al servidor no se comportó como se esperaba.
     idx = {n: i for i, n in enumerate(filas[0])}
-    del_periodo = [
+    fuera_de_periodo = [
         f for f in datos
-        if len(f) > idx["Fecha de apertura"] and f[idx["Fecha de apertura"]].startswith(periodo)
+        if len(f) > idx["Fecha de apertura"] and not f[idx["Fecha de apertura"]].startswith(periodo)
     ]
-    if not del_periodo:
+    if fuera_de_periodo:
         problemas.append(
-            f"Ningún caso con fecha de apertura en {periodo}. El informe lo reportará "
-            "como «sin registros en el periodo» — comprueba que sea correcto."
+            f"{len(fuera_de_periodo)} caso(s) con fecha de apertura fuera de {periodo} pese "
+            "al filtro en origen — revisa el rango de fechas que se envió a GLPI."
         )
     return problemas
 
 
 def escribir_insumos_js(destino, periodo, csv_bytes, nombre_csv, origen):
-    """Genera el archivo que el informe lee al abrirse.
+    """Añade la sábana de GLPI al insumo que el informe lee al abrirse.
 
-    No puede ser un `.json` leído con fetch: abierto desde el disco, el
-    navegador bloquea toda petición al sistema de archivos. Un `<script>`
-    vecino sí carga, y es la única puerta que queda abierta sin montar un
-    servidor. Verificado en Chrome.
+    Comparte archivo con `extraer_alertas.py` (y los que vengan): se lee el
+    paquete existente antes de escribir, así que correr este script no borra
+    el `archivos.alertas` que haya dejado el otro extractor, ni al revés.
 
-    Por eso el contenido viaja como datos —base64 y un hash— y nunca como
-    código: el informe comprueba el hash antes de aceptarlo. Si alguien más
-    puede escribir en la carpeta, esto es lo que impide que cuele otra cosa.
+    El contenido viaja como datos —base64 y un hash— y nunca como código: el
+    informe comprueba el hash antes de aceptarlo. Si alguien más puede escribir
+    en la carpeta, esto es lo que impide que cuele otra cosa.
     """
-    anio, mes = periodo.split("-")
-    paquete = {
-        "version": 1,
-        "generado": datetime.now().astimezone().isoformat(timespec="seconds"),
-        "origen": origen,
-        # El informe cuenta los meses desde cero, igual que JavaScript.
-        "periodo": {"mes": int(mes) - 1, "anio": int(anio)},
-        "archivos": {
-            "glpi": {
-                "nombre": nombre_csv,
-                "sha256": hashlib.sha256(csv_bytes).hexdigest(),
-                "contenido": b64encode(csv_bytes).decode(),
-            }
-        },
-    }
-    cuerpo = json.dumps(paquete, ensure_ascii=False, indent=2)
-    destino.write_text(
-        "/* Generado por automatizacion/extraer_glpi.py. No editar a mano.\n"
-        "   Lo lee el informe al abrirse; si este archivo no está, el centro de\n"
-        "   carga funciona como siempre. */\n"
-        f"window.__INSUMOS__ = {cuerpo};\n",
-        encoding="utf-8",
-    )
+    paquete = cargar_paquete(destino)
+    discrepancia = fijar_periodo(paquete, periodo)
+    if discrepancia:
+        print(f"Aviso: el insumo ya traía periodo {discrepancia} (de otra fuente); "
+              f"se ajusta a {periodo}. Vuelve a correr esa otra extracción si no debía cambiar.",
+              file=sys.stderr)
+    paquete["archivos"]["glpi"] = archivo_de(csv_bytes, nombre_csv, origen)
+    escribir_paquete(destino, paquete)
     return paquete["archivos"]["glpi"]["sha256"]
 
 
@@ -249,11 +270,11 @@ def escribir_insumos_js(destino, periodo, csv_bytes, nombre_csv, origen):
 
 def main():
     cargar_env()
-    hoy = date.today()
 
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--periodo", default=f"{hoy.year}-{hoy.month:02d}",
-                   help="Mes a verificar, formato AAAA-MM (por defecto, el actual)")
+    p.add_argument("--periodo", default=mes_cerrado(),
+                   help="Mes a verificar, formato AAAA-MM (por defecto, el mes que ya cerró: "
+                        "si se corre en agosto, julio)")
     p.add_argument("--sin-filtro-entidad", action="store_true",
                    help="Descarga todas las entidades, como la exportación manual de hoy")
     p.add_argument("--muestra", action="store_true",
@@ -279,7 +300,10 @@ def main():
         filtro = None if args.sin_filtro_entidad else entidad
         print(f"Filtro de entidad: {filtro or '(ninguno — todas las entidades)'}")
 
-        filas, total = buscar_casos(cli, base, token, entidad=filtro,
+        desde, hasta = rango_del_mes(args.periodo)
+        print(f"Filtro de fecha de apertura: {args.periodo} ({desde} a {hasta}, bordes exclusivos)")
+
+        filas, total = buscar_casos(cli, base, token, entidad=filtro, desde=desde, hasta=hasta,
                                     limite=5 if args.muestra else None)
         print(f"GLPI reporta {total} casos; se recibieron {len(filas)}.")
 
