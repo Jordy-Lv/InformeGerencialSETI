@@ -22,3 +22,9 @@ __pycache__/
 
 # Insumo generado por la extracción automática (datos de casos)
 insumos-af.js
+
+# Insumos manuales con datos reales de casos/alertas del cliente (Excel de
+# GLPI, AlertsList, Disponibilidad, Logros). Igual que automatizacion/salida/,
+# nunca deben salir del equipo donde se preparan. Cubre "Insumos/" y las
+# carpetas mensuales tipo "Insumos - Junio/".
+Insumos*/
