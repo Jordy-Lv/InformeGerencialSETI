@@ -43,6 +43,13 @@ extraer_glpi.py     ─┤
 extraer_alertas.py  ──────►  (mismo trío, con alertops-2026-06.csv)    (junto al HTML;
                               insumos-af.js: un solo archivo,           lo copia
                               dos claves, archivos.glpi/.alertas)       actualizar_informe.py)
+                                        │
+                                        └─► RUTA_ONEDRIVE/Junio/
+                                              ├─ Informe Accion Fiduciaria Junio 2026.html
+                                              └─ insumos-af.js
+                                            (el HTML ya cargado, junto a los CSV
+                                             de resguardo — mismo mecanismo,
+                                             mismo mes, sin tocar nada a mano)
 ```
 
 `actualizar_informe.py` orquesta los pasos que antes había que hacer a mano:
@@ -64,7 +71,18 @@ del mismo CSV, ninguna derivada de otra por mutación:
    `actualizar_informe.py` copia junto al HTML para que el informe la cargue
    sola al abrirse.
 
+Además, si `RUTA_ONEDRIVE` está configurada, `actualizar_informe.py` deja una
+**cuarta copia**: el HTML del informe **ya cargado**, con su `insumos-af.js` al
+lado, en la misma subcarpeta del mes donde caen los CSV de resguardo
+(`RUTA_ONEDRIVE/Junio/Informe Accion Fiduciaria Junio 2026.html`). Reutiliza el
+mismo `copiar_resguardo()` de los CSV — mismo mecanismo, sin código nuevo que
+mantener por separado. `insumos-af.js` conserva ese nombre exacto ahí: el HTML
+lo busca así sin importar cómo se llame el informe.
+
 Al terminar, **abrir el HTML ya alcanza**: no hay que arrastrar ni copiar nada.
+Y quien solo tenga acceso a la carpeta de OneDrive del cliente encuentra ahí
+mismo el informe del mes con AlertsList y GLPI ya adentro, sin pasar por el
+equipo donde corrió la extracción.
 
 ```bash
 python3 automatizacion/actualizar_informe.py                 # el mes que ya cerró (agosto -> reporta julio)

@@ -15,6 +15,13 @@ Este script añade el último paso, el que hasta ahora había que hacer a mano:
 copia ese `insumos-af.js` **junto al HTML del informe**. Al abrirlo, las
 fuentes que hayan funcionado ya están cargadas — nadie mueve un archivo.
 
+Además, si `RUTA_ONEDRIVE` está configurada (`.env`), deja en la carpeta del
+mes (junto a los CSV originales) un **HTML autocontenido**: no es una copia
+del informe con `insumos-af.js` al lado — los datos quedan **incrustados
+dentro del propio archivo** (`incrustar_insumos`), así que sigue abriendo con
+todo cargado aunque alguien lo copie, lo descargue o lo mueva solo, sin el
+resto de la carpeta.
+
 Una fuente que falle no cancela la otra: se corren siempre las dos, y al
 final se informa qué salió bien y qué no. Si ambas fallan, no se toca el
 `insumos-af.js` que ya estuviera junto al HTML (uno viejo sigue siendo mejor
@@ -44,10 +51,16 @@ from pathlib import Path
 
 AQUI = Path(__file__).parent
 sys.path.insert(0, str(AQUI))
-from insumos_af import mes_cerrado  # noqa: E402
+from insumos_af import MESES_ES, copiar_resguardo, incrustar_insumos, mes_cerrado  # noqa: E402
+from sonda_glpi import cargar_env  # noqa: E402
 
 SALIDA = AQUI / "salida"
 HTML = AQUI.parent / "informe-accion-fiduciaria 1.html"
+
+
+def nombre_informe(periodo):
+    anio, mes = periodo.split("-")
+    return f"Informe Accion Fiduciaria {MESES_ES[int(mes) - 1].capitalize()} {anio}.html"
 
 
 def correr(script, periodo):
@@ -58,6 +71,12 @@ def correr(script, periodo):
 
 
 def main():
+    # Los dos extractores leen .env dentro de su propio subproceso (vía
+    # subprocess.run) — esa variable nunca vuelve a este proceso. RUTA_ONEDRIVE
+    # se usa aquí mismo (copiar_resguardo del HTML), así que este proceso
+    # también necesita cargar .env por su cuenta, no asumir que ya quedó en
+    # el entorno.
+    cargar_env()
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--periodo", default=mes_cerrado(),
                    help="Mes a extraer, formato AAAA-MM (por defecto, el mes que ya cerró: "
@@ -94,6 +113,26 @@ def main():
     print(f"\nCopiado junto al informe: {destino}")
     print("  Al abrir el HTML, las fuentes que hayan funcionado se cargan solas;")
     print("  la que haya fallado sigue siendo manual, sin bloquear a la otra.")
+
+    # Copia a la carpeta del mes en OneDrive, junto a los CSV originales que
+    # copiar_resguardo() ya deja ahí por cada extractor. No es una copia
+    # simple del HTML: los datos van incrustados dentro del propio archivo,
+    # no en un insumos-af.js vecino — así no hace falta que nada más viaje
+    # junto a él, y no queda ningún archivo técnico suelto en esa carpeta.
+    try:
+        html_incrustado = incrustar_insumos(HTML, js)
+    except (OSError, ValueError) as e:
+        print(f"Aviso: no se pudo incrustar los insumos en el HTML ({e}); "
+              "no se copió nada a RUTA_ONEDRIVE.", file=sys.stderr)
+    else:
+        temporal = SALIDA / "informe-incrustado.html"
+        temporal.write_text(html_incrustado, encoding="utf-8")
+        # proteger=False: el informe no es un registro de auditoría como los
+        # CSV, es una vista de la extracción más reciente — siempre se
+        # actualiza solo, sin necesitar FORZAR_ONEDRIVE en cada corrida.
+        copia_html = copiar_resguardo(temporal, nombre_informe(args.periodo), args.periodo, proteger=False)
+        if copia_html:
+            print(f"Informe autocontenido copiado también a: {copia_html}")
 
     if args.abrir:
         try:

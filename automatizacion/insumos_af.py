@@ -70,7 +70,13 @@ MESES_ES = [
 ]
 
 
-def copiar_resguardo(origen, nombre, periodo):
+def _mismo_contenido(a, b):
+    """True si dos archivos tienen exactamente los mismos bytes."""
+    return (hashlib.sha256(Path(a).read_bytes()).digest()
+            == hashlib.sha256(Path(b).read_bytes()).digest())
+
+
+def copiar_resguardo(origen, nombre, periodo, proteger=True):
     """Copia el CSV original, tal cual y sin abrirlo, a la carpeta del mes
     dentro de RUTA_ONEDRIVE (`.env`) — típicamente la carpeta sincronizada
     con la biblioteca de SharePoint donde se archiva el corte de cada mes
@@ -86,6 +92,21 @@ def copiar_resguardo(origen, nombre, periodo):
     no instalado o sin sincronizar, ruta mal escrita), avisa por stderr pero
     no interrumpe la extracción: el insumo del informe ya quedó bien
     generado antes de llegar aquí.
+
+    Con `proteger=True` (por defecto — para los CSV originales, que son
+    registro de auditoría): si en esa carpeta ya hay un archivo con ese
+    nombre y su contenido es distinto del que se va a escribir, **no lo
+    sobrescribe** — avisa por stderr y conserva el que ya estaba. Evita que
+    una corrida repetida del mismo mes borre en silencio una versión que ya
+    quedó ahí. Si el contenido es idéntico, no hace nada. Para forzar la
+    sobrescritura de todas formas, definir `FORZAR_ONEDRIVE=1`.
+
+    Con `proteger=False` (para el informe HTML): siempre sobrescribe. Ese
+    archivo no es un registro de auditoría — es una vista de la extracción
+    más reciente disponible, así que congelarlo en la primera corrida del mes
+    no protegería nada real, solo generaría una advertencia constante y sin
+    valor en cada corrida siguiente (su contenido cambia siempre, aunque los
+    datos no, por la marca de tiempo que lleva incrustada).
     """
     ruta = os.environ.get("RUTA_ONEDRIVE", "").strip()
     if not ruta:
@@ -96,11 +117,46 @@ def copiar_resguardo(origen, nombre, periodo):
         carpeta = Path(ruta) / nombre_mes
         carpeta.mkdir(parents=True, exist_ok=True)
         destino = carpeta / nombre
+        # `nombre` puede traer una subcarpeta (p. ej. "_datos/insumos-af.js"),
+        # para dejar un archivo técnico un nivel más adentro que los insumos
+        # de negocio. Se crea también si hace falta.
+        destino.parent.mkdir(parents=True, exist_ok=True)
+        forzar = os.environ.get("FORZAR_ONEDRIVE", "").strip() not in ("", "0")
+        if proteger and destino.exists() and not forzar:
+            if _mismo_contenido(origen, destino):
+                return destino  # ya estaba igual: nada que hacer
+            print(f"Aviso: {destino} ya existe con contenido distinto; se conservó "
+                  f"el existente sin sobrescribir (define FORZAR_ONEDRIVE=1 para "
+                  f"forzarlo).", file=sys.stderr)
+            return destino
         shutil.copyfile(origen, destino)
         return destino
     except OSError as e:
         print(f"Aviso: no se pudo copiar {nombre} a RUTA_ONEDRIVE ({ruta}): {e}", file=sys.stderr)
         return None
+
+
+def incrustar_insumos(html_path, insumos_js_path):
+    """Devuelve el HTML como texto, con el contenido de `insumos-af.js`
+    incrustado como un `<script>` propio justo después de `<head>`.
+
+    El archivo resultante es autocontenido: no depende de ningún vecino para
+    auto-cargar los datos del mes. Sigue funcionando igual si alguien lo
+    copia, lo descarga suelto o lo mueve fuera de la carpeta donde vive hoy
+    `insumos-af.js` — a diferencia del truco de `<script src="...">`, que
+    exige que ambos archivos viajen juntos. `cargarInsumosAutomaticos()` ya
+    revisa primero si `window.__INSUMOS__` existe antes de intentar buscar un
+    archivo vecino, así que este bloque basta para que arranque solo.
+    """
+    html = Path(html_path).read_text(encoding="utf-8")
+    insumos_js = Path(insumos_js_path).read_text(encoding="utf-8")
+    marcador = "<head>"
+    i = html.find(marcador)
+    if i < 0:
+        raise ValueError(f"{html_path} no tiene una etiqueta <head> donde incrustar los insumos.")
+    i += len(marcador)
+    bloque = f"\n<script>\n{insumos_js}</script>\n"
+    return html[:i] + bloque + html[i:]
 
 
 def archivo_de(csv_bytes, nombre, origen):
