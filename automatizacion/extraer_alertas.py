@@ -48,7 +48,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from sonda_glpi import cargar_env  # mismo lector de .env que usa GLPI
-from insumos_af import archivo_de, cargar_paquete, escribir_paquete, fijar_periodo, mes_cerrado  # noqa: E402
+from insumos_af import archivo_de, cargar_paquete, copiar_resguardo, escribir_paquete, fijar_periodo, mes_cerrado  # noqa: E402
 
 import os  # noqa: E402
 
@@ -208,6 +208,18 @@ def verificar(csv_texto, periodo):
             f"Ninguna alerta con fecha en {periodo}. El informe lo reportará "
             "como «sin registros en el periodo» — comprueba que sea correcto."
         )
+
+    # El filtro de fecha ya va en la consulta a la API (createdFrom/createdTo,
+    # ver main()); esto es una red de seguridad, no el filtro principal —igual
+    # que en extraer_glpi.py. Si aparece algo aquí, el rango que aceptó
+    # AlertOps no se comportó como se esperaba (borde inclusive/exclusive,
+    # zona horaria) y el CSV no debe darse por bueno sin revisarlo.
+    fuera_de_periodo = [f for f in datos if len(f) > idx and not f[idx].startswith(periodo)]
+    if fuera_de_periodo:
+        problemas.append(
+            f"{len(fuera_de_periodo)} alerta(s) con fecha de creación fuera de {periodo} pese "
+            "al filtro createdFrom/createdTo enviado a AlertOps — revisa el rango de fechas."
+        )
     return problemas
 
 
@@ -274,6 +286,7 @@ def main():
         destino = SALIDA / nombre
         bytes_csv = contenido.encode("utf-8-sig")
         destino.write_bytes(bytes_csv)
+        resguardo = copiar_resguardo(destino, nombre)
 
         js = SALIDA / "insumos-af.js"
         paquete = cargar_paquete(js)
@@ -288,6 +301,7 @@ def main():
         problemas = verificar(contenido, args.periodo)
         print(f"\nArchivo generado: {destino}")
         print(f"  {len(cliente)} alertas · {len(bytes_csv)} bytes")
+        print(f"Copia de resguardo: {resguardo if resguardo else '(RUTA_ONEDRIVE no configurada, se omite)'}")
         print(f"Insumo para el informe: {js}")
         print(f"  sha256 {paquete['archivos']['alertas']['sha256'][:16]}…")
         print("  Colócalo junto al HTML para que el informe lo cargue solo (mismo archivo que GLPI).")

@@ -15,9 +15,13 @@ contenido viaja como datos —base64 y un hash— dentro de un `window.__INSUMOS
 
 import hashlib
 import json
+import os
 import re
+import shutil
+import sys
 from base64 import b64encode
 from datetime import date, datetime
+from pathlib import Path
 
 CABECERA = (
     "/* Generado por automatizacion/extraer_glpi.py y/o extraer_alertas.py. No editar a mano.\n"
@@ -58,6 +62,34 @@ def cargar_paquete(destino):
             except (ValueError, KeyError):
                 pass
     return {"version": 1, "generado": None, "periodo": None, "archivos": {}}
+
+
+def copiar_resguardo(origen, nombre):
+    """Copia el CSV original, tal cual y sin abrirlo, a la carpeta de
+    resguardo que declare RUTA_ONEDRIVE en `.env` — típicamente una carpeta
+    sincronizada con OneDrive donde el cliente/jefatura archiva el corte de
+    cada mes para trazabilidad. Es un tercer destino, distinto de los otros
+    dos que ya existían: el propio `origen` (la copia intacta que se queda en
+    `automatizacion/salida/`) y `insumos-af.js` (la copia en base64 que lee
+    el informe). Ninguno de los tres se deriva de otro por mutación.
+
+    Sin RUTA_ONEDRIVE configurada, no hace nada — es opcional. Si la carpeta
+    no se puede crear o escribir (OneDrive no instalado, ruta mal escrita),
+    avisa por stderr pero no interrumpe la extracción: el insumo del informe
+    ya quedó bien generado antes de llegar aquí.
+    """
+    ruta = os.environ.get("RUTA_ONEDRIVE", "").strip()
+    if not ruta:
+        return None
+    try:
+        carpeta = Path(ruta)
+        carpeta.mkdir(parents=True, exist_ok=True)
+        destino = carpeta / nombre
+        shutil.copyfile(origen, destino)
+        return destino
+    except OSError as e:
+        print(f"Aviso: no se pudo copiar {nombre} a RUTA_ONEDRIVE ({ruta}): {e}", file=sys.stderr)
+        return None
 
 
 def archivo_de(csv_bytes, nombre, origen):

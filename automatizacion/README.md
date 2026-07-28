@@ -29,24 +29,37 @@ ahí, paso a paso, está en
 | `sonda_alertops.py` | Reconocimiento de AlertOps. Confirma que la api-key autentica contra la API documentada y que el esquema real coincide con lo esperado. |
 | `extraer_alertas.py` | Extrae el consolidado de alertas por la API REST de AlertOps y aporta su parte al `insumos-af.js`. |
 | `insumos_af.py` | Módulo compartido: lee/escribe `insumos-af.js` para que los dos extractores puedan aportar su archivo sin borrar el del otro. |
-| `.env.ejemplo` | Plantilla de credenciales de ambas fuentes. Cópiala a `.env` (ignorado por git). |
+| `.env.ejemplo` | Plantilla de credenciales de ambas fuentes, más `RUTA_ONEDRIVE` (opcional). Cópiala a `.env` (ignorado por git). |
 
 ## Cómo se conecta con el informe
 
 ```
-extraer_glpi.py     ─┐
-                      ├──►  salida/insumos-af.js  ─────►  ../insumos-af.js
-extraer_alertas.py  ─┘      (un solo archivo,             (junto al HTML;
-                              dos claves: archivos.glpi     lo copia
-                              / archivos.alertas)           actualizar_informe.py)
+                      ┌─►  salida/glpi-2026-06.csv       (original, para archivo)
+extraer_glpi.py     ─┤
+                      ├─►  RUTA_ONEDRIVE/glpi-2026-06.csv    (copia de resguardo,
+                      │                                        si está configurada)
+                      └─►  salida/insumos-af.js  ─────►  ../insumos-af.js
+extraer_alertas.py  ──────►  (mismo trío, con alertops-2026-06.csv)    (junto al HTML;
+                              insumos-af.js: un solo archivo,           lo copia
+                              dos claves, archivos.glpi/.alertas)       actualizar_informe.py)
 ```
 
-`actualizar_informe.py` orquesta los tres pasos que antes había que hacer a
-mano: llamar a las dos APIs, guardar cada insumo **original** en `salida/`
-(`glpi-2026-06.csv`, `alertops-2026-06.csv` — el archivo tal cual llegó de la
-fuente, para archivo y auditoría), y copiar la versión ya convertida
-(`insumos-af.js`) junto al HTML. Al terminar, **abrir el HTML ya alcanza**:
-no hay que arrastrar ni copiar nada.
+`actualizar_informe.py` orquesta los pasos que antes había que hacer a mano:
+llamar a las dos APIs y, por cada una, dejar **tres copias independientes**
+del mismo CSV, ninguna derivada de otra por mutación:
+
+1. **Original**, intacto, en `salida/` (`glpi-2026-06.csv`,
+   `alertops-2026-06.csv`) — para archivo y auditoría local.
+2. **Copia de resguardo**, también intacta, en la carpeta que declares en
+   `RUTA_ONEDRIVE` (`.env`) — típicamente una carpeta sincronizada con
+   OneDrive, para que quien archive el corte mensual del cliente no dependa
+   de que alguien se lo envíe. Sin `RUTA_ONEDRIVE` configurada, este paso se
+   omite sin error: es opcional, no bloqueante.
+3. **Copia convertida** (base64 + huella) dentro de `insumos-af.js`, que
+   `actualizar_informe.py` copia junto al HTML para que el informe la cargue
+   sola al abrirse.
+
+Al terminar, **abrir el HTML ya alcanza**: no hay que arrastrar ni copiar nada.
 
 ```bash
 python3 automatizacion/actualizar_informe.py                 # el mes que ya cerró (agosto -> reporta julio)
@@ -216,9 +229,11 @@ SETI, no solo de Acción Fiduciaria.
   una persona, el día que la cambie el proceso se cae en silencio, y cada
   acción queda registrada a su nombre. Cambiarlas por cuentas de servicio antes
   de dejar esto desatendido.
-- **Depósito automático en SharePoint/OneDrive.** Hoy `actualizar_informe.py`
-  deja `insumos-af.js` en el equipo donde corre (junto al HTML local); falta
-  que lo escriba directamente en la biblioteca del cliente
+- **Depósito automático del informe en SharePoint/OneDrive del cliente.**
+  Distinto de `RUTA_ONEDRIVE` (que ya existe y solo resguarda los CSV
+  originales para trazabilidad interna): hoy `actualizar_informe.py` deja
+  `insumos-af.js` en el equipo donde corre (junto al HTML local); falta que
+  el informe mismo se escriba en la biblioteca del cliente
   (`/Informes/AccionFiduciaria/2026-06/…`).
 - **Dónde se ejecuta.** Necesita una máquina encendida a la 1:00 a. m.: el
   servidor de Carlos Barrera, Azure Functions u otra, por decidir. Puede ser

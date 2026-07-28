@@ -36,7 +36,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from sonda_glpi import Cliente, cargar_env, texto  # noqa: E402
-from insumos_af import archivo_de, cargar_paquete, escribir_paquete, fijar_periodo, mes_cerrado  # noqa: E402
+from insumos_af import archivo_de, cargar_paquete, copiar_resguardo, escribir_paquete, fijar_periodo, mes_cerrado  # noqa: E402
 
 import os  # noqa: E402
 
@@ -320,6 +320,7 @@ def main():
         destino = SALIDA / nombre
         bytes_csv = contenido.encode("utf-8-sig")
         destino.write_bytes(bytes_csv)
+        resguardo = copiar_resguardo(destino, nombre)
 
         js = SALIDA / "insumos-af.js"
         huella = escribir_insumos_js(
@@ -330,6 +331,7 @@ def main():
         problemas = verificar(contenido, args.periodo)
         print(f"\nArchivo generado: {destino}")
         print(f"  {len(filas)} casos · {len(bytes_csv)} bytes")
+        print(f"Copia de resguardo: {resguardo if resguardo else '(RUTA_ONEDRIVE no configurada, se omite)'}")
         print(f"Insumo para el informe: {js}")
         print(f"  sha256 {huella[:16]}…")
         print("  Colócalo junto al HTML para que el informe lo cargue solo.")
