@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Lanza actualizar_informe.py (GLPI + AlertOps) en Windows con doble clic.
 
@@ -22,7 +22,9 @@
     .\automatizacion\ejecutar.ps1 -Periodo 2026-06
 
 .NOTES
-    Nunca pregunta nada: va de principio a fin sin intervención.
+    TEMPORAL (demo): si no se pasa -Periodo, pregunta el mes por número
+    antes de correr — ver el bloque marcado más abajo. Quitar ese bloque
+    devuelve el comportamiento normal: nunca preguntar nada.
 
     Códigos de salida, heredados de actualizar_informe.py:
       0  correcto (al menos una fuente generó insumo)
@@ -58,6 +60,22 @@ if (-not $exe) {
 if (-not (Test-Path (Join-Path $PSScriptRoot '.env'))) {
     Write-Error "Falta automatizacion\.env. Copia .env.ejemplo y completa las credenciales."
     exit 2
+}
+
+# --- TEMPORAL: elegir el mes por número, para la demo — quitar después ----
+# Solo pregunta si no se pasó -Periodo por línea de comandos. Enter en
+# blanco conserva el comportamiento normal (mes cerrado automático).
+if (-not $Periodo) {
+    $anio = (Get-Date).Year
+    $numero = Read-Host "¿Qué mes de $anio quieres consultar? (1-12, Enter = mes cerrado automático)"
+    if ($numero) {
+        if ($numero -notmatch '^\d{1,2}$' -or [int]$numero -lt 1 -or [int]$numero -gt 12) {
+            Write-Error "«$numero» no es un mes válido (debe ser 1-12)."
+            exit 2
+        }
+        $Periodo = "{0}-{1:D2}" -f $anio, [int]$numero
+        Write-Output "Consultando $Periodo…"
+    }
 }
 
 # --- Argumentos -------------------------------------------------------------
