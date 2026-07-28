@@ -64,25 +64,36 @@ def cargar_paquete(destino):
     return {"version": 1, "generado": None, "periodo": None, "archivos": {}}
 
 
-def copiar_resguardo(origen, nombre):
-    """Copia el CSV original, tal cual y sin abrirlo, a la carpeta de
-    resguardo que declare RUTA_ONEDRIVE en `.env` — típicamente una carpeta
-    sincronizada con OneDrive donde el cliente/jefatura archiva el corte de
-    cada mes para trazabilidad. Es un tercer destino, distinto de los otros
-    dos que ya existían: el propio `origen` (la copia intacta que se queda en
+MESES_ES = [
+    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
+]
+
+
+def copiar_resguardo(origen, nombre, periodo):
+    """Copia el CSV original, tal cual y sin abrirlo, a la carpeta del mes
+    dentro de RUTA_ONEDRIVE (`.env`) — típicamente la carpeta sincronizada
+    con la biblioteca de SharePoint donde se archiva el corte de cada mes
+    para trazabilidad. Es un tercer destino, distinto de los otros dos que ya
+    existían: el propio `origen` (la copia intacta que se queda en
     `automatizacion/salida/`) y `insumos-af.js` (la copia en base64 que lee
     el informe). Ninguno de los tres se deriva de otro por mutación.
 
-    Sin RUTA_ONEDRIVE configurada, no hace nada — es opcional. Si la carpeta
-    no se puede crear o escribir (OneDrive no instalado, ruta mal escrita),
-    avisa por stderr pero no interrumpe la extracción: el insumo del informe
-    ya quedó bien generado antes de llegar aquí.
+    La subcarpeta se llama solo el mes en español, capitalizado (p. ej.
+    «Julio»), igual que ya se nombran a mano la mayoría de los meses en esa
+    biblioteca — se crea si no existe. Sin RUTA_ONEDRIVE configurada, no hace
+    nada: es opcional. Si la carpeta no se puede crear o escribir (OneDrive
+    no instalado o sin sincronizar, ruta mal escrita), avisa por stderr pero
+    no interrumpe la extracción: el insumo del informe ya quedó bien
+    generado antes de llegar aquí.
     """
     ruta = os.environ.get("RUTA_ONEDRIVE", "").strip()
     if not ruta:
         return None
     try:
-        carpeta = Path(ruta)
+        _anio, mes = periodo.split("-")
+        nombre_mes = MESES_ES[int(mes) - 1].capitalize()
+        carpeta = Path(ruta) / nombre_mes
         carpeta.mkdir(parents=True, exist_ok=True)
         destino = carpeta / nombre
         shutil.copyfile(origen, destino)

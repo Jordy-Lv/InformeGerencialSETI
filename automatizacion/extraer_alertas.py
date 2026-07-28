@@ -286,7 +286,7 @@ def main():
         destino = SALIDA / nombre
         bytes_csv = contenido.encode("utf-8-sig")
         destino.write_bytes(bytes_csv)
-        resguardo = copiar_resguardo(destino, nombre)
+        resguardo = copiar_resguardo(destino, nombre, args.periodo)
 
         js = SALIDA / "insumos-af.js"
         paquete = cargar_paquete(js)

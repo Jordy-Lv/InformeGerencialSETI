@@ -36,8 +36,9 @@ ahí, paso a paso, está en
 ```
                       ┌─►  salida/glpi-2026-06.csv       (original, para archivo)
 extraer_glpi.py     ─┤
-                      ├─►  RUTA_ONEDRIVE/glpi-2026-06.csv    (copia de resguardo,
-                      │                                        si está configurada)
+                      ├─►  RUTA_ONEDRIVE/Junio/glpi-2026-06.csv  (copia de resguardo;
+                      │                                            la subcarpeta del mes
+                      │                                            se crea sola)
                       └─►  salida/insumos-af.js  ─────►  ../insumos-af.js
 extraer_alertas.py  ──────►  (mismo trío, con alertops-2026-06.csv)    (junto al HTML;
                               insumos-af.js: un solo archivo,           lo copia
@@ -50,11 +51,15 @@ del mismo CSV, ninguna derivada de otra por mutación:
 
 1. **Original**, intacto, en `salida/` (`glpi-2026-06.csv`,
    `alertops-2026-06.csv`) — para archivo y auditoría local.
-2. **Copia de resguardo**, también intacta, en la carpeta que declares en
-   `RUTA_ONEDRIVE` (`.env`) — típicamente una carpeta sincronizada con
-   OneDrive, para que quien archive el corte mensual del cliente no dependa
-   de que alguien se lo envíe. Sin `RUTA_ONEDRIVE` configurada, este paso se
-   omite sin error: es opcional, no bloqueante.
+2. **Copia de resguardo**, también intacta, en una subcarpeta con el nombre
+   del mes (p. ej. `Julio/`) dentro de la carpeta que declares en
+   `RUTA_ONEDRIVE` (`.env`) — la subcarpeta se crea sola si no existe.
+   Pensada para una biblioteca de SharePoint sincronizada localmente vía
+   OneDrive (el mismo mecanismo que usa «Agregar acceso directo a OneDrive»
+   en la web de SharePoint): el cliente de sincronización se encarga de
+   subirla, sin que el script hable con ninguna API de SharePoint. Sin
+   `RUTA_ONEDRIVE` configurada, este paso se omite sin error: es opcional,
+   no bloqueante.
 3. **Copia convertida** (base64 + huella) dentro de `insumos-af.js`, que
    `actualizar_informe.py` copia junto al HTML para que el informe la cargue
    sola al abrirse.
