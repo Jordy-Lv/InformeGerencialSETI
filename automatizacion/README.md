@@ -276,12 +276,20 @@ sea la fila) y reporta lo que dice el equipo; sin match, lo deja
 ### El HTML ya usa esta reconciliación (29/07/2026, corregido el mismo día)
 
 `cargarGlpi()` en `informe-accion-fiduciaria 1.html` lee la reconciliación
-(vía `archivos.indisponibilidades` en `insumos-af.js`) y, si un ticket ya está
-marcado «NO», lo excluye del conteo de **«incidentes atribuibles a SETI»** —
-el dato real del equipo manda sobre la inferencia por categoría. «SI»,
-«EN ESTUDIO» o sin match siguen contando como atribuibles (regla de siempre);
-sigue pendiente decidir con negocio qué hacer específicamente con
-«EN ESTUDIO».
+(vía `archivos.indisponibilidades` en `insumos-af.js`) para el conteo de
+**«incidentes atribuibles a SETI»** — el dato real del equipo manda sobre la
+inferencia por categoría.
+
+**Regla de atribución (corregida el 29/07/2026, señalada en vivo por el
+usuario con un caso real):** un caso NO se asume atribuible a SETI por
+defecto. Solo cuenta como atribuible un «SI» explícito. «NO», «EN ESTUDIO»,
+«SIN_VERIFICAR» (sin fila todavía) o cualquier ID que no aparezca en el log
+**no** cuentan como atribuibles — quedan pendientes hasta que el equipo
+confirme «SI». Antes, «EN ESTUDIO» y «sin match» sí contaban como atribuibles
+por defecto (con la idea de "no restarle importancia a lo aún no descartado")
+— eso resultó ser precisamente el error: un caso recién abierto en GLPI
+(sin tiempo siquiera de que el equipo lo registrara) aparecía marcado
+«atribuible a SETI» sin que nadie lo hubiera confirmado.
 
 **Importante — «no atribuible a SETI» no es lo mismo que «no hubo
 incidente».** La primera versión de esta reconciliación restaba el ticket
@@ -303,6 +311,18 @@ atendidos» de julio muestra **52 casos · 45 alertas, 6 requerimientos y 1
 incidente**, con el indicador «Incidentes atribuibles a SETI» en **0** por
 separado — ambos números correctos a la vez, sin tocar nada en el HTML a
 mano.
+
+**Segunda corrección, mismo día:** mientras se probaba lo anterior, apareció
+un caso real nuevo en GLPI (311835, abierto ese mismo 29/07) sin fila
+todavía en el Excel de Indisponibilidades. Con la regla de entonces
+(«EN ESTUDIO» o sin match cuentan como atribuibles), el informe mostraba 2
+incidentes y 1 atribuible a SETI — un caso recién creado, sin que nadie lo
+hubiera revisado siquiera, ya aparecía "atribuible a SETI" por el solo hecho
+de no tener fila. El usuario lo señaló como incorrecto: un caso no se asume
+atribuible por defecto. Corregido para que solo un «SI» explícito cuente;
+`SIN_VERIFICAR` pasó a comportarse igual que `NO`/`EN_ESTUDIO` para este
+conteo (sigue contando como *caso atendido*, nunca como *atribuible*, hasta
+que el equipo confirme «SI»).
 
 ### El archivo standalone es una ALERTA, no un registro permanente
 

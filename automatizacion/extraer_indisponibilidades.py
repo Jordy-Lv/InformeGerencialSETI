@@ -35,13 +35,15 @@ Requiere haber corrido antes `extraer_glpi.py` para el mismo periodo (deja
 indisponibilidades solo, sin cruce.
 
 Desde el 29/07/2026, el HTML SÍ lee esta reconciliación (`cargarGlpi()`, vía
-`RECONCILIACION_INDISPONIBILIDADES` en el HTML): un ticket marcado «NO» deja
-de contar como «atribuible a SETI» — pero SÍ sigue contando como incidente
-real y como caso atendido, tanto en vivo (`cargarGlpi()`) como en
-`historico_casos.json` (que este script no toca: ya trae el total correcto
-desde `extraer_glpi.py`). «SI», «EN ESTUDIO» o sin match siguen siendo
-atribuibles (se mantiene la regla de siempre) — sigue pendiente decidir con
-negocio qué hacer específicamente con «EN ESTUDIO». Ver
+`RECONCILIACION_INDISPONIBILIDADES` en el HTML) — pero SIEMPRE sigue contando
+como incidente real y como caso atendido, tanto en vivo (`cargarGlpi()`) como
+en `historico_casos.json` (que este script no toca: ya trae el total correcto
+desde `extraer_glpi.py`). Regla de atribución corregida el mismo día (el
+usuario la señaló en vivo: un caso no se asume atribuible a SETI por
+defecto): solo un «SI» explícito cuenta como atribuible. «NO», «EN ESTUDIO»,
+«SIN_VERIFICAR» o un caso sin fila en el log NO cuentan como atribuibles
+hasta que el equipo confirme «SI» — antes «EN ESTUDIO» y «sin match» sí
+contaban por defecto, que era el error. Ver
 docs/2026-07-29-relevo-sesion-28-julio.md §2 y §8.
 """
 
@@ -325,8 +327,8 @@ def verificar(reconciliadas, pendientes, hubo_cruce):
     en_estudio = [r for r in reconciliadas if r["atribuible"] == "EN_ESTUDIO"]
     if en_estudio:
         problemas.append(
-            f"{len(en_estudio)} caso(s) marcados «EN ESTUDIO» — pendiente decidir con negocio cómo "
-            "tratarlos (ver docs/2026-07-29-relevo-sesion-28-julio.md §8)."
+            f"{len(en_estudio)} caso(s) marcados «EN ESTUDIO» — no cuentan como atribuibles a SETI "
+            "mientras el equipo no confirme «SI» (decisión del 29/07/2026)."
         )
     if pendientes:
         problemas.append(
