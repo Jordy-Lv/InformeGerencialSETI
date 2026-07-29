@@ -36,7 +36,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from sonda_glpi import Cliente, cargar_env, texto  # noqa: E402
-from insumos_af import archivo_de, cargar_paquete, copiar_resguardo, escribir_paquete, fijar_periodo, mes_cerrado  # noqa: E402
+from insumos_af import adjuntar_historico, archivo_de, cargar_paquete, clasificar_caso_glpi, copiar_resguardo, escribir_paquete, fijar_periodo, mes_cerrado  # noqa: E402
+import historico_casos  # noqa: E402
 
 import os  # noqa: E402
 
@@ -244,7 +245,19 @@ def verificar(csv_texto, periodo):
     return problemas
 
 
-def escribir_insumos_js(destino, periodo, csv_bytes, nombre_csv, origen):
+def contar_requerimientos_incidentes(contenido_csv):
+    """Cuenta requerimientos/incidentes del CSV ya generado (a_csv()), con la
+    MISMA clasificación que `inc`/`req` en cargarGlpi() del HTML — vía
+    `clasificar_caso_glpi()`, compartida con `extraer_indisponibilidades.py`.
+    Ya viene filtrado por entidad y periodo (la consulta a GLPI lo garantiza),
+    así que no hace falta filtrar de nuevo aquí."""
+    filas = list(csv.DictReader(io.StringIO(contenido_csv), delimiter=";"))
+    req = sum(1 for f in filas if clasificar_caso_glpi(f.get("Categoría"), f.get("Tipo")) == "requerimiento")
+    inc = sum(1 for f in filas if clasificar_caso_glpi(f.get("Categoría"), f.get("Tipo")) == "incidente")
+    return req, inc
+
+
+def escribir_insumos_js(destino, periodo, csv_bytes, nombre_csv, origen, historico=None):
     """Añade la sábana de GLPI al insumo que el informe lee al abrirse.
 
     Comparte archivo con `extraer_alertas.py` (y los que vengan): se lee el
@@ -254,6 +267,10 @@ def escribir_insumos_js(destino, periodo, csv_bytes, nombre_csv, origen):
     El contenido viaja como datos —base64 y un hash— y nunca como código: el
     informe comprueba el hash antes de aceptarlo. Si alguien más puede escribir
     en la carpeta, esto es lo que impide que cuele otra cosa.
+
+    `historico`, si se da, es el ledger completo de `historico_casos.json`
+    (ya con el upsert de este mes hecho) — se adjunta como campo de nivel
+    superior, no como otro `archivos.<clave>` (ver `adjuntar_historico()`).
     """
     paquete = cargar_paquete(destino)
     discrepancia = fijar_periodo(paquete, periodo)
@@ -262,6 +279,8 @@ def escribir_insumos_js(destino, periodo, csv_bytes, nombre_csv, origen):
               f"se ajusta a {periodo}. Vuelve a correr esa otra extracción si no debía cambiar.",
               file=sys.stderr)
     paquete["archivos"]["glpi"] = archivo_de(csv_bytes, nombre_csv, origen)
+    if historico is not None:
+        adjuntar_historico(paquete, historico)
     escribir_paquete(destino, paquete)
     return paquete["archivos"]["glpi"]["sha256"]
 
@@ -322,16 +341,27 @@ def main():
         destino.write_bytes(bytes_csv)
         resguardo = copiar_resguardo(destino, nombre, args.periodo)
 
+        # Ledger histórico (historico_casos.json): upsert de requerimientos/
+        # incidentes de este mes, independiente de la hoja «Casos» del Excel.
+        # No toca el campo «alertas» del mismo periodo (eso es territorio de
+        # extraer_alertas.py) ni ningún otro mes.
+        req, inc = contar_requerimientos_incidentes(contenido)
+        datos_historico = historico_casos.cargar()
+        historico_casos.actualizar_periodo(datos_historico, args.periodo, requerimientos=req, incidentes=inc)
+        historico_casos.escribir(datos_historico)
+
         js = SALIDA / "insumos-af.js"
         huella = escribir_insumos_js(
             js, args.periodo, bytes_csv, nombre,
             f"API REST de GLPI · {base}",
+            historico=datos_historico,
         )
 
         problemas = verificar(contenido, args.periodo)
         print(f"\nArchivo generado: {destino}")
         print(f"  {len(filas)} casos · {len(bytes_csv)} bytes")
         print(f"Copia de resguardo: {resguardo if resguardo else '(RUTA_ONEDRIVE no configurada, se omite)'}")
+        print(f"Histórico: {req} requerimiento(s), {inc} incidente(s) atribuible(s) → {historico_casos.RUTA}")
         print(f"Insumo para el informe: {js}")
         print(f"  sha256 {huella[:16]}…")
         print("  Colócalo junto al HTML para que el informe lo cargue solo.")

@@ -2,14 +2,22 @@
 """
 Punto de entrada único para la tarea programada mensual.
 
-Corre las dos extracciones —GLPI y AlertOps— una tras otra. Cada una:
+Corre las extracciones —GLPI, AlertOps e Indisponibilidades— una tras otra.
+Las dos primeras:
 
-  1. Llama a su API y descarga los datos.
-  2. Guarda el insumo original en `salida/` (`glpi-AAAA-MM.csv`,
+  1. Llaman a su API y descargan los datos.
+  2. Guardan el insumo original en `salida/` (`glpi-AAAA-MM.csv`,
      `alertops-AAAA-MM.csv`) — el archivo tal cual llegó de la fuente, para
      archivo y auditoría.
-  3. Aporta su parte a `salida/insumos-af.js`, la copia ya convertida
+  3. Aportan su parte a `salida/insumos-af.js`, la copia ya convertida
      (base64 + huella) que el informe sabe leer.
+
+Indisponibilidades no llama a ninguna API: cruza el CSV que deja GLPI (paso
+anterior) contra `DisponibilidadMensual.xlsx` para validar «atribuible a
+SETI» con dato real — ver `extraer_indisponibilidades.py`. Es opcional
+(`RUTA_INDISPONIBILIDADES` sin configurar no es una falla) y, a diferencia de
+las otras dos, el HTML todavía no lee lo que aporta a `insumos-af.js`
+(pendiente de integrar, ver docs/2026-07-29-relevo-sesion-28-julio.md §8).
 
 Este script añade el último paso, el que hasta ahora había que hacer a mano:
 copia ese `insumos-af.js` **junto al HTML del informe**. Al abrirlo, las
@@ -22,11 +30,12 @@ dentro del propio archivo** (`incrustar_insumos`), así que sigue abriendo con
 todo cargado aunque alguien lo copie, lo descargue o lo mueva solo, sin el
 resto de la carpeta.
 
-Una fuente que falle no cancela la otra: se corren siempre las dos, y al
-final se informa qué salió bien y qué no. Si ambas fallan, no se toca el
-`insumos-af.js` que ya estuviera junto al HTML (uno viejo sigue siendo mejor
-que ninguno; el informe además delata su fecha de extracción si quedara
-desactualizado).
+Una fuente que falle no cancela las demás: se corren siempre todas, y al
+final se informa qué salió bien y qué no. Si GLPI y AlertOps fallan las dos,
+no se toca el `insumos-af.js` que ya estuviera junto al HTML (uno viejo sigue
+siendo mejor que ninguno; el informe además delata su fecha de extracción si
+quedara desactualizado). El código de salida general solo depende de GLPI y
+AlertOps — Indisponibilidades es complementario y no lo mueve.
 
 Uso:
 
@@ -89,10 +98,18 @@ def main():
 
     ok_glpi = correr("extraer_glpi.py", args.periodo)
     ok_alertas = correr("extraer_alertas.py", args.periodo)
+    # Depende del CSV que deja extraer_glpi.py (glpi-<periodo>.csv) para cruzar
+    # atribución; por eso corre después. Es opcional (RUTA_INDISPONIBILIDADES sin
+    # configurar no cuenta como falla, ver extraer_indisponibilidades.py) y no
+    # entra en el código de salida general: todavía no alimenta el HTML (ver
+    # docs/2026-07-29-relevo-sesion-28-julio.md §8), solo deja su CSV y su parte
+    # de insumos-af.js listos para cuando se integre.
+    ok_indisponibilidades = correr("extraer_indisponibilidades.py", args.periodo)
 
     print(f"\n{' Resumen '.center(60, '=')}", flush=True)
-    print(f"  GLPI:     {'OK' if ok_glpi else 'FALLÓ — revisa el mensaje de arriba'}", flush=True)
-    print(f"  AlertOps: {'OK' if ok_alertas else 'FALLÓ — revisa el mensaje de arriba'}", flush=True)
+    print(f"  GLPI:               {'OK' if ok_glpi else 'FALLÓ — revisa el mensaje de arriba'}", flush=True)
+    print(f"  AlertOps:           {'OK' if ok_alertas else 'FALLÓ — revisa el mensaje de arriba'}", flush=True)
+    print(f"  Indisponibilidades: {'OK' if ok_indisponibilidades else 'FALLÓ — revisa el mensaje de arriba'}", flush=True)
 
     js = SALIDA / "insumos-af.js"
     if not js.exists():

@@ -19,9 +19,43 @@ import os
 import re
 import shutil
 import sys
+import unicodedata
 from base64 import b64encode
 from datetime import date, datetime
 from pathlib import Path
+
+# Clasificación de un caso de GLPI en requerimiento/incidente/revisión, EXACTAMENTE
+# igual que cargarGlpi() en el HTML (informe-accion-fiduciaria 1.html): un ticket
+# cuenta como «incidente» si su Categoría (o Tipo, si no hay Categoría) matchea
+# R_INCIDENTE, salvo que el segundo nivel de la categoría (tras ">") sea una
+# revisión de alerta autogenerada por el monitoreo — esas no son fallas nuevas.
+# Compartida entre extraer_glpi.py (cuenta req/inc del mes para historico_casos.json)
+# y extraer_indisponibilidades.py (identifica qué IDs de GLPI son «incidente» para
+# cruzarlos contra el log de indisponibilidades): una sola definición, no dos.
+R_REQUERIMIENTO = re.compile(r"requerim|request|solicitud", re.I)
+R_INCIDENTE = re.compile(r"incidente|incident", re.I)
+R_REVISION = re.compile(r"^revision", re.I)
+
+
+def _norm(v):
+    s = unicodedata.normalize("NFD", str(v or ""))
+    s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+    s = re.sub(r"[^a-z0-9]+", " ", s.lower())
+    return s.strip()
+
+
+def clasificar_caso_glpi(categoria, tipo):
+    """'requerimiento' | 'incidente' | 'revision' | 'otro', a partir de la
+    Categoría (o Tipo si no hay Categoría) de un caso ya extraído de GLPI."""
+    clas_texto = categoria or tipo or ""
+    n = _norm(clas_texto)
+    if R_REQUERIMIENTO.search(n):
+        return "requerimiento"
+    if R_INCIDENTE.search(n):
+        nivel2 = _norm(categoria.split(">")[-1]) if categoria and ">" in categoria else ""
+        return "revision" if R_REVISION.search(nivel2) else "incidente"
+    return "otro"
+
 
 CABECERA = (
     "/* Generado por automatizacion/extraer_glpi.py y/o extraer_alertas.py. No editar a mano.\n"
@@ -157,6 +191,16 @@ def incrustar_insumos(html_path, insumos_js_path):
     i += len(marcador)
     bloque = f"\n<script>\n{insumos_js}</script>\n"
     return html[:i] + bloque + html[i:]
+
+
+def adjuntar_historico(paquete, historico):
+    """Añade el ledger acumulado (historico_casos.json, vía historico_casos.py)
+    al paquete, como campo de nivel superior `historico` — no bajo `archivos`,
+    porque no es un CSV de una sola fuente: ya es el JSON combinado de todos
+    los meses/fuentes. A diferencia de `archivos.<clave>` no lleva huella
+    propia: viaja igual de confiable (o no) que `paquete.periodo`, que el
+    informe ya acepta sin verificar por separado."""
+    paquete["historico"] = historico
 
 
 def archivo_de(csv_bytes, nombre, origen):

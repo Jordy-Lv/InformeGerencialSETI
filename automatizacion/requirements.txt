@@ -1,0 +1,5 @@
+# Única dependencia externa de automatizacion/: la necesita solo
+# extraer_indisponibilidades.py, para leer el .xlsx real de Indisponibilidades
+# (celdas combinadas, filas plantilla, tipos mixtos). extraer_glpi.py y
+# extraer_alertas.py siguen sin dependencias, solo librería estándar.
+openpyxl>=3.1

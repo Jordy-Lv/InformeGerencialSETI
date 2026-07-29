@@ -48,7 +48,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from sonda_glpi import cargar_env  # mismo lector de .env que usa GLPI
-from insumos_af import archivo_de, cargar_paquete, copiar_resguardo, escribir_paquete, fijar_periodo, mes_cerrado  # noqa: E402
+from insumos_af import adjuntar_historico, archivo_de, cargar_paquete, copiar_resguardo, escribir_paquete, fijar_periodo, mes_cerrado  # noqa: E402
+import historico_casos  # noqa: E402
 
 import os  # noqa: E402
 
@@ -288,6 +289,14 @@ def main():
         destino.write_bytes(bytes_csv)
         resguardo = copiar_resguardo(destino, nombre, args.periodo)
 
+        # Ledger histórico (historico_casos.json): upsert de alertas de este
+        # mes, independiente de la hoja «Casos» del Excel. No toca el campo
+        # «requerimientos»/«incidentes» del mismo periodo (territorio de
+        # extraer_glpi.py) ni ningún otro mes.
+        datos_historico = historico_casos.cargar()
+        historico_casos.actualizar_periodo(datos_historico, args.periodo, alertas=len(cliente))
+        historico_casos.escribir(datos_historico)
+
         js = SALIDA / "insumos-af.js"
         paquete = cargar_paquete(js)
         discrepancia = fijar_periodo(paquete, args.periodo)
@@ -296,12 +305,14 @@ def main():
                   f"se ajusta a {args.periodo}. Vuelve a correr esa otra extracción si no debía cambiar.",
                   file=sys.stderr)
         paquete["archivos"]["alertas"] = archivo_de(bytes_csv, nombre, f"API REST de AlertOps · {base}")
+        adjuntar_historico(paquete, datos_historico)
         escribir_paquete(js, paquete)
 
         problemas = verificar(contenido, args.periodo)
         print(f"\nArchivo generado: {destino}")
         print(f"  {len(cliente)} alertas · {len(bytes_csv)} bytes")
         print(f"Copia de resguardo: {resguardo if resguardo else '(RUTA_ONEDRIVE no configurada, se omite)'}")
+        print(f"Histórico: {len(cliente)} alerta(s) → {historico_casos.RUTA}")
         print(f"Insumo para el informe: {js}")
         print(f"  sha256 {paquete['archivos']['alertas']['sha256'][:16]}…")
         print("  Colócalo junto al HTML para que el informe lo cargue solo (mismo archivo que GLPI).")

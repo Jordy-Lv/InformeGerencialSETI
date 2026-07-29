@@ -28,8 +28,12 @@ ahí, paso a paso, está en
 | `extraer_glpi.py` | Extrae la sábana de casos por la API REST de GLPI y aporta su parte al `insumos-af.js`. |
 | `sonda_alertops.py` | Reconocimiento de AlertOps. Confirma que la api-key autentica contra la API documentada y que el esquema real coincide con lo esperado. |
 | `extraer_alertas.py` | Extrae el consolidado de alertas por la API REST de AlertOps y aporta su parte al `insumos-af.js`. |
-| `insumos_af.py` | Módulo compartido: lee/escribe `insumos-af.js` para que los dos extractores puedan aportar su archivo sin borrar el del otro. |
-| `.env.ejemplo` | Plantilla de credenciales de ambas fuentes, más `RUTA_ONEDRIVE` (opcional). Cópiala a `.env` (ignorado por git). |
+| `insumos_af.py` | Módulo compartido: lee/escribe `insumos-af.js` para que los extractores puedan aportar su archivo sin borrar el de los otros. |
+| `extraer_indisponibilidades.py` | Cruza `DisponibilidadMensual.xlsx` (log de indisponibilidades, diligenciado a mano) contra los incidentes que `extraer_glpi.py` ya clasificó, para validar «atribuible a SETI» con dato real en vez de solo inferencia por categoría. **Enganchado a `actualizar_informe.py` (corre solo con el `.bat`); opcional y no bloqueante; el HTML aún no lee lo que aporta** — ver nota de alcance en su docstring y `docs/2026-07-29-relevo-sesion-28-julio.md` §2 y §8. |
+| `historico_casos.py` | Módulo compartido: lee/escribe `salida/historico_casos.json`, el ledger acumulado de casos (alertas/requerimientos/incidentes) por mes, mes a mes por *upsert* — independiente de la hoja «Casos» del consolidado. **Construido, enganchado y consumido por el HTML** — ver sección propia más abajo. |
+| `backfill_historico_casos.py` | Script de una sola vez: puebla el ledger con los meses anteriores a la automatización, leyendo la hoja «Casos» del consolidado. Ya corrido una vez (sep-25 → jun-26); no hace falta volver a correrlo salvo para poblar un cliente nuevo. |
+| `requirements.txt` | Única dependencia externa de todo `automatizacion/`: `openpyxl`, para `extraer_indisponibilidades.py` y `backfill_historico_casos.py`. Los extractores mensuales (`extraer_glpi.py`, `extraer_alertas.py`) siguen sin dependencias. |
+| `.env.ejemplo` | Plantilla de credenciales de las fuentes, más `RUTA_ONEDRIVE` y `RUTA_INDISPONIBILIDADES` (opcionales). Cópiala a `.env` (ignorado por git). |
 
 ## Cómo se conecta con el informe
 
@@ -227,6 +231,131 @@ la ausencia no afecta al informe.
   `informe-accion-fiduciaria 1.html` carga las dos fuentes solas (GLPI: 0
   casos en junio, confirma el hallazgo ya conocido; AlertOps: 53 alertas) sin
   errores de consola.
+
+## Indisponibilidades (cruce de atribución a SETI)
+
+Encargo del usuario, 28-29/07/2026: el consolidado de disponibilidad hoy
+decide «incidentes atribuibles a SETI» solo por el texto de la categoría del
+ticket de GLPI (`cargarGlpi()`, regla `I=/incidente|incident/` menos
+revisiones de alerta) — poco confiable, porque no dice si la causa real fue de
+SETI o del cliente. `DisponibilidadMensual.xlsx` (SharePoint, Célula 3,
+compartido entre Acción Fiduciaria/Bancoldex/EMI) sí tiene ese dato real,
+diligenciado a mano por el equipo: columna «Atribuible a SETI»
+(SI/NO/EN ESTUDIO), enlazada por «NUMERO CASO GLPI».
+
+```bash
+pip install -r automatizacion/requirements.txt   # openpyxl, primera dependencia externa
+# RUTA_INDISPONIBILIDADES en .env, apuntando directo al .xlsx (no a una carpeta)
+```
+
+**Enganchado a `actualizar_informe.py`** (y por lo tanto a `ejecutar.bat`/
+`ejecutar.ps1`/la tarea programada): corre solo, como tercer paso, después de
+GLPI y antes de copiar el insumo junto al HTML — no hace falta invocarlo
+aparte. También puede correrse solo para depurar:
+
+```bash
+python3 automatizacion/extraer_indisponibilidades.py                  # el mes que ya cerró
+python3 automatizacion/extraer_indisponibilidades.py --periodo 2026-07
+```
+
+Es **opcional y no bloqueante**, igual que `RUTA_ONEDRIVE`: si
+`RUTA_INDISPONIBILIDADES` no está configurada (p. ej. un equipo donde esa
+biblioteca de SharePoint todavía no se sincronizó), se omite con un aviso y
+`actualizar_informe.py` sigue igual — no cuenta como falla ni afecta el código
+de salida general (que solo depende de GLPI/AlertOps).
+
+Requiere haber corrido antes `extraer_glpi.py` para el mismo periodo (lee
+`salida/glpi-<periodo>.csv`); si no está —incluido el caso en que GLPI falló
+en esa misma corrida (¡probado en vivo el 29/07/2026: se cayó la conexión a
+`www.seti.co/glpi` a mitad de sesión!)—, avisa y reporta el log de
+indisponibilidades solo, sin cruce, sin tumbar el resto de la corrida. Para
+cada incidente de GLPI del periodo busca su caso en la hoja
+«Indisponibilidades» (por «NUMERO CASO GLPI», sin importar de qué mes sea la
+fila) y reporta lo que dice el equipo; sin match, lo deja `SIN_VERIFICAR` —
+nunca inventa una atribución.
+
+**Construido, enganchado a la corrida mensual y probado el 29/07/2026 contra
+la biblioteca real de OneDrive** (`RUTA_INDISPONIBILIDADES` ya configurada en
+este Mac), **pero el HTML todavía no lo consume:**
+
+- El HTML no lee la clave `archivos.indisponibilidades` que este script aporta
+  a `insumos-af.js` — `cargarGlpi()` sigue clasificando solo por categoría.
+  Ese es el trabajo que falta: un parser nuevo en el HTML y la decisión de
+  negocio de abajo.
+- Pendiente de decidir con negocio: qué hacer con el estado `EN ESTUDIO`.
+- El propio archivo real (visto el 28/07/2026 y reconfirmado el 29/07/2026
+  contra la ruta sincronizada real, mismo hash) traía las 3 filas de Acción
+  Fiduciaria con «NUMERO CASO GLPI» vacío — el 29/07/2026 Carlos Barrera le
+  pidió al equipo en el chat de Teams (Célula 3) empezar a diligenciar esa
+  columna, así que el cruce empieza a tener valor real recién ahora.
+
+Detalle completo del diseño y las preguntas abiertas en
+[`../docs/2026-07-29-relevo-sesion-28-julio.md`](../docs/2026-07-29-relevo-sesion-28-julio.md)
+§2 y §8.
+
+## Histórico de casos (independiente de la hoja «Casos»)
+
+Encargo original del usuario (capturas de WhatsApp, ver
+docs/2026-07-29-relevo-sesion-28-julio.md §5.1, punto 1): *"que el HTML tenga
+conocimiento de los casos anteriores... independiente de esa hoja
+totalmente"*. Antes de esta sesión (29/07/2026) estaba solo diseñado, no
+construido — `cargarCasos()` en el HTML reconstruía todo el histórico
+(`DATA_CASOS.historico`, el que alimenta el modal de evolución de slide 5)
+leyendo la hoja «Casos» del consolidado **cada vez** que se cargaba. Sin
+cargar el Excel a mano, el informe no sabía nada de meses anteriores — ni
+siquiera con GLPI/AlertOps ya cargados automáticamente.
+
+**Construido, enganchado y validado el 29/07/2026:**
+
+1. **Ledger acumulado** (`automatizacion/salida/historico_casos.json`,
+   `historico_casos.py`): un JSON que crece mes a mes por *upsert* — cada
+   extractor toca solo su campo del mes que le corresponde
+   (`extraer_glpi.py` → requerimientos/incidentes, con la misma clasificación
+   que `cargarGlpi()`, vía `clasificar_caso_glpi()` en `insumos_af.py`;
+   `extraer_alertas.py` → alertas), sin pisar lo que dejó el otro ni otros
+   meses. Se adjunta a `insumos-af.js` como campo `historico` de nivel
+   superior (no bajo `archivos.*`, porque no es un CSV de una sola fuente).
+2. **Backfill de una sola vez** (`backfill_historico_casos.py`): pobló el
+   ledger con sep-25 → jun-26 leyendo la hoja «Casos» del consolidado real,
+   con la misma heurística de encabezado que usa `cargarCasos()` en el HTML
+   (la fila con más columnas de fecha). Nunca pisa un periodo que el ledger
+   ya tenga (`solo_si_falta`), así que correrlo de nuevo por error no hace
+   daño. Julio-2026 en adelante ya lo cubre la automatización en vivo.
+3. **Consumo en el HTML** (`aplicarHistoricoAutomatico()`, cerca de
+   `DATA_CASOS`): si `insumos-af.js` trae `historico`, sus periodos mandan
+   sobre `DATA_CASOS.historico` — incluido si alguien carga o recarga el
+   consolidado después (se reaplica al final de `cargarCasos()`), así el
+   ledger no se revierte a la hoja del Excel. Respeta los mismos límites que
+   el Excel: nunca un mes posterior al periodo seleccionado en el desplegable
+   (mismo criterio que `columnasPeriodo`/`antesOIgual`), ni anterior al inicio
+   de contrato.
+
+```bash
+# una sola vez, para poblar los meses anteriores a la automatización
+python3 automatizacion/backfill_historico_casos.py --archivo "/ruta/Disponibilidad Consolidado Mayo.xlsx"
+```
+
+De ahí en adelante no hace falta nada manual: `extraer_glpi.py` y
+`extraer_alertas.py` (ya enganchados a `actualizar_informe.py`/`ejecutar.bat`)
+alimentan el ledger solos cada mes.
+
+**Validado de la forma más exigente posible** (mismo método que el informe
+autocontenido, §5.4 del relevo): se generó un HTML autocontenido con
+`insumos-af.js` real (glpi + alertas + indisponibilidades + el ledger de 11
+meses) incrustado, servido por HTTP local, **sin cargar el consolidado en
+ningún momento**. Resultado, vía JavaScript en la propia página:
+
+```
+REPORTE.d('casos').datos.historico.periodos → 2025-09 … 2026-07 (11 meses)
+REPORTE.d('casos').datos.historico.alertas → [56,59,47,66,74,70,83,54,30,61,45]
+REPORTE.d('casos').datos.historico.requerimientos → [1,0,1,2,5,1,0,3,6,0,6]
+REPORTE.d('casos').datos.historico.incidentes → [0,0,1,0,1,0,0,1,0,0,1]
+```
+
+Sin errores de consola. La tarjeta «Casos atendidos» del periodo mostró **52
+casos · 45 alertas · 6 requerimientos · 1 atribuible a SETI** — coincide con
+lo que ya reportaba GLPI/AlertOps en vivo, ahora también respaldado por el
+histórico completo sin abrir el Excel.
 
 ## Credenciales
 
