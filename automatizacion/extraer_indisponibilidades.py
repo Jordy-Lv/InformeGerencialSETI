@@ -34,11 +34,14 @@ Requiere haber corrido antes `extraer_glpi.py` para el mismo periodo (deja
 `salida/glpi-<periodo>.csv`); si no está, se avisa y se reporta el log de
 indisponibilidades solo, sin cruce.
 
-Nota de alcance (28-29/07/2026): este extractor está construido y probado,
-pero el HTML todavía NO lee la clave `archivos.indisponibilidades` que aporta
-a `insumos-af.js` — la clasificación real (`cargarGlpi()`) sigue siendo solo
-por categoría hasta que se decida con negocio qué hacer con «EN ESTUDIO» y
-cómo se integra. Ver docs/2026-07-29-relevo-sesion-28-julio.md §2 y §8.
+Desde el 29/07/2026, el HTML SÍ lee esta reconciliación (`cargarGlpi()`, vía
+`RECONCILIACION_INDISPONIBILIDADES` en el HTML): un ticket marcado «NO» deja
+de contar como incidente atribuible a SETI. «SI», «EN ESTUDIO» o sin match
+siguen contando (se mantiene la regla de siempre) — sigue pendiente decidir
+con negocio qué hacer específicamente con «EN ESTUDIO». Este script también
+corrige `historico_casos.json` para el periodo procesado, para que el número
+quede bien desde que se generó, no solo mientras se ve como mes en curso. Ver
+docs/2026-07-29-relevo-sesion-28-julio.md §2 y §8.
 """
 
 import argparse
@@ -51,7 +54,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from sonda_glpi import cargar_env  # noqa: E402
-from insumos_af import archivo_de, cargar_paquete, clasificar_caso_glpi, copiar_resguardo, escribir_paquete, fijar_periodo, mes_cerrado  # noqa: E402
+from insumos_af import adjuntar_historico, archivo_de, cargar_paquete, clasificar_caso_glpi, copiar_resguardo, eliminar_resguardo, escribir_paquete, fijar_periodo, mes_cerrado  # noqa: E402
+import historico_casos  # noqa: E402
 
 import os  # noqa: E402
 
@@ -342,13 +346,55 @@ def main():
 
     reconciliadas = reconciliar(todas, incidentes_glpi or {})
     pendientes = [f for f in del_periodo if not solo_digitos(f.get("caso_glpi"))]
+    # Lo que de verdad falta por registrar: incidentes de GLPI sin fila en el
+    # Excel de indisponibilidades. Es la señal que decide si el archivo
+    # standalone (ver más abajo) debe existir o borrarse.
+    pendientes_registro = [r for r in reconciliadas if r["atribuible"] == "SIN_VERIFICAR"]
+
+    # Corrige lo que extraer_glpi.py ya dejó en historico_casos.json: un
+    # incidente marcado «NO» por el equipo deja de contar como atribuible a
+    # SETI. «SI», «EN ESTUDIO» o SIN_VERIFICAR se mantienen (regla de
+    # siempre) — mismo criterio que aplica el HTML en vivo (cargarGlpi(), vía
+    # RECONCILIACION_INDISPONIBILIDADES). Sin cruce (hubo_cruce=False) no hay
+    # nada que corregir: el valor de extraer_glpi.py queda tal cual.
+    datos_historico = None
+    if hubo_cruce:
+        incidentes_corregidos = sum(1 for r in reconciliadas if r["atribuible"] != "NO")
+        datos_historico = historico_casos.cargar()
+        anterior = datos_historico["periodos"].get(args.periodo, {}).get("incidentes")
+        historico_casos.actualizar_periodo(datos_historico, args.periodo, incidentes=incidentes_corregidos)
+        historico_casos.escribir(datos_historico)
+        if anterior is not None and anterior != incidentes_corregidos:
+            print(f"Histórico corregido: incidentes de {args.periodo} pasó de {anterior} a "
+                  f"{incidentes_corregidos} (excluidos los marcados «NO» en indisponibilidades).")
 
     contenido = a_csv(reconciliadas)
+    bytes_csv = contenido.encode("utf-8-sig")
     nombre = f"indisponibilidades-{args.periodo}.csv"
     destino = SALIDA / nombre
-    bytes_csv = contenido.encode("utf-8-sig")
-    destino.write_bytes(bytes_csv)
-    resguardo = copiar_resguardo(destino, nombre, args.periodo)
+
+    # El archivo standalone (local + copia en RUTA_ONEDRIVE) es una ALERTA:
+    # su sola existencia dice «hay un incidente de GLPI sin registrar en el
+    # Excel de indisponibilidades». Una vez el equipo registra todos los
+    # casos del periodo (SI/NO/EN ESTUDIO, ya no SIN_VERIFICAR), deja de
+    # hacer falta — se borra en vez de quedarse ahí con un «sin
+    # observaciones» que ya no aporta nada.
+    if hubo_cruce and not pendientes_registro:
+        if destino.exists():
+            destino.unlink()
+            print(f"Nada pendiente por registrar: se eliminó {destino} (ya no es necesario).")
+        borrado = eliminar_resguardo(nombre, args.periodo)
+        if borrado:
+            print(f"También se eliminó la copia en OneDrive: {borrado}")
+        resguardo = None
+    else:
+        destino.write_bytes(bytes_csv)
+        # proteger=False: a diferencia de glpi-*.csv/alertops-*.csv (una foto
+        # fija de lo que dijo la fuente al momento de extraer), este archivo
+        # cambia legítimamente cada vez que el equipo llena más filas del
+        # Excel — protegerlo impediría que una corrida futura actualizara un
+        # SIN_VERIFICAR a SI/NO.
+        resguardo = copiar_resguardo(destino, nombre, args.periodo, proteger=False)
 
     js = SALIDA / "insumos-af.js"
     paquete = cargar_paquete(js)
@@ -356,17 +402,27 @@ def main():
     if discrepancia:
         print(f"Aviso: el insumo ya traía periodo {discrepancia} (de otra fuente); "
               f"se ajusta a {args.periodo}.", file=sys.stderr)
-    paquete["archivos"]["indisponibilidades"] = archivo_de(bytes_csv, nombre, f"{ruta.name} · hoja {nombre_hoja}")
+    # El insumo para el HTML SIEMPRE lleva la reconciliación completa mientras
+    # hubo cruce — exista o no el archivo standalone en disco. Es lo que
+    # mantiene correcto el conteo de «atribuible a SETI» en vivo aunque todo
+    # ya esté registrado y el archivo visible haya desaparecido.
+    if hubo_cruce:
+        paquete["archivos"]["indisponibilidades"] = archivo_de(bytes_csv, nombre, f"{ruta.name} · hoja {nombre_hoja}")
+    else:
+        paquete["archivos"].pop("indisponibilidades", None)
+    if datos_historico is not None:
+        adjuntar_historico(paquete, datos_historico)
     escribir_paquete(js, paquete)
 
     problemas = verificar(reconciliadas, pendientes, hubo_cruce)
-    print(f"\nArchivo generado: {destino}")
-    print(f"  {len(reconciliadas)} incidente(s) reconciliado(s) · {len(bytes_csv)} bytes")
-    print(f"Copia de resguardo: {resguardo if resguardo else '(RUTA_ONEDRIVE no configurada, se omite)'}")
+    print(f"\n{len(reconciliadas)} incidente(s) reconciliado(s).")
+    print(f"Archivo standalone: {destino if destino.exists() else '(no existe: nada pendiente por registrar)'}")
+    print(f"Copia de resguardo: {resguardo if resguardo else '(sin copia — RUTA_ONEDRIVE no configurada, o nada pendiente)'}")
     print(f"Insumo para el informe: {js}")
-    print(f"  sha256 {paquete['archivos']['indisponibilidades']['sha256'][:16]}…")
-    print("  Nota: el HTML todavía no lee archivos.indisponibilidades — la clasificación real de "
-          "cargarGlpi() sigue siendo solo por categoría hasta integrarlo (ver docs/2026-07-29-relevo-sesion-28-julio.md §8).")
+    if hubo_cruce:
+        print(f"  sha256 {paquete['archivos']['indisponibilidades']['sha256'][:16]}…")
+        print("  El HTML ya usa esta reconciliación: un incidente marcado «NO» deja de contar como "
+              "atribuible a SETI (ver RECONCILIACION_INDISPONIBILIDADES en informe-accion-fiduciaria 1.html).")
     if problemas:
         print("\n  Revisar antes de usarlo:")
         for x in problemas:

@@ -170,6 +170,29 @@ def copiar_resguardo(origen, nombre, periodo, proteger=True):
         return None
 
 
+def eliminar_resguardo(nombre, periodo):
+    """Borra la copia de resguardo en RUTA_ONEDRIVE si existe — contraparte de
+    copiar_resguardo(), para archivos cuya sola EXISTENCIA es la señal (como
+    el log de indisponibilidades pendientes de extraer_indisponibilidades.py):
+    una vez deja de haber algo que reportar, el archivo no debe quedarse ahí
+    con contenido obsoleto. Sin RUTA_ONEDRIVE configurada, o si el archivo no
+    existe, no hace nada."""
+    ruta = os.environ.get("RUTA_ONEDRIVE", "").strip()
+    if not ruta:
+        return None
+    try:
+        _anio, mes = periodo.split("-")
+        nombre_mes = MESES_ES[int(mes) - 1].capitalize()
+        destino = Path(ruta) / nombre_mes / nombre
+        if destino.exists():
+            destino.unlink()
+            return destino
+        return None
+    except OSError as e:
+        print(f"Aviso: no se pudo borrar {nombre} de RUTA_ONEDRIVE ({ruta}): {e}", file=sys.stderr)
+        return None
+
+
 def incrustar_insumos(html_path, insumos_js_path):
     """Devuelve el HTML como texto, con el contenido de `insumos-af.js`
     incrustado como un `<script>` propio justo después de `<head>`.

@@ -29,7 +29,7 @@ ahí, paso a paso, está en
 | `sonda_alertops.py` | Reconocimiento de AlertOps. Confirma que la api-key autentica contra la API documentada y que el esquema real coincide con lo esperado. |
 | `extraer_alertas.py` | Extrae el consolidado de alertas por la API REST de AlertOps y aporta su parte al `insumos-af.js`. |
 | `insumos_af.py` | Módulo compartido: lee/escribe `insumos-af.js` para que los extractores puedan aportar su archivo sin borrar el de los otros. |
-| `extraer_indisponibilidades.py` | Cruza `DisponibilidadMensual.xlsx` (log de indisponibilidades, diligenciado a mano) contra los incidentes que `extraer_glpi.py` ya clasificó, para validar «atribuible a SETI» con dato real en vez de solo inferencia por categoría. **Enganchado a `actualizar_informe.py` (corre solo con el `.bat`); opcional y no bloqueante; el HTML aún no lee lo que aporta** — ver nota de alcance en su docstring y `docs/2026-07-29-relevo-sesion-28-julio.md` §2 y §8. |
+| `extraer_indisponibilidades.py` | Cruza `DisponibilidadMensual.xlsx` (log de indisponibilidades, diligenciado a mano) contra los incidentes que `extraer_glpi.py` ya clasificó, para validar «atribuible a SETI» con dato real en vez de solo inferencia por categoría. **Enganchado a `actualizar_informe.py` (corre solo con el `.bat`); opcional y no bloqueante; el HTML ya usa esta reconciliación** para corregir el conteo. El archivo standalone (local + OneDrive) solo existe mientras haya algo sin registrar — se borra solo cuando ya no hace falta. |
 | `historico_casos.py` | Módulo compartido: lee/escribe `salida/historico_casos.json`, el ledger acumulado de casos (alertas/requerimientos/incidentes) por mes, mes a mes por *upsert* — independiente de la hoja «Casos» del consolidado. **Construido, enganchado y consumido por el HTML** — ver sección propia más abajo. |
 | `backfill_historico_casos.py` | Script de una sola vez: puebla el ledger con los meses anteriores a la automatización, leyendo la hoja «Casos» del consolidado. Ya corrido una vez (sep-25 → jun-26); no hace falta volver a correrlo salvo para poblar un cliente nuevo. |
 | `requirements.txt` | Única dependencia externa de todo `automatizacion/`: `openpyxl`, para `extraer_indisponibilidades.py` y `backfill_historico_casos.py`. Los extractores mensuales (`extraer_glpi.py`, `extraer_alertas.py`) siguen sin dependencias. |
@@ -267,29 +267,48 @@ de salida general (que solo depende de GLPI/AlertOps).
 Requiere haber corrido antes `extraer_glpi.py` para el mismo periodo (lee
 `salida/glpi-<periodo>.csv`); si no está —incluido el caso en que GLPI falló
 en esa misma corrida (¡probado en vivo el 29/07/2026: se cayó la conexión a
-`www.seti.co/glpi` a mitad de sesión!)—, avisa y reporta el log de
-indisponibilidades solo, sin cruce, sin tumbar el resto de la corrida. Para
-cada incidente de GLPI del periodo busca su caso en la hoja
-«Indisponibilidades» (por «NUMERO CASO GLPI», sin importar de qué mes sea la
-fila) y reporta lo que dice el equipo; sin match, lo deja `SIN_VERIFICAR` —
-nunca inventa una atribución.
+`www.seti.co/glpi` a mitad de sesión!)—, avisa y no toca nada, sin tumbar el
+resto de la corrida. Para cada incidente de GLPI del periodo busca su caso en
+la hoja «Indisponibilidades» (por «NUMERO CASO GLPI», sin importar de qué mes
+sea la fila) y reporta lo que dice el equipo; sin match, lo deja
+`SIN_VERIFICAR` — nunca inventa una atribución.
 
-**Construido, enganchado a la corrida mensual y probado el 29/07/2026 contra
-la biblioteca real de OneDrive** (`RUTA_INDISPONIBILIDADES` ya configurada en
-este Mac), **pero el HTML todavía no lo consume:**
+### El HTML ya usa esta reconciliación (29/07/2026)
 
-- El HTML no lee la clave `archivos.indisponibilidades` que este script aporta
-  a `insumos-af.js` — `cargarGlpi()` sigue clasificando solo por categoría.
-  Ese es el trabajo que falta: un parser nuevo en el HTML y la decisión de
-  negocio de abajo.
-- Pendiente de decidir con negocio: qué hacer con el estado `EN ESTUDIO`.
-- El propio archivo real (visto el 28/07/2026 y reconfirmado el 29/07/2026
-  contra la ruta sincronizada real, mismo hash) traía las 3 filas de Acción
-  Fiduciaria con «NUMERO CASO GLPI» vacío — el 29/07/2026 Carlos Barrera le
-  pidió al equipo en el chat de Teams (Célula 3) empezar a diligenciar esa
-  columna, así que el cruce empieza a tener valor real recién ahora.
+`cargarGlpi()` en `informe-accion-fiduciaria 1.html` lee la reconciliación
+(vía `archivos.indisponibilidades` en `insumos-af.js`) y, si un ticket ya está
+marcado «NO», lo excluye del conteo de «incidentes atribuibles a SETI» — el
+dato real del equipo manda sobre la inferencia por categoría. «SI»,
+«EN ESTUDIO» o sin match siguen contando como atribuibles (regla de siempre);
+sigue pendiente decidir con negocio qué hacer específicamente con
+«EN ESTUDIO». `historico_casos.json` también se corrige para el periodo
+procesado, para que el número quede bien incluso después de que el mes deje
+de ser el actual.
 
-Detalle completo del diseño y las preguntas abiertas en
+Validado en vivo el 29/07/2026: el usuario diligenció el caso real (309522,
+`Atribuible a SETI: NO`) en el Excel; al volver a correr el extractor, la
+tarjeta «Casos atendidos» pasó de **52 casos · 1 atribuible a SETI** a **51
+casos · 0 atribuibles a SETI**, sin tocar nada en el HTML a mano.
+
+### El archivo standalone es una ALERTA, no un registro permanente
+
+A diferencia de `glpi-*.csv`/`alertops-*.csv` (una foto fija de lo que dijo la
+fuente al extraer), `indisponibilidades-<periodo>.csv` — tanto en
+`salida/` como su copia en `RUTA_ONEDRIVE` — solo existe mientras haya al
+menos un incidente de GLPI **sin fila correspondiente** en el Excel
+(`SIN_VERIFICAR`). Su única función es avisar «hay algo pendiente de
+registrar»; una vez el equipo registra todos los casos del periodo (con
+cualquier valor: SI, NO o EN ESTUDIO), el script **borra el archivo** —local y
+su copia en OneDrive— porque ya no aporta nada. Vuelve a aparecer solo si
+aparece un incidente nuevo sin registrar.
+
+Esto es independiente del insumo que llega al HTML: `archivos.indisponibilidades`
+en `insumos-af.js` sigue llevando la reconciliación completa mientras haya
+cruce contra GLPI, exista o no el archivo standalone — así el conteo de
+«atribuible a SETI» del informe no se revierte solo porque ya no quede nada
+pendiente que mostrar en el archivo visible.
+
+Detalle completo del diseño original y las preguntas abiertas en
 [`../docs/2026-07-29-relevo-sesion-28-julio.md`](../docs/2026-07-29-relevo-sesion-28-julio.md)
 §2 y §8.
 
