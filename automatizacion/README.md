@@ -17,6 +17,12 @@ había que adaptar (el envoltorio de la tarea programada) y cómo instalarlo
 ahí, paso a paso, está en
 [`../docs/2026-07-28-desarrollo-mac-despliegue-windows.md`](../docs/2026-07-28-desarrollo-mac-despliegue-windows.md).
 
+La primera puesta en marcha real en Windows (29/07/2026) encontró y corrigió
+varios bugs en vivo con datos reales del cliente — crash de consola, el
+histórico corrompiéndose al cambiar de mes, un caso nuevo de GLPI asumido
+como "atribuible a SETI" sin confirmar, entre otros. Detalle completo en
+[`../docs/2026-07-29-pruebas-en-windows-y-correcciones-en-vivo.md`](../docs/2026-07-29-pruebas-en-windows-y-correcciones-en-vivo.md).
+
 ## Qué hay aquí hoy
 
 | Archivo | Qué es |
