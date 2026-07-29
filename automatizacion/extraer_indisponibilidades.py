@@ -36,11 +36,12 @@ indisponibilidades solo, sin cruce.
 
 Desde el 29/07/2026, el HTML SÍ lee esta reconciliación (`cargarGlpi()`, vía
 `RECONCILIACION_INDISPONIBILIDADES` en el HTML): un ticket marcado «NO» deja
-de contar como incidente atribuible a SETI. «SI», «EN ESTUDIO» o sin match
-siguen contando (se mantiene la regla de siempre) — sigue pendiente decidir
-con negocio qué hacer específicamente con «EN ESTUDIO». Este script también
-corrige `historico_casos.json` para el periodo procesado, para que el número
-quede bien desde que se generó, no solo mientras se ve como mes en curso. Ver
+de contar como «atribuible a SETI» — pero SÍ sigue contando como incidente
+real y como caso atendido, tanto en vivo (`cargarGlpi()`) como en
+`historico_casos.json` (que este script no toca: ya trae el total correcto
+desde `extraer_glpi.py`). «SI», «EN ESTUDIO» o sin match siguen siendo
+atribuibles (se mantiene la regla de siempre) — sigue pendiente decidir con
+negocio qué hacer específicamente con «EN ESTUDIO». Ver
 docs/2026-07-29-relevo-sesion-28-julio.md §2 y §8.
 """
 
@@ -54,8 +55,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from sonda_glpi import cargar_env  # noqa: E402
-from insumos_af import adjuntar_historico, archivo_de, cargar_paquete, clasificar_caso_glpi, copiar_resguardo, eliminar_resguardo, escribir_paquete, fijar_periodo, mes_cerrado  # noqa: E402
-import historico_casos  # noqa: E402
+from insumos_af import archivo_de, cargar_paquete, clasificar_caso_glpi, copiar_resguardo, eliminar_resguardo, escribir_paquete, fijar_periodo, mes_cerrado  # noqa: E402
 
 import os  # noqa: E402
 
@@ -351,22 +351,13 @@ def main():
     # standalone (ver más abajo) debe existir o borrarse.
     pendientes_registro = [r for r in reconciliadas if r["atribuible"] == "SIN_VERIFICAR"]
 
-    # Corrige lo que extraer_glpi.py ya dejó en historico_casos.json: un
-    # incidente marcado «NO» por el equipo deja de contar como atribuible a
-    # SETI. «SI», «EN ESTUDIO» o SIN_VERIFICAR se mantienen (regla de
-    # siempre) — mismo criterio que aplica el HTML en vivo (cargarGlpi(), vía
-    # RECONCILIACION_INDISPONIBILIDADES). Sin cruce (hubo_cruce=False) no hay
-    # nada que corregir: el valor de extraer_glpi.py queda tal cual.
-    datos_historico = None
-    if hubo_cruce:
-        incidentes_corregidos = sum(1 for r in reconciliadas if r["atribuible"] != "NO")
-        datos_historico = historico_casos.cargar()
-        anterior = datos_historico["periodos"].get(args.periodo, {}).get("incidentes")
-        historico_casos.actualizar_periodo(datos_historico, args.periodo, incidentes=incidentes_corregidos)
-        historico_casos.escribir(datos_historico)
-        if anterior is not None and anterior != incidentes_corregidos:
-            print(f"Histórico corregido: incidentes de {args.periodo} pasó de {anterior} a "
-                  f"{incidentes_corregidos} (excluidos los marcados «NO» en indisponibilidades).")
+    # historico_casos.json («incidentes») no se toca aquí: es el TOTAL de
+    # incidentes reales que ya dejó extraer_glpi.py, y que uno no sea
+    # atribuible a SETI no significa que no haya ocurrido — sigue siendo un
+    # caso atendido (ver informe-accion-fiduciaria 1.html, cargarGlpi()/
+    # actualizarTarjetaCasos()/metricasCasos(): «incidentes» es el total,
+    # «atribuiblesSeti» es la cifra aparte, calculada en vivo desde
+    # archivos.indisponibilidades — no hace falta duplicarla en el ledger).
 
     contenido = a_csv(reconciliadas)
     bytes_csv = contenido.encode("utf-8-sig")
@@ -410,8 +401,9 @@ def main():
         paquete["archivos"]["indisponibilidades"] = archivo_de(bytes_csv, nombre, f"{ruta.name} · hoja {nombre_hoja}")
     else:
         paquete["archivos"].pop("indisponibilidades", None)
-    if datos_historico is not None:
-        adjuntar_historico(paquete, datos_historico)
+    # El campo «historico» ya quedó en `paquete` tal cual lo dejaron
+    # extraer_glpi.py/extraer_alertas.py en esta misma corrida (cargar_paquete
+    # lee el insumos-af.js existente) — no se toca ni se reescribe aquí.
     escribir_paquete(js, paquete)
 
     problemas = verificar(reconciliadas, pendientes, hubo_cruce)
