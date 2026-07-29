@@ -381,6 +381,20 @@ def probar_exportacion(cli, base, criterios, etiqueta):
 
 # --------------------------------------------------------------------------
 
+def _asegurar_utf8_consola():
+    """En Windows, la consola por defecto (cp1252) no sabe imprimir tildes ni
+    flechas («→») que sí llevan los mensajes de estos scripts — sin esto, un
+    print con esos caracteres revienta con UnicodeEncodeError a mitad de
+    ejecución (visto en vivo: GLPI y AlertOps ya habían extraído todo bien,
+    pero el traceback tumbaba el proceso con código de salida distinto de 0,
+    y actualizar_informe.py reportaba «FALLÓ» aunque el insumo sí se generó).
+    Se reconfigura una sola vez, aquí, porque cargar_env() es lo primero que
+    llama cada script (sondas, extractores y el orquestador)."""
+    for flujo in (sys.stdout, sys.stderr):
+        if hasattr(flujo, "reconfigure") and (flujo.encoding or "").lower() != "utf-8":
+            flujo.reconfigure(encoding="utf-8", errors="replace")
+
+
 def cargar_env():
     """Lee `.env` sin pasar por el intérprete de comandos.
 
@@ -392,6 +406,7 @@ def cargar_env():
     deja exportadas variables vacías que sobreviven en la terminal; si esas
     contaran, el archivo quedaría ignorado para siempre en esa sesión.
     """
+    _asegurar_utf8_consola()
     ruta = Path(__file__).parent / ".env"
     if not ruta.exists():
         return
