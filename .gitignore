@@ -17,8 +17,16 @@ qa-report/*
 # Credenciales de GLPI y respuestas crudas del servidor (traen datos de casos
 # de todos los clientes). Nunca deben salir del equipo donde se ejecutan.
 automatizacion/.env
-automatizacion/salida/
+automatizacion/salida/*
 __pycache__/
+
+# Excepción: el ledger del histórico de casos (automatizacion/historico_casos.py)
+# solo trae conteos mensuales ya agregados de Acción Fiduciaria (alertas/
+# requerimientos/incidentes por mes) — no datos crudos de otros clientes de
+# SETI como el resto de salida/. Se versiona a propósito para que viaje con el
+# repo (git clone, .zip, cambio de equipo) y el HTML no dependa de rehacer el
+# backfill cada vez que cambia de máquina quien lo corre.
+!automatizacion/salida/historico_casos.json
 
 # Insumo generado por la extracción automática (datos de casos)
 insumos-af.js
