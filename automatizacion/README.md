@@ -409,6 +409,49 @@ Aplicado en los dos lugares del HTML con este patrón: `montarHistorico()`
   informe se abre mostrando los últimos 3 (mes actual + 2 anteriores),
   siempre.
 
+### El ledger viaja con el repo (29/07/2026) — y por qué eso no es lo mismo que el informe
+
+`historico_casos.json` vivía solo dentro de `automatizacion/salida/`, ignorada
+en bloque junto con los CSV crudos (que sí traen datos de otros clientes de
+SETI). Al cambiar de equipo (Mac → Windows) el ledger se perdió y hubo que
+rehacer el backfill a mano. Como este archivo son solo conteos mensuales ya
+agregados de Acción Fiduciaria —nunca datos crudos de otro cliente—, se
+excluyó de la regla general del `.gitignore`
+(`!automatizacion/salida/historico_casos.json`) y se commiteó el backfill ya
+corrido. De ahora en adelante un `git clone`, un `.zip` del repo o pasar el
+proyecto a otra persona trae este histórico sin rehacer el backfill; la
+automatización mensual lo sigue actualizando por upsert en cada corrida,
+corra donde corra.
+
+**Importante — esto no reemplaza al informe autocontenido.** Un `.zip` del
+repositorio trae `historico_casos.json` (los números crudos) y la plantilla
+`informe-accion-fiduciaria 1.html` **sin datos incrustados** — `insumos-af.js`
+(el paquete que empareja el ledger con GLPI/AlertOps y se incrusta en el
+HTML) sigue —correctamente— fuera de git, porque depende de credenciales y de
+la corrida del mes. Abrir esa plantilla desde un `.zip` del repo muestra el
+centro de carga manual de siempre, no el informe ya cargado. Para entregarle
+a alguien (p. ej. un jefe) un informe que abra ya con todo cargado, sin
+Python ni credenciales, el archivo correcto es el **HTML autocontenido** que
+`actualizar_informe.py` deja en `RUTA_ONEDRIVE/<Mes>/Informe Accion
+Fiduciaria <Mes> <Año>.html` — verificado copiándolo solo, sin nada más al
+lado, a una carpeta vacía: carga el periodo y los 11 meses de histórico sin
+errores de consola. Confirmado con un `git archive` real del `HEAD` de esta
+sesión: la plantilla del repo pesa lo mismo con o sin el ledger commiteado
+(`insumos-af.js` sigue sin estar ahí); el HTML autocontenido de OneDrive, en
+cambio, sí lo trae todo incrustado.
+
+### Bug de consola en Windows (29/07/2026)
+
+`cargar_env()` —lo primero que llaman los seis scripts (sondas, extractores y
+el orquestador)— imprime caracteres como «→» que la consola por defecto de
+Windows (cp1252, no UTF-8) no sabe codificar. El `UnicodeEncodeError`
+ocurría **después** de que GLPI/AlertOps ya habían extraído los datos
+correctamente, pero el traceback tumbaba el proceso: `actualizar_informe.py`
+veía un código de salida distinto de 0 y reportaba «FALLÓ» para ambas fuentes
+aunque el insumo sí se había generado bien. Corregido reconfigurando la
+consola a UTF-8 dentro de `cargar_env()` — un solo punto para los seis
+scripts. Validado en vivo en Windows: GLPI y AlertOps ya reportan «OK».
+
 ## Credenciales
 
 - **Cuenta de servicio de solo lectura** en ambas plataformas, no la personal
@@ -433,12 +476,16 @@ SETI, no solo de Acción Fiduciaria.
   una persona, el día que la cambie el proceso se cae en silencio, y cada
   acción queda registrada a su nombre. Cambiarlas por cuentas de servicio antes
   de dejar esto desatendido.
-- **Depósito automático del informe en SharePoint/OneDrive del cliente.**
-  Distinto de `RUTA_ONEDRIVE` (que ya existe y solo resguarda los CSV
-  originales para trazabilidad interna): hoy `actualizar_informe.py` deja
-  `insumos-af.js` en el equipo donde corre (junto al HTML local); falta que
-  el informe mismo se escriba en la biblioteca del cliente
-  (`/Informes/AccionFiduciaria/2026-06/…`).
+- ~~Depósito automático del informe en SharePoint/OneDrive del cliente~~ —
+  **ya construido y validado** (28-29/07/2026, ver «El HTML ya usa esta
+  reconciliación» y «El ledger viaja con el repo» más arriba):
+  `actualizar_informe.py` deja el informe **autocontenido** (GLPI + AlertOps +
+  histórico + indisponibilidades ya incrustados) directo en
+  `RUTA_ONEDRIVE/<Mes>/`, que sincroniza solo a la biblioteca de SharePoint del
+  cliente — sin depender de que nadie arrastre nada. Probado en dos equipos
+  distintos (Mac y Windows). Lo que sigue pendiente es dónde corre esto
+  desatendido (siguiente punto): hoy solo funciona en un equipo con sesión de
+  OneDrive iniciada.
 - **Dónde se ejecuta.** Necesita una máquina encendida a la 1:00 a. m.: el
   servidor de Carlos Barrera, Azure Functions u otra, por decidir. Puede ser
   la misma para las dos extracciones — es un solo comando
