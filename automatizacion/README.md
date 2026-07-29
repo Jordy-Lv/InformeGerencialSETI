@@ -273,22 +273,36 @@ la hoja «Indisponibilidades» (por «NUMERO CASO GLPI», sin importar de qué m
 sea la fila) y reporta lo que dice el equipo; sin match, lo deja
 `SIN_VERIFICAR` — nunca inventa una atribución.
 
-### El HTML ya usa esta reconciliación (29/07/2026)
+### El HTML ya usa esta reconciliación (29/07/2026, corregido el mismo día)
 
 `cargarGlpi()` en `informe-accion-fiduciaria 1.html` lee la reconciliación
 (vía `archivos.indisponibilidades` en `insumos-af.js`) y, si un ticket ya está
-marcado «NO», lo excluye del conteo de «incidentes atribuibles a SETI» — el
-dato real del equipo manda sobre la inferencia por categoría. «SI»,
+marcado «NO», lo excluye del conteo de **«incidentes atribuibles a SETI»** —
+el dato real del equipo manda sobre la inferencia por categoría. «SI»,
 «EN ESTUDIO» o sin match siguen contando como atribuibles (regla de siempre);
 sigue pendiente decidir con negocio qué hacer específicamente con
-«EN ESTUDIO». `historico_casos.json` también se corrige para el periodo
-procesado, para que el número quede bien incluso después de que el mes deje
-de ser el actual.
+«EN ESTUDIO».
+
+**Importante — «no atribuible a SETI» no es lo mismo que «no hubo
+incidente».** La primera versión de esta reconciliación restaba el ticket
+del conteo de **«casos atendidos»** también (no solo del de «atribuibles a
+SETI»), y `historico_casos.json` se corregía con ese mismo número reducido.
+El usuario lo detectó probando el informe real: la tarjeta pasó de 52 a 51
+casos y el desglose decía «0 incidentes» para un mes que sí tuvo uno. Se
+corrigió el mismo día: «incidentes» (en `DATA_CASOS`, `historico_casos.json`
+y el total de «casos atendidos») es siempre el TOTAL de incidentes reales,
+sin importar la atribución; «atribuible a SETI» es una cifra aparte
+(`atribuiblesSeti`, calculada una sola vez en `publicarCasos()`), que
+alimenta solo ese indicador. `extraer_indisponibilidades.py` ya no toca el
+total del ledger — solo dice qué fracción de esos incidentes es atribuible a
+SETI, para el cálculo en vivo del periodo actual.
 
 Validado en vivo el 29/07/2026: el usuario diligenció el caso real (309522,
-`Atribuible a SETI: NO`) en el Excel; al volver a correr el extractor, la
-tarjeta «Casos atendidos» pasó de **52 casos · 1 atribuible a SETI** a **51
-casos · 0 atribuibles a SETI**, sin tocar nada en el HTML a mano.
+`Atribuible a SETI: NO`) en el Excel. Tras la corrección, la tarjeta «Casos
+atendidos» de julio muestra **52 casos · 45 alertas, 6 requerimientos y 1
+incidente**, con el indicador «Incidentes atribuibles a SETI» en **0** por
+separado — ambos números correctos a la vez, sin tocar nada en el HTML a
+mano.
 
 ### El archivo standalone es una ALERTA, no un registro permanente
 
