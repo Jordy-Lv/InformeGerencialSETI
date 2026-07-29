@@ -357,6 +357,39 @@ casos · 45 alertas · 6 requerimientos · 1 atribuible a SETI** — coincide co
 lo que ya reportaba GLPI/AlertOps en vivo, ahora también respaldado por el
 histórico completo sin abrir el Excel.
 
+### Bug real encontrado y corregido: el modal se quedaba pegado a un rango viejo
+
+Al probarlo en el navegador (no en un test aislado — el usuario lo notó
+abriendo el informe real), el modal de «Casos» no abría en los 3 meses que
+debía (jun-26 a jul-26 en vez de may-26 a jul-26): el filtro «3M» seguía
+mostrando 2 meses en vez de 3.
+
+**Causa:** `montarHistorico()` (el componente de rango 3M/6M/12M/Todo,
+compartido con Indicadores/Disponibilidad/Backups) solo recalculaba el rango
+automático cuando cambiaba el **último mes** del histórico. Con el ledger
+nuevo, «Casos» se publica varias veces mientras carga la página: primero con
+un solo mes (el que `indiceMesActualHistorico()` crea al vuelo, antes de que
+llegue el insumo), y milisegundos después ya con el ledger completo — pero el
+último mes es el mismo en ambas publicaciones (el periodo del informe), así
+que la condición nunca detectaba el cambio y el rango se quedaba fijo en el
+primer cálculo, hecho con muy pocos meses.
+
+**Corrección:** además de «¿cambió el último mes?», el chequeo ahora también
+mira «¿cambió el TOTAL de meses?» (`cacheVieja.totalPeriodos!==periodos.length`).
+Aplicado en los dos lugares del HTML con este patrón: `montarHistorico()`
+(Casos/Indicadores/Disponibilidad) y el radar de Disponibilidad por CI/Backups
+(mismo riesgo, mismo código duplicado).
+
+**Validado con dos escenarios reales:**
+- El HTML real de OneDrive (julio-26, 11 meses): `desde: 2026-05, hasta:
+  2026-07` — 3 meses correctos.
+- Simulación de agosto-26 ya cerrado (12 meses, agregando el mes con
+  `historico_casos.actualizar_periodo()`): `desde: 2026-06, hasta: 2026-08` —
+  la ventana móvil de 3 meses se corre sola al mes siguiente, sin tocar nada
+  a mano. Confirma el comportamiento pedido: cuando cierre un mes nuevo, el
+  informe se abre mostrando los últimos 3 (mes actual + 2 anteriores),
+  siempre.
+
 ## Credenciales
 
 - **Cuenta de servicio de solo lectura** en ambas plataformas, no la personal
