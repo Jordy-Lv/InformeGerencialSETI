@@ -50,7 +50,9 @@ import csv
 import io
 import re
 import sys
+import time
 import unicodedata
+import zipfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -131,6 +133,44 @@ def _encontrar_columna(header, candidatos):
 
 
 # --------------------------------------------------------------------------
+
+def leer_indisponibilidades_con_reintentos(ruta, intentos=4, espera=5):
+    """Como leer_indisponibilidades(), pero reintenta si el archivo está
+    bloqueado u ocupado — visto en vivo el 29/07/2026: el archivo vive en una
+    biblioteca de SharePoint que edita varias personas (Estefania, Santiago,
+    Mateo, el equipo), y si la extracción corre justo cuando alguien lo tiene
+    abierto en Excel, o OneDrive está a mitad de sincronizar una escritura
+    reciente, `openpyxl.load_workbook` revienta con un `PermissionError` (o,
+    si la sincronización deja el .zip a medio escribir, `zipfile.BadZipFile`).
+
+    Antes, ese error no quedaba atrapado por `ErrorIndisponibilidades` en
+    main() — tumbaba el script entero con un traceback crudo, sin tocar
+    `insumos-af.js`. El síntoma que reporta el usuario ("cambié Atribuible a
+    SETI y no lo reconoce") es justamente este: la corrida no fallaba con un
+    mensaje claro, simplemente no llegaba a leer el archivo esa vez, y el
+    insumo se quedaba con la reconciliación de la corrida anterior — parecía
+    que el cambio no se detectaba, cuando en realidad ni se había intentado
+    leer. Un bloqueo de este tipo suele durar segundos (mientras se completa
+    el guardado/sincronización), así que unos pocos reintentos con espera
+    bastan para que la mayoría de las corridas ya no dependan de la suerte de
+    no chocar con una edición en curso.
+    """
+    ultimo = None
+    for intento in range(1, intentos + 1):
+        try:
+            return leer_indisponibilidades(ruta)
+        except (PermissionError, OSError, zipfile.BadZipFile) as e:
+            ultimo = e
+            if intento < intentos:
+                print(f"Aviso: {ruta.name} está bloqueado u ocupado (intento {intento}/{intentos}); "
+                      f"reintentando en {espera}s...", file=sys.stderr)
+                time.sleep(espera)
+    raise ErrorIndisponibilidades(
+        f"No se pudo leer {ruta} tras {intentos} intento(s): {ultimo}. "
+        "¿Alguien lo tiene abierto en Excel, o OneDrive está sincronizando un cambio reciente? "
+        "Vuelve a correr la extracción en un momento."
+    )
+
 
 def leer_indisponibilidades(ruta):
     """Abre el .xlsx y devuelve (filas_cliente, nombre_hoja).
@@ -326,7 +366,7 @@ def main():
 
     SALIDA.mkdir(exist_ok=True)
     try:
-        todas, nombre_hoja = leer_indisponibilidades(ruta)
+        todas, nombre_hoja = leer_indisponibilidades_con_reintentos(ruta)
     except ErrorIndisponibilidades as e:
         print(f"\n{e}", file=sys.stderr)
         return 1
