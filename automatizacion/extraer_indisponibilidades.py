@@ -312,12 +312,25 @@ def a_csv(reconciliadas):
     return salida.getvalue()
 
 
-def verificar(reconciliadas, pendientes, hubo_cruce):
+def verificar(reconciliadas, pendientes, hubo_cruce, columna_cruce_vacia=False, total_filas=0):
     """Comprobaciones que deben pasar antes de dar el archivo por bueno."""
     if not hubo_cruce:
         return ["No se cruzó contra GLPI: no se encontró el CSV de esa extracción para este periodo "
                 "(corre extraer_glpi.py primero para el mismo --periodo)."]
     problemas = []
+    # F4 (02/08/2026): distingue «hay casos nuevos por registrar» (normal, la
+    # columna sí se diligencia, solo faltan los de este mes) de «nadie
+    # diligenció NUNCA la columna del cruce» (falta estructural: el cruce no
+    # puede emparejar en NINGÚN periodo). Sin esta señal ambos casos se veían
+    # igual que «pendientes» de abajo, y el segundo es mucho más grave — el
+    # indicador «atribuible a SETI» queda en 0 por construcción, no porque
+    # SETI sea inocente, sino porque el dato nunca llega a compararse.
+    if columna_cruce_vacia:
+        problemas.append(
+            f"La columna NUMERO CASO GLPI está vacía en las {total_filas} fila(s) de Acción Fiduciaria "
+            "del log: el cruce no puede emparejar nunca y el indicador «atribuible a SETI» será 0 por "
+            "construcción hasta que el equipo la diligencie."
+        )
     sin_verificar = [r for r in reconciliadas if r["atribuible"] == "SIN_VERIFICAR"]
     if sin_verificar:
         problemas.append(
@@ -376,6 +389,13 @@ def main():
     print(f"Hoja «{nombre_hoja}» de {ruta.name}: {len(todas)} fila(s) de Acción Fiduciaria (todos los meses).")
     del_periodo = [f for f in todas if periodo_de(f.get("inicio")) == args.periodo]
     print(f"  {len(del_periodo)} en {args.periodo}.")
+    # F4 (02/08/2026): sobre TODAS las filas del cliente en el log (no solo las
+    # de este periodo) — si ninguna trae NUMERO CASO GLPI, es que el equipo
+    # nunca diligenció esa columna, no que falten los casos de este mes.
+    columna_cruce_vacia = bool(todas) and not any(solo_digitos(f.get("caso_glpi")) for f in todas)
+    if columna_cruce_vacia:
+        print(f"  Aviso: NUMERO CASO GLPI está vacío en las {len(todas)} fila(s) del log — el cruce no "
+              "puede emparejar nunca hasta que el equipo la diligencie.")
 
     ruta_glpi = SALIDA / f"glpi-{args.periodo}.csv"
     incidentes_glpi = leer_incidentes_glpi(ruta_glpi, args.periodo)
@@ -448,7 +468,7 @@ def main():
     # lee el insumos-af.js existente) — no se toca ni se reescribe aquí.
     escribir_paquete(js, paquete)
 
-    problemas = verificar(reconciliadas, pendientes, hubo_cruce)
+    problemas = verificar(reconciliadas, pendientes, hubo_cruce, columna_cruce_vacia, len(todas))
     print(f"\n{len(reconciliadas)} incidente(s) reconciliado(s).")
     print(f"Archivo standalone: {destino if destino.exists() else '(no existe: nada pendiente por registrar)'}")
     print(f"Copia de resguardo: {resguardo if resguardo else '(sin copia — RUTA_ONEDRIVE no configurada, o nada pendiente)'}")

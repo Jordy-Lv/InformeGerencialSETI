@@ -15,9 +15,11 @@ Las dos primeras:
 Indisponibilidades no llama a ninguna API: cruza el CSV que deja GLPI (paso
 anterior) contra `DisponibilidadMensual.xlsx` para validar «atribuible a
 SETI» con dato real — ver `extraer_indisponibilidades.py`. Es opcional
-(`RUTA_INDISPONIBILIDADES` sin configurar no es una falla) y, a diferencia de
-las otras dos, el HTML todavía no lee lo que aporta a `insumos-af.js`
-(pendiente de integrar, ver docs/2026-07-29-relevo-sesion-28-julio.md §8).
+(`RUTA_INDISPONIBILIDADES` sin configurar no es una falla). El HTML sí lee lo
+que aporta a `insumos-af.js`, vía `cargarInsumosAutomaticos()`
+(informe-accion-fiduciaria 1.html:2622) — es lo que llena
+`RECONCILIACION_INDISPONIBILIDADES` y decide cuántos incidentes cuentan como
+atribuibles a SETI en `cargarGlpi()`.
 
 Este script añade el último paso, el que hasta ahora había que hacer a mano:
 copia ese `insumos-af.js` **junto al HTML del informe**. Al abrirlo, las
@@ -100,10 +102,10 @@ def main():
     ok_alertas = correr("extraer_alertas.py", args.periodo)
     # Depende del CSV que deja extraer_glpi.py (glpi-<periodo>.csv) para cruzar
     # atribución; por eso corre después. Es opcional (RUTA_INDISPONIBILIDADES sin
-    # configurar no cuenta como falla, ver extraer_indisponibilidades.py) y no
-    # entra en el código de salida general: todavía no alimenta el HTML (ver
-    # docs/2026-07-29-relevo-sesion-28-julio.md §8), solo deja su CSV y su parte
-    # de insumos-af.js listos para cuando se integre.
+    # configurar no cuenta como falla, ver extraer_indisponibilidades.py) y por
+    # eso no entra en el código de salida general — pero sí alimenta el HTML:
+    # su parte de insumos-af.js la lee cargarInsumosAutomaticos()
+    # (informe-accion-fiduciaria 1.html:2622) igual que GLPI y AlertOps.
     ok_indisponibilidades = correr("extraer_indisponibilidades.py", args.periodo)
 
     print(f"\n{' Resumen '.center(60, '=')}", flush=True)
