@@ -27,8 +27,13 @@ from pathlib import Path
 # Clasificación de un caso de GLPI en requerimiento/incidente/revisión, EXACTAMENTE
 # igual que cargarGlpi() en el HTML (informe-accion-fiduciaria 1.html): un ticket
 # cuenta como «incidente» si su Categoría (o Tipo, si no hay Categoría) matchea
-# R_INCIDENTE, salvo que el segundo nivel de la categoría (tras ">") sea una
-# revisión de alerta autogenerada por el monitoreo — esas no son fallas nuevas.
+# R_INCIDENTE, salvo que CUALQUIER nivel de la categoría tras el primero (tras
+# ">") sea una revisión de alerta autogenerada por el monitoreo — esas no son
+# fallas nuevas. Regla corregida el 02/08/2026 (F3): con categorías de tres
+# niveles («INCIDENTES > Revision Alerta > Jobs Fallidos») tomar solo el
+# último nivel no matcheaba «Revision Alerta» y el ticket se contaba como
+# incidente real; había que revisar todos los niveles después del primero,
+# no solo uno.
 # Compartida entre extraer_glpi.py (cuenta req/inc del mes para historico_casos.json)
 # y extraer_indisponibilidades.py (identifica qué IDs de GLPI son «incidente» para
 # cruzarlos contra el log de indisponibilidades): una sola definición, no dos.
@@ -52,8 +57,9 @@ def clasificar_caso_glpi(categoria, tipo):
     if R_REQUERIMIENTO.search(n):
         return "requerimiento"
     if R_INCIDENTE.search(n):
-        nivel2 = _norm(categoria.split(">")[-1]) if categoria and ">" in categoria else ""
-        return "revision" if R_REVISION.search(nivel2) else "incidente"
+        niveles = categoria.split(">")[1:] if categoria else []
+        es_revision = any(R_REVISION.search(_norm(p)) for p in niveles)
+        return "revision" if es_revision else "incidente"
     return "otro"
 
 
