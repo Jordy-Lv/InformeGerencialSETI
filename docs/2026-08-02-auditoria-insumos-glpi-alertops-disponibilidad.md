@@ -10,6 +10,20 @@ navegador con esos insumos, comparando entrada → transformación → pantalla.
 **Estado del repo al terminar:** intacto (`git status` limpio). Todas las
 corridas se hicieron sobre una copia en un directorio temporal.
 
+> **Nota de resolución (02/08/2026, mismo día).** F1, F2a, F2b, F3, F4 y F10
+> —todo lo confirmado en la sección 2 y el hallazgo de documentación de la
+> sección 3— se corrigieron en la rama `fix/auditoria-2026-08-02` (4 commits,
+> uno por fase: `d08bad1`, `01fd654`, `c2884d6`, `98fc059`) y ya están en
+> `main` (`4d0ad43`, fast-forward, publicado en `origin/main`). El detalle de
+> cada corrección, la verificación A/B contra `main` con insumos reales, y
+> tres hallazgos adicionales que salieron de esa verificación (dos bugs reales
+> + un comentario desactualizado, también corregidos) están documentados en
+> [`2026-08-02-correccion-de-la-auditoria-y-verificacion-ab.md`](2026-08-02-correccion-de-la-auditoria-y-verificacion-ab.md).
+> F5–F9 y F11 (sección 3) **siguen pendientes**, sin tocar: son riesgo latente
+> no confirmado con datos reales (F5, F6, F7, F8), mejora operativa ajena al
+> código (F9), o mejora de QA general del repo (F11) — ver ese mismo documento,
+> §5, para el detalle de por qué cada uno se dejó fuera de esta ronda.
+
 ---
 
 ## 0. Efecto secundario de la auditoría (para trazabilidad)
