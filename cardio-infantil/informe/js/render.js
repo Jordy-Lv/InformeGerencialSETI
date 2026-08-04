@@ -66,4 +66,26 @@ function renderDeck() {
 
   grilla.querySelectorAll('.tarjeta:not(.tarjeta--sin-dato)').forEach(el =>
     el.addEventListener('click', () => abrirDetalle(el.dataset.id)));
+
+  ajustarEscalaSlides();
 }
+
+// css/styles.css define `.slide{width:1280px;height:720px}` (lienzo fijo,
+// como una diapositiva) y una regla @media(max-width:1360px) que aplica
+// `transform:scale(var(--escala,1))` — pero nada calculaba nunca esa
+// variable, así que en cualquier pantalla angosta (una laptop normal,
+// <1280px) el informe se desbordaba con scroll horizontal en vez de
+// encogerse. Esta función calcula la escala real y también fija el alto en
+// px del contenedor (el transform no libera el espacio de layout por sí
+// solo, así que sin esto quedaría un hueco en blanco del tamaño original
+// debajo de cada diapositiva encogida).
+function ajustarEscalaSlides() {
+  const disponible = document.documentElement.clientWidth - 32;
+  const escala = Math.min(1, disponible / 1280);
+  document.querySelectorAll('.stage-wrap').forEach(wrap => {
+    wrap.style.setProperty('--escala', escala);
+    wrap.style.height = (720 * escala) + 'px';
+  });
+}
+
+window.addEventListener('resize', ajustarEscalaSlides);
