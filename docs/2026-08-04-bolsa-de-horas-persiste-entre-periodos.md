@@ -10,9 +10,15 @@ horas (`informeAF:bolsa:<AAAA-MM>`) en `informe-accion-fiduciaria 1.html`.
 relación con `fix/recarga-insumos-2026-08-04`, que sigue en su propio PR
 aparte).
 
+**Incluye dos cambios relacionados, mismo PR:** el carry-forward entre
+periodos (§1-2) y, agregado después por feedback del usuario probando el fix
+en vivo, un botón «Guardar» explícito (§3) — sin él, la única forma de sacar
+la tarjeta de «Dato no disponible» la primera vez era tocar un campo y
+reescribir el mismo valor, algo nada intuitivo.
+
 ---
 
-## El bug
+## 1. El bug (carry-forward)
 
 La bolsa de horas no tiene insumo automático — el consultor la diligencia a
 mano en el editor de la tarjeta, y se guarda en `localStorage` bajo una clave
@@ -29,7 +35,7 @@ se abría con valores por defecto (100/0/97), y la tarjeta KPI del dashboard
 mostraba «Sin datos» — aunque el consultor ya la había diligenciado
 correctamente el mes anterior y nada había cambiado.
 
-## El fix
+## 2. El fix (carry-forward)
 
 `restaurarBolsaGuardada()` (línea ~6033 de
 `informe-accion-fiduciaria 1.html`) ahora, si no hay una clave exacta para el
@@ -55,7 +61,32 @@ No se tocó el modelo de datos (`normalizarBolsa`), la validación
 (`validarBolsa`) ni el guardado (`publicarBolsa`) — solo la resolución de
 "¿qué muestro si este periodo no tiene su propio registro?".
 
-## Alcance declarado por el usuario
+## 3. Botón «Guardar» explícito (feedback en vivo del usuario)
+
+Probando el fix de carry-forward en el navegador, el usuario notó algo que la
+implementación original no resolvía: **la primera vez** que se abre el editor
+para un periodo sin ningún registro (ni propio ni heredado — el caso base,
+antes de que exista cualquier dato), los campos muestran valores por defecto
+razonables (100/0/97, de `normalizarBolsa()`), pero esos valores no cuentan
+como «guardados» hasta que el usuario dispara un evento `input` en el
+formulario — es decir, hasta que toca un campo y escribe algo, **aunque sea
+el mismo número que ya estaba ahí**. No había ninguna pista visual de que
+hiciera falta hacer eso, ni un botón que dijera «confirmar esto».
+
+**El fix:** se agregó un botón «Guardar» junto a «Borrar datos»
+(`.bolsa-form__save`, en `editorBolsa()`) que lee los valores actuales del
+formulario (los que estén, por defecto o editados), valida y publica de
+inmediato — sin depender de ningún evento `input` previo. Un solo clic saca
+la tarjeta de «Dato no disponible» y la deja con esos valores confirmados,
+igual que si el usuario los hubiera escrito a mano. Si los datos no pasan
+`validarBolsa()` (p. ej. un campo vacío), no guarda nada y muestra el mismo
+panel de errores que ya usaba el autoguardado.
+
+No reemplaza el autoguardado por `input` (`actualizarYGuardarBolsa()`, que
+sigue igual para ediciones posteriores) — es un atajo adicional para el caso
+en que no hay nada que «editar» de verdad, solo confirmar.
+
+## 4. Alcance declarado por el usuario
 
 > "esta grafica por lo menos para este cliente (este proyecto se va a
 > extender para hacer multicliente) se mantenga con la ultima modificacion"
@@ -70,10 +101,12 @@ Si el proyecto pasa a multicliente en el mismo documento o dominio de
 cliente — **no se tocó aquí** porque está fuera del alcance pedido y no hay
 todavía un mecanismo de identidad de cliente en el HTML al que enlazarlo.
 
-## Verificado en vivo
+## 5. Verificado en vivo
 
 Servidor local (`python3 -m http.server`), sin insumos automáticos de por
 medio (la bolsa de horas es 100 % manual):
+
+**Carry-forward (§1-2):**
 
 1. Periodo → junio-2026. `hayCifra('bolsa')` en `false` (limpio).
 2. `window.guardarBolsaHoras({contratadas:100, consumidasMes:3,
@@ -91,5 +124,24 @@ medio (la bolsa de horas es 100 % manual):
 5. Periodo → marzo-2026 (anterior a cualquier registro). `hayCifra('bolsa')`
    → `false`, como se espera: no hay nada de qué heredar.
 
+**Botón «Guardar» (§3), en el navegador real (no solo por consola), sobre la
+misma sesión anterior:**
+
+6. Periodo → marzo-2026 (`hayCifra('bolsa')` en `false`, sin heredar de
+   nada anterior). Abrí el editor con clic real y hallé el botón morado
+   «Guardar» junto a «Borrar datos», con los valores por defecto (100/0/97)
+   ya visibles. Clic en «Guardar» **sin tocar ningún campo** → la tarjeta
+   pasó de «Dato no disponible» a la tarjeta completa (Consumo del mes,
+   Bolsa contratada, Saldo disponible, medidor, resumen narrativo), la
+   tarjeta KPI del dashboard pasó de «Sin datos» a «Actualizada», y quedó
+   guardado en `localStorage['informeAF:bolsa:2026-03']` con esos mismos
+   valores.
+7. Periodo → febrero-2026 (otro caso base, sin heredar). Vacié el campo
+   «Horas contratadas» y hice clic en «Guardar»: no se publicó nada
+   (`hayCifra('bolsa')` siguió en `false`), el formulario mostró
+   `has-error` con el mensaje «Ingresa una cantidad válida de horas
+   contratadas mayor que cero.», y no quedó nada escrito en `localStorage`
+   para ese periodo.
+
 Sintaxis de los 9 bloques `<script>` del HTML verificada con `node --check`
-tras el cambio.
+tras cada cambio.
