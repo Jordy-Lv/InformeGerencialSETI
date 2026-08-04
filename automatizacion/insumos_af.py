@@ -19,6 +19,7 @@ import os
 import re
 import shutil
 import sys
+import time
 import unicodedata
 from base64 import b64encode
 from datetime import date, datetime
@@ -257,7 +258,42 @@ def fijar_periodo(paquete, periodo):
     return None
 
 
+class ArchivoBloqueado(OSError):
+    """`destino` existe y no se pudo escribir tras varios reintentos —
+    típicamente porque OneDrive lo está sincronizando o alguien tiene abierto
+    el informe HTML vecino con el navegador reteniendo el archivo en Windows.
+    Se distingue de un OSError genérico para que quien llame pueda dar un
+    mensaje claro ("cierra el archivo e intenta de nuevo") en vez de "no se
+    pudo hablar con GLPI", que sería engañoso: la extracción sí funcionó, lo
+    que falló fue el guardado en disco."""
+
+
+def escribir_con_reintentos(destino, bytes_datos, intentos=5, espera=0.4):
+    """Escribe `bytes_datos` en `destino`, reintentando ante PermissionError.
+
+    `escribir_paquete()` no tenía reintentos: un `destino.write_text()` que
+    choca con el archivo bloqueado por OneDrive o por el propio informe
+    abierto en el navegador simplemente truena. `extraer_indisponibilidades.py`
+    ya resuelve el mismo problema para su propio archivo con
+    `leer_indisponibilidades_con_reintentos()` — esta es la versión para
+    escritura, compartida por los extractores que escriben insumos-af.js."""
+    ultimo_error = None
+    for intento in range(intentos):
+        try:
+            destino.write_bytes(bytes_datos)
+            return
+        except PermissionError as e:
+            ultimo_error = e
+            if intento < intentos - 1:
+                time.sleep(espera)
+    raise ArchivoBloqueado(
+        f"No se pudo escribir {destino} tras {intentos} intentos — "
+        f"¿está abierto en otro programa? ({ultimo_error})"
+    )
+
+
 def escribir_paquete(destino, paquete):
     paquete["generado"] = datetime.now().astimezone().isoformat(timespec="seconds")
     cuerpo = json.dumps(paquete, ensure_ascii=False, indent=2)
-    destino.write_text(CABECERA + f"window.__INSUMOS__ = {cuerpo};\n", encoding="utf-8")
+    contenido = (CABECERA + f"window.__INSUMOS__ = {cuerpo};\n").encode("utf-8")
+    escribir_con_reintentos(destino, contenido)
