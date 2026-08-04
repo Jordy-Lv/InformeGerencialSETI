@@ -304,7 +304,7 @@ def main():
             print(f"Aviso: el insumo ya traía periodo {discrepancia} (de otra fuente); "
                   f"se ajusta a {args.periodo}. Vuelve a correr esa otra extracción si no debía cambiar.",
                   file=sys.stderr)
-        paquete["archivos"]["alertas"] = archivo_de(bytes_csv, nombre, f"API REST de AlertOps · {base}")
+        paquete["archivos"]["alertas"] = archivo_de(bytes_csv, nombre, f"API REST de AlertOps · {base}", periodo=args.periodo)
         adjuntar_historico(paquete, datos_historico)
         escribir_paquete(js, paquete)
 
