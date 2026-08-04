@@ -278,7 +278,7 @@ def escribir_insumos_js(destino, periodo, csv_bytes, nombre_csv, origen, histori
         print(f"Aviso: el insumo ya traía periodo {discrepancia} (de otra fuente); "
               f"se ajusta a {periodo}. Vuelve a correr esa otra extracción si no debía cambiar.",
               file=sys.stderr)
-    paquete["archivos"]["glpi"] = archivo_de(csv_bytes, nombre_csv, origen)
+    paquete["archivos"]["glpi"] = archivo_de(csv_bytes, nombre_csv, origen, periodo=periodo)
     if historico is not None:
         adjuntar_historico(paquete, historico)
     escribir_paquete(destino, paquete)
