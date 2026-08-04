@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<title>Informe Gerencial</title>
+
+<link rel="stylesheet" href="css/styles.css" />
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-marca">
+    <span class="icono icono--doc">
+  <svg viewBox="0 0 24 24">
+    <defs>
+      <linearGradient id="gradDoc" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#f0483a"/>
+        <stop offset="1" stop-color="#E0352B"/>
+      </linearGradient>
+    </defs>
+    <path d="M6 2.5h8.5L19 7v13.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1z" fill="url(#gradDoc)" stroke="none"/>
+    <path d="M14.5 2.5V7H19" fill="none" stroke="#fff" stroke-width="1" stroke-linejoin="round" opacity=".55"/>
+    <path d="M8 11.5h8M8 14.5h8M8 17.5h5" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>
+  </svg>
+</span>
+    <h1 id="tituloTopbar">Informe Fundación Cardioinfantil</h1>
+  </div>
+
+  <div class="topbar-periodo">· <span id="periodoActualLabel">Sin período cargado</span></div>
+
+  <div class="topbar-ayuda">Haz clic en “Editar datos” para modificar el informe</div>
+
+  <div class="topbar-actions">
+    <button class="btn btn--claro" id="btnAbrirCarga">
+      <svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
+      <span>Cargar<br>informes</span>
+    </button>
+    <button class="btn btn--claro" id="btnEditarDatos">
+      <svg viewBox="0 0 24 24"><path d="M3 21l3.5-1 11-11-2.5-2.5-11 11L3 21z"/><path d="M14 4.5L19.5 10"/></svg>
+      <span>Editar<br>datos</span>
+    </button>
+    <button class="btn btn--oscuro" id="btnExportarHTML">
+      <svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/></svg>
+      <span>Exportar<br>HTML</span>
+    </button>
+    <button class="btn btn--oscuro" id="btnExportarPDF" disabled>
+      <svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><text x="11" y="17" font-size="7" font-weight="800" text-anchor="middle" fill="currentColor">PDF</text></svg>
+      <span>Exportar<br>PDF</span>
+    </button>
+  </div>
+</header>
+
+<section class="carga-panel" id="panelCarga">
+  <h2>Centro de carga mensual</h2>
+  <p class="sub">Selecciona el período y el archivo consolidado.</p>
+
+  <div class="carga-grid">
+    <div class="campo">
+      <label for="inputAnio">Año</label>
+      <input type="number" id="inputAnio" value="2026" min="2000" max="2100" />
+    </div>
+    <div class="campo">
+      <label for="inputMes">Mes</label>
+      <select id="inputMes"></select>
+    </div>
+
+    <div class="dropzone" id="dropzone">
+      Arrastra el Excel/CSV consolidado aquí, o haz clic para seleccionarlo
+      <input type="file" id="inputArchivo" accept=".csv,.xlsx,.xls" hidden />
+    </div>
+  </div>
+
+  <div class="lista-avisos" id="listaAvisos"></div>
+
+  <div class="periodos-guardados">
+    <h3>Informes guardados en este equipo</h3>
+    <div id="chipsPeriodos"></div>
+  </div>
+</section>
+
+<main class="deck" id="deck"></main>
+
+<div class="modal-fondo" id="modalFondo">
+  <div class="modal">
+    <div class="modal-cabecera">
+      <h2 id="modalTitulo">Detalle del indicador</h2>
+      <button id="modalCerrar" aria-label="Cerrar">×</button>
+    </div>
+    <div class="modal-narrativa" id="modalNarrativa"></div>
+    <div class="modal-grafico"><canvas id="modalCanvas"></canvas></div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/parsers.js"></script>
+<script src="js/persistence.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/render.js"></script>
+<script src="js/modal.js"></script>
+<script src="js/exportPdf.js"></script>
+<script src="js/exportHtml.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
