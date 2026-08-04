@@ -1,0 +1,7 @@
+# Por ahora, ninguna dependencia externa: sonda_glpi.py, insumos_cardio.py e
+# historico_casos.py usan solo librería estándar de Python.
+#
+# Cuando exista un extractor que lea un .xlsx real (por ejemplo, si el cruce
+# de disponibilidad/backups termina dependiendo de un archivo de Excel como
+# en Acción Fiduciaria — ver su requirements.txt), agregar aquí:
+# openpyxl>=3.1

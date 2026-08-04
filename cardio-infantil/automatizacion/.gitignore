@@ -1,0 +1,14 @@
+# Credenciales — nunca se versionan
+.env
+
+# Carpeta de trabajo: CSV crudos, insumos, logs, ledger de historico
+# (trae datos reales del cliente, no debe ir al repositorio)
+salida/
+
+# Basura habitual de Python
+__pycache__/
+*.pyc
+
+# Basura habitual de VS Code / SO
+.vscode/
+.DS_Store
