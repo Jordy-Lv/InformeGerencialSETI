@@ -16,8 +16,9 @@ abrir el informe.
 
 ## Interfaz y exportación
 
-El selector reutiliza el modal existente para no abrir un segundo sistema de
-diálogos. Cada opción muestra su nombre y los criterios que desaparecerían;
+El selector tiene un diálogo de autoría propio, aislado con el mismo manejo de
+foco y fondo inerte que los modales existentes. Cada opción muestra su nombre,
+su estado de selección y los criterios que desaparecerían;
 una dependencia no satisfecha queda deshabilitada con su motivo. La primera
 versión de Acción Fiduciaria no declara dependencias, pero la validación se
 implementa desde el descriptor para no esconder esa regla futura.

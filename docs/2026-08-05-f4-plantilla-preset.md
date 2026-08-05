@@ -17,6 +17,9 @@ editar el HTML o el perfil entregado.
 - El botón **Tarjetas** abre un selector accesible. Muestra criterios que
   dejarían de exigirse, evita una selección vacía y deja preparada la regla de
   dependencias declarativas.
+- La interfaz del selector presenta cada tarjeta como una opción editorial con
+  estado, numeración, contador de selección y un resumen visible del impacto
+  de la decisión; conserva foco contenido y fondo inerte mientras está abierto.
 - El override se guarda por perfil como
   `informe:<perfil>:preset-tarjetas`. Un JSON vacío, repetido o desconocido se
   descarta sin impedir el inicio.
