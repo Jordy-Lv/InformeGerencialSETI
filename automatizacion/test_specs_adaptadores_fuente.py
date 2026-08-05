@@ -193,6 +193,17 @@ class TestLectoresConsolidadoGeneralizados(unittest.TestCase):
         self.assertIn("const ajuste=PERFIL.tarjetas?.presentacion?.[tarjeta.id];", HTML)
         self.assertIn("return ids.map(id=>presentarTarjetaPerfil(INDICE_TARJETAS.get(id)));", HTML)
 
+    def test_resumen_de_ci_usa_la_meta_del_dominio_no_un_literal(self):
+        # Cuarto lugar con «99,30%» quemado, encontrado al probar en
+        # navegador con datos reales completos (no al verificar solo la
+        # lectura): actualizarTarjetasDesdeStore() pintaba el resumen de
+        # c11 con el literal de AF sin importar la meta real del dominio.
+        self.assertIn(
+            "if(m) m.textContent=`${ok} de ${n} cumplen la meta de ${pct(ci.datos.meta??99.3,ci.datos.meta!=null?2:1)}`;",
+            HTML,
+        )
+        self.assertNotIn("cumplen la meta de 99,30%`", HTML)
+
 
 if __name__ == "__main__":
     unittest.main()

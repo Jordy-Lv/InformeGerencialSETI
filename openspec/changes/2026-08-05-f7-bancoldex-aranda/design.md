@@ -27,6 +27,18 @@ jun-26."`, comportamiento correcto (la restricción inviolable #2 exige no
 inventar cifras). **Queda como hallazgo para reportar a Bancóldex/SETI**,
 no como pendiente de este change.
 
+### Cuarto lugar con texto de AF quemado: resumen de `c11`
+
+Al probar con un consolidado completo (insumo real + una columna de prueba
+de junio-2026 con disponibilidad 100 %, ver docs de sesión), el resumen
+colapsado de `c11` seguía diciendo *"4 de 4 cumplen la meta de 99,30%"* —
+un literal dentro de `actualizarTarjetasDesdeStore()`, distinto de
+`presentarTarjetaPerfil()` (que ya cubre el texto por defecto de la
+tarjeta) y de `TARJETA_PENDIENTE` (que cubre el estado sin cifra). Se
+corrigió a leer `ci.datos.meta` (que `cargarDisponibilidadTabla()` ya
+publica desde `PERFIL.metas.disponibilidad`), con el mismo valor 99,3 %
+como default cuando el dominio no lo declara — AF sin cambios.
+
 ### Tercer lugar con texto de AF quemado: `TARJETA_PENDIENTE`
 
 Además del `presentacion.items` de `INVENTARIO_TARJETAS` (ya cubierto por
