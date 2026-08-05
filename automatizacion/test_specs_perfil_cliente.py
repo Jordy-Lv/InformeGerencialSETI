@@ -12,6 +12,8 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 HTML = (RAIZ / "informe-accion-fiduciaria 1.html").read_text(encoding="utf-8")
 PERFIL = (RAIZ / "perfiles/accion-fiduciaria.js").read_text(encoding="utf-8")
+BASE = (RAIZ / "perfiles/base.js").read_text(encoding="utf-8")
+BANCOLDEX = (RAIZ / "perfiles/bancoldex.js").read_text(encoding="utf-8")
 SPEC = (RAIZ / "openspec/specs/perfil-cliente/spec.md").read_text(encoding="utf-8")
 DELTA = (
     RAIZ
@@ -20,6 +22,10 @@ DELTA = (
 DELTA_F2 = (
     RAIZ
     / "openspec/changes/2026-08-05-f2-contrato-perfil/specs/perfil-cliente/spec.md"
+).read_text(encoding="utf-8")
+DELTA_F7 = (
+    RAIZ
+    / "openspec/changes/2026-08-05-f7-bancoldex-aranda/specs/perfil-cliente/spec.md"
 ).read_text(encoding="utf-8")
 
 
@@ -38,6 +44,7 @@ class TestContratoOpenSpec(unittest.TestCase):
             ("spec actual", SPEC),
             ("delta F1", DELTA),
             ("delta F2", DELTA_F2),
+            ("delta F7", DELTA_F7),
         ):
             bloques = re.split(r"(?=^### Requirement:)", documento, flags=re.M)[1:]
             self.assertGreater(len(bloques), 0, nombre)
@@ -61,9 +68,12 @@ class TestPerfilDesplegado(unittest.TestCase):
             "window.__ESTADO__?.perfil:null",
             compacto,
         )
+        # F7a: con más de un perfil registrado, el embebido debe coincidir
+        # por id (antes bastaba con que existiera) — mismo valor para AF, que
+        # sigue siendo hoy el único perfil que puede llegar embebido.
         self.assertIn(
-            "'accion-fiduciaria':()=>PERFIL_EMBEBIDO||"
-            "window.PERFIL_ACCION_FIDUCIARIA",
+            "'accion-fiduciaria':()=>PERFIL_EMBEBIDO?.id==='accion-fiduciaria'?"
+            "PERFIL_EMBEBIDO:window.PERFIL_ACCION_FIDUCIARIA",
             compacto,
         )
         self.assertIn("returnfusionarProfundo(padre,propio)", compacto)
@@ -140,6 +150,62 @@ class TestContratoDesdePerfil(unittest.TestCase):
         self.assertIn("functionhidratarContratoPerfil()", codigo)
         self.assertIn("campo.textContent=`${d}/${m}/${INICIO_CONTRATO.getFullYear()}`", codigo)
         self.assertIn("hidratarContratoPerfil()", codigo)
+
+
+class TestPerfilBaseYBancoldex(unittest.TestCase):
+    """F7a — perfil raíz sin cliente y Bancóldex, que lo extiende."""
+
+    def test_base_no_representa_ningun_cliente(self):
+        self.assertRegex(BASE, r"\bid\s*:\s*['\"]base['\"]")
+        self.assertRegex(BASE, r"\bextiende\s*:\s*null\b")
+        self.assertNotRegex(BASE, r"\bfunction\b|=>|\bclass\s")
+        # Sin contrato.inicio a propósito: resolverPerfil('base') debe fallar
+        # explícitamente por F2 si alguien lo resuelve sin extenderlo.
+        self.assertNotRegex(BASE, r"\binicio\s*:\s*['\"]\d{4}-\d{2}-\d{2}['\"]")
+
+    def test_bancoldex_extiende_base_no_accion_fiduciaria(self):
+        self.assertRegex(BANCOLDEX, r"\bid\s*:\s*['\"]bancoldex['\"]")
+        self.assertRegex(BANCOLDEX, r"\bextiende\s*:\s*['\"]base['\"]")
+        self.assertNotRegex(BANCOLDEX, r"extiende\s*:\s*['\"]accion-fiduciaria['\"]")
+        self.assertNotRegex(BANCOLDEX, r"\bfunction\b|=>|\bclass\s")
+
+    def test_ambos_perfiles_estan_registrados(self):
+        compacto = _compacto(HTML)
+        self.assertIn(
+            "'base':()=>PERFIL_EMBEBIDO?.id==='base'?PERFIL_EMBEBIDO:window.PERFIL_BASE",
+            compacto,
+        )
+        self.assertIn(
+            "'bancoldex':()=>PERFIL_EMBEBIDO?.id==='bancoldex'?"
+            "PERFIL_EMBEBIDO:window.PERFIL_BANCOLDEX",
+            compacto,
+        )
+
+    def test_contrato_de_bancoldex_viene_del_pdf_de_referencia(self):
+        # CN-2024112, 14/11/2024-14/11/2026: página «Línea base del servicio»
+        # de Bancoldex/reporte-bancoldex-2026-07-02.pdf, no inventado.
+        self.assertRegex(BANCOLDEX, r"codigo\s*:\s*['\"]CN-2024112['\"]")
+        self.assertRegex(BANCOLDEX, r"inicio\s*:\s*['\"]2024-11-14['\"]")
+        self.assertRegex(BANCOLDEX, r"vigenciaHasta\s*:\s*['\"]2026-11-14['\"]")
+
+    def test_bancoldex_selecciona_solo_c9(self):
+        # resolverTarjetasPerfil() exige al menos una tarjeta (hallazgo al
+        # verificar en navegador); c9 es la única sin texto estático
+        # heredado de AF. Ver design.md, "Gap preexistente".
+        self.assertRegex(BANCOLDEX, r"seleccionadas\s*:\s*\[\s*['\"]c9['\"]\s*\]")
+
+    def test_perfil_activo_se_puede_elegir_por_url(self):
+        # F7a: sin esto, 'base'/'bancoldex' quedan registrados pero
+        # inalcanzables — resolverPerfil('accion-fiduciaria') estaba fijo al
+        # cierre de F5. AF conserva el mismo resultado por defecto.
+        compacto = _compacto(HTML)
+        self.assertIn(
+            "constID_PERFIL_ACTIVO=PERFIL_EMBEBIDO?.id||"
+            "newURLSearchParams(window.location.search).get('perfil')||"
+            "'accion-fiduciaria'",
+            compacto,
+        )
+        self.assertIn("constPERFIL=resolverPerfil(ID_PERFIL_ACTIVO)", compacto)
 
 
 if __name__ == "__main__":
