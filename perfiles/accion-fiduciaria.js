@@ -12,6 +12,9 @@ window.PERFIL_ACCION_FIDUCIARIA = {
 
   contrato: {
     codigo: 'CN-21012025',
+    // Fecha calendario ISO. F2 la valida al arrancar y es la fuente de
+    // verdad para los históricos; el DOM solo la presenta como 01/09/2025.
+    inicio: '2025-09-01',
     vigenciaHasta: '2026-08-31',
   },
 

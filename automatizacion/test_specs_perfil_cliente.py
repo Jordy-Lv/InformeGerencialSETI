@@ -17,6 +17,10 @@ DELTA = (
     RAIZ
     / "openspec/changes/2026-08-04-f1-perfil-cliente/specs/perfil-cliente/spec.md"
 ).read_text(encoding="utf-8")
+DELTA_F2 = (
+    RAIZ
+    / "openspec/changes/2026-08-05-f2-contrato-perfil/specs/perfil-cliente/spec.md"
+).read_text(encoding="utf-8")
 
 
 def _compacto(texto):
@@ -30,7 +34,11 @@ def _sin_comentarios(texto):
 
 class TestContratoOpenSpec(unittest.TestCase):
     def test_cada_requisito_tiene_shall_y_escenario(self):
-        for nombre, documento in (("spec actual", SPEC), ("delta", DELTA)):
+        for nombre, documento in (
+            ("spec actual", SPEC),
+            ("delta F1", DELTA),
+            ("delta F2", DELTA_F2),
+        ):
             bloques = re.split(r"(?=^### Requirement:)", documento, flags=re.M)[1:]
             self.assertGreater(len(bloques), 0, nombre)
             for bloque in bloques:
@@ -103,6 +111,35 @@ class TestPerfilDesplegado(unittest.TestCase):
         self.assertIn("data-perfil-texto=\"clienteHero\"", compacto)
         self.assertIn("PERFIL.textos.nombreArchivo", HTML)
         self.assertRegex(PERFIL, r"\bnombreArchivo\s*:\s*['\"]Accion Fiduciaria['\"]")
+
+
+class TestContratoDesdePerfil(unittest.TestCase):
+    def test_inicio_es_fecha_iso_declarada_en_el_perfil(self):
+        self.assertRegex(PERFIL, r"\binicio\s*:\s*['\"]2025-09-01['\"]")
+
+    def test_pipeline_usa_inicio_validado_y_no_lee_el_dom(self):
+        codigo = _sin_comentarios(HTML)
+        self.assertIn("const INICIO_CONTRATO=inicioContrato()", codigo)
+        self.assertGreaterEqual(codigo.count("INICIO_CONTRATO"), 9)
+        self.assertNotRegex(
+            codigo,
+            r"querySelector\('\[data-k=\"finicio\"\]'\)\?\.textContent",
+        )
+        self.assertNotIn("new Date(2025,8,1)", _compacto(codigo))
+
+    def test_inicio_faltante_o_invalido_falla_con_mensaje(self):
+        codigo = _compacto(_sin_comentarios(HTML))
+        self.assertIn("functioninicioContrato()", codigo)
+        self.assertIn("PERFIL.contrato?.inicio", codigo)
+        self.assertIn("requierecontrato.iniciocomofechaAAAA-MM-DD", codigo)
+        self.assertIn("tienecontrato.inicioinválido", codigo)
+        self.assertIn("newDate(anio,mes,dia)", codigo)
+
+    def test_campo_visual_se_hidrata_desde_el_perfil(self):
+        codigo = _compacto(_sin_comentarios(HTML))
+        self.assertIn("functionhidratarContratoPerfil()", codigo)
+        self.assertIn("campo.textContent=`${d}/${m}/${INICIO_CONTRATO.getFullYear()}`", codigo)
+        self.assertIn("hidratarContratoPerfil()", codigo)
 
 
 if __name__ == "__main__":
