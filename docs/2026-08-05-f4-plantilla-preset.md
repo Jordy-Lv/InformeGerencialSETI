@@ -38,6 +38,11 @@ editar el HTML o el perfil entregado.
 - `python3 -m unittest discover -s automatizacion -p 'test_*.py' -v`
   → `Ran 49 tests ... OK`.
 - `git diff --check` → código 0.
+- `python3 automatizacion/verificar_ab.py '/Users/yordypardopajaro/Downloads/Otros/export-main-f3.html' '/Users/yordypardopajaro/Downloads/Otros/export-f4.html'`
+  → `0 diferencias entre export-main-f3.html y export-f4.html.`
+- Un `HTMLParser` sobre `export-f4.html` → `Modal de autoría en DOM: no`.
+  La cadena permanece solamente en el código del motor para crear el selector
+  durante la autoría; no aparece como interfaz entregada al cliente.
 
 ## Archivos tocados
 
@@ -53,7 +58,5 @@ editar el HTML o el perfil entregado.
 
 ## Pendiente
 
-- Repetir la suite completa tras el ajuste estático y obtener `0` diferencias
-  A/B contra `main` con el preset predeterminado y los mismos insumos reales.
 - Hacer la comprobación visual manual del preset mínimo y máximo, incluido el
   PDF, porque la captura depende de las dimensiones reales del navegador.

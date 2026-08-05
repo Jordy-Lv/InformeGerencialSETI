@@ -27,5 +27,15 @@ estos archivos productivos.
 - [x] Añadir autopruebas y pruebas estáticas para presets mínimo, máximo y
   restauración del predeterminado.
 - [x] Ejecutar suite y comprobaciones de sintaxis.
-- [ ] Ejecutar validación visual y A/B real contra `main`.
+- [x] Ejecutar A/B real contra `main` con el preset predeterminado.
+- [ ] Comprobar visualmente el PDF con preset mínimo y máximo.
 - [x] Actualizar las specs vigentes y el documento de sesión.
+
+## Evidencia parcial de cierre
+
+El 5 de agosto de 2026, `export-main-f3.html` (desde `main` `404408c`) y
+`export-f4.html` (F4) se compararon con
+`python3 automatizacion/verificar_ab.py` y dieron `0 diferencias`. Un parser
+HTML confirmó además que `#presetTarjetasModal` no quedó en el DOM del
+entregable. Falta solamente la comprobación visual de las dos composiciones
+extremas del PDF.
