@@ -492,6 +492,48 @@ aunque el insumo sí se había generado bien. Corregido reconfigurando la
 consola a UTF-8 dentro de `cargar_env()` — un solo punto para los seis
 scripts. Validado en vivo en Windows: GLPI y AlertOps ya reportan «OK».
 
+## Cambios recientes (04/08/2026): recarga de insumos, reintentos de escritura, bolsa de horas
+
+Tres correcciones que cambian comportamiento visible, entraron a `main` el
+mismo día por PRs separados. Se documentan acá porque no estaban cuando se
+escribió el resto de este README (29/07/2026).
+
+**Reintentos al escribir `insumos-af.js`.** `escribir_paquete()` (en
+`insumos_af.py`) ya no falla directo si el archivo está bloqueado (OneDrive
+sincronizando, o el propio informe abierto en el navegador con el archivo
+cargado): usa `escribir_con_reintentos(destino, bytes_datos, intentos=5,
+espera=0.4)`, con espera **constante** (no exponencial) entre intentos.
+Agotados los 5 intentos, lanza `ArchivoBloqueado` (subclase de `OSError`) en
+vez de un `PermissionError` genérico, para que quien llame distinga "no se
+pudo hablar con GLPI/AlertOps" de "sí se extrajo, pero no se pudo guardar".
+
+**`incrustar_insumos()` es idempotente.** Antes, si el HTML ya traía un
+bloque `window.__INSUMOS__` incrustado (por ejemplo, al reprocesar el mismo
+mes dos veces), la función agregaba un segundo bloque en vez de reemplazar
+el primero — y el bloque **viejo** ganaba en el navegador en silencio.
+Ahora reemplaza el bloque existente si lo encuentra.
+
+**Bolsa de horas: persiste entre periodos sin reingresar nada.** La tarjeta
+«Control bolsa de horas» (diapositiva 9) guardaba su estado en
+`localStorage` bajo `informeAF:bolsa:<AAAA-MM>` (`BOLSA_STORE_PREFIX`), una
+clave exacta por mes. Si el consultor no tocaba la tarjeta ese mes (lo
+normal, sin novedades), no había clave para el mes activo y la tarjeta caía
+a «Dato no disponible» aunque el mes anterior sí tuviera datos válidos.
+`restaurarBolsaGuardada()` ahora, si no hay clave exacta para el periodo
+activo, cae al registro guardado más reciente **anterior o igual** a ese
+periodo vía `ultimaBolsaHasta()` — sin persistirlo bajo la clave nueva, así
+que no deja copias huérfanas y un periodo sin ningún registro previo (por
+ejemplo, marzo-2026 antes de que existiera la tarjeta) sigue mostrando
+correctamente «Dato no disponible». Además se agregó un botón **«Guardar»**
+explícito junto a «Borrar datos»: antes, la única forma de activar la
+tarjeta en un periodo nuevo era editar un campo y reescribir el mismo valor
+que ya estaba ahí (nada intuitivo); ahora un clic confirma los valores
+visibles del formulario.
+
+Detalle completo, con la verificación de cada punto, en
+`docs/2026-08-04-correccion-recarga-de-insumos.md` y
+`docs/2026-08-04-bolsa-de-horas-persiste-entre-periodos.md`.
+
 ## Credenciales
 
 - **Cuenta de servicio de solo lectura** en ambas plataformas, no la personal

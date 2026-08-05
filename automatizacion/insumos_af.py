@@ -19,6 +19,7 @@ import os
 import re
 import shutil
 import sys
+import time
 import unicodedata
 from base64 import b64encode
 from datetime import date, datetime
@@ -199,6 +200,9 @@ def eliminar_resguardo(nombre, periodo):
         return None
 
 
+_SCRIPT_TAG = re.compile(r"<script(?:\s[^>]*)?>.*?</script>", re.S)
+
+
 def incrustar_insumos(html_path, insumos_js_path):
     """Devuelve el HTML como texto, con el contenido de `insumos-af.js`
     incrustado como un `<script>` propio justo después de `<head>`.
@@ -210,15 +214,33 @@ def incrustar_insumos(html_path, insumos_js_path):
     exige que ambos archivos viajen juntos. `cargarInsumosAutomaticos()` ya
     revisa primero si `window.__INSUMOS__` existe antes de intentar buscar un
     archivo vecino, así que este bloque basta para que arranque solo.
+
+    Idempotente (bug reportado 04/08/2026): si `html_path` ya trae un bloque
+    `window.__INSUMOS__` incrustado (p. ej. porque se corre dos veces sobre
+    el mismo archivo, o porque `HTML` en actualizar_informe.py apunta al
+    resultado de una corrida anterior), ese bloque se REEMPLAZA en su propio
+    lugar en vez de insertar uno nuevo después de `<head>`. Antes, dos
+    incrustaciones dejaban dos bloques `window.__INSUMOS__`: el nuevo quedaba
+    primero y el viejo después, y como ambos scripts reasignan la misma
+    variable global en orden de aparición, el que corría al final —el
+    viejo— ganaba en silencio.
     """
     html = Path(html_path).read_text(encoding="utf-8")
     insumos_js = Path(insumos_js_path).read_text(encoding="utf-8")
+    bloque = f"\n<script>\n{insumos_js}</script>\n"
+    existente = next((m for m in _SCRIPT_TAG.finditer(html) if "window.__INSUMOS__" in m.group()), None)
+    if existente:
+        inicio, fin = existente.start(), existente.end()
+        if html[:inicio].endswith("\n"):
+            inicio -= 1
+        if html[fin:fin + 1] == "\n":
+            fin += 1
+        return html[:inicio] + bloque + html[fin:]
     marcador = "<head>"
     i = html.find(marcador)
     if i < 0:
         raise ValueError(f"{html_path} no tiene una etiqueta <head> donde incrustar los insumos.")
     i += len(marcador)
-    bloque = f"\n<script>\n{insumos_js}</script>\n"
     return html[:i] + bloque + html[i:]
 
 
@@ -232,14 +254,28 @@ def adjuntar_historico(paquete, historico):
     paquete["historico"] = historico
 
 
-def archivo_de(csv_bytes, nombre, origen):
-    """Construye la entrada de `archivos.<clave>` para un CSV ya generado."""
-    return {
+def archivo_de(csv_bytes, nombre, origen, periodo=None):
+    """Construye la entrada de `archivos.<clave>` para un CSV ya generado.
+
+    `periodo` (AAAA-MM, opcional) es el mes al que corresponde ESTE archivo
+    en particular — no necesariamente el de `paquete['periodo']`, que puede
+    haber avanzado después vía `fijar_periodo()` sin que esta fuente vuelva a
+    correr (hallazgos P1+P2 de la validación de recarga de insumos,
+    04/08/2026: p. ej. `extraer_indisponibilidades.py` sale temprano —
+    RUTA_INDISPONIBILIDADES sin configurar, archivo inexistente, error tras
+    reintentos— sin tocar su entrada, mientras GLPI/AlertOps sí avanzan el
+    periodo del paquete). Guardarlo aquí le da al HTML (`cargarInsumosAutomaticos()`)
+    algo contra qué comparar `paquete.periodo` para avisar del desfase, sin
+    necesitar que cada extractor lleve su propia bitácora."""
+    resultado = {
         "nombre": nombre,
         "origen": origen,
         "sha256": hashlib.sha256(csv_bytes).hexdigest(),
         "contenido": b64encode(csv_bytes).decode(),
     }
+    if periodo:
+        resultado["periodo"] = periodo
+    return resultado
 
 
 def fijar_periodo(paquete, periodo):
@@ -257,7 +293,42 @@ def fijar_periodo(paquete, periodo):
     return None
 
 
+class ArchivoBloqueado(OSError):
+    """`destino` existe y no se pudo escribir tras varios reintentos —
+    típicamente porque OneDrive lo está sincronizando o alguien tiene abierto
+    el informe HTML vecino con el navegador reteniendo el archivo en Windows.
+    Se distingue de un OSError genérico para que quien llame pueda dar un
+    mensaje claro ("cierra el archivo e intenta de nuevo") en vez de "no se
+    pudo hablar con GLPI", que sería engañoso: la extracción sí funcionó, lo
+    que falló fue el guardado en disco."""
+
+
+def escribir_con_reintentos(destino, bytes_datos, intentos=5, espera=0.4):
+    """Escribe `bytes_datos` en `destino`, reintentando ante PermissionError.
+
+    `escribir_paquete()` no tenía reintentos: un `destino.write_text()` que
+    choca con el archivo bloqueado por OneDrive o por el propio informe
+    abierto en el navegador simplemente truena. `extraer_indisponibilidades.py`
+    ya resuelve el mismo problema para su propio archivo con
+    `leer_indisponibilidades_con_reintentos()` — esta es la versión para
+    escritura, compartida por los extractores que escriben insumos-af.js."""
+    ultimo_error = None
+    for intento in range(intentos):
+        try:
+            destino.write_bytes(bytes_datos)
+            return
+        except PermissionError as e:
+            ultimo_error = e
+            if intento < intentos - 1:
+                time.sleep(espera)
+    raise ArchivoBloqueado(
+        f"No se pudo escribir {destino} tras {intentos} intentos — "
+        f"¿está abierto en otro programa? ({ultimo_error})"
+    )
+
+
 def escribir_paquete(destino, paquete):
     paquete["generado"] = datetime.now().astimezone().isoformat(timespec="seconds")
     cuerpo = json.dumps(paquete, ensure_ascii=False, indent=2)
-    destino.write_text(CABECERA + f"window.__INSUMOS__ = {cuerpo};\n", encoding="utf-8")
+    contenido = (CABECERA + f"window.__INSUMOS__ = {cuerpo};\n").encode("utf-8")
+    escribir_con_reintentos(destino, contenido)

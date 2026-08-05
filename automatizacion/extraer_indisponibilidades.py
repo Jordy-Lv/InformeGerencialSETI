@@ -264,12 +264,26 @@ def reconciliar(filas_indisponibilidades, incidentes_glpi):
     """Para cada incidente de GLPI del periodo, busca su NUMERO CASO GLPI
     entre las filas de indisponibilidades (de cualquier mes: el enlace es por
     ID exacto, no depende de que las fechas coincidan) y reporta qué dice el
-    equipo. Sin match: SIN_VERIFICAR — nunca se inventa una atribución."""
+    equipo. Sin match: SIN_VERIFICAR — nunca se inventa una atribución.
+
+    Devuelve `(reconciliadas, duplicados)`. `duplicados` es
+    `{digitos: [valores «Atribuible a SETI» tal cual, en orden de aparición]}`
+    para cada NUMERO CASO GLPI que aparece en más de una fila del log con una
+    atribución distinta (hallazgo P3, validación de recarga de insumos,
+    04/08/2026: antes se quedaba en silencio con la última fila leída, sin
+    ninguna señal de que había un conflicto que el equipo debía resolver en
+    el Excel). El comportamiento de «gana la última fila» se conserva —
+    corregirlo a ciegas sería adivinar cuál de las dos es la correcta — pero
+    ahora `verificar()` lo reporta."""
     por_caso = {}
+    vistos = {}
     for fila in filas_indisponibilidades:
         digitos = solo_digitos(fila.get("caso_glpi"))
-        if digitos:
-            por_caso[digitos] = fila
+        if not digitos:
+            continue
+        vistos.setdefault(digitos, []).append(fila.get("atribuible"))
+        por_caso[digitos] = fila
+    duplicados = {d: valores for d, valores in vistos.items() if len({norm(v) for v in valores}) > 1}
 
     reconciliadas = []
     for id_glpi, fila_glpi in incidentes_glpi.items():
@@ -296,7 +310,7 @@ def reconciliar(filas_indisponibilidades, incidentes_glpi):
             "tipo_evento": match.get("tipo_evento") or "",
             "motivo": match.get("motivo") or "",
         })
-    return reconciliadas
+    return reconciliadas, duplicados
 
 
 CAMPOS_CSV = ["id_glpi", "categoria_tipo", "atribuible", "servicio", "objeto", "tipo_evento", "motivo"]
@@ -312,7 +326,7 @@ def a_csv(reconciliadas):
     return salida.getvalue()
 
 
-def verificar(reconciliadas, pendientes, hubo_cruce, columna_cruce_vacia=False, total_filas=0):
+def verificar(reconciliadas, pendientes, hubo_cruce, columna_cruce_vacia=False, total_filas=0, duplicados=None):
     """Comprobaciones que deben pasar antes de dar el archivo por bueno."""
     if not hubo_cruce:
         return ["No se cruzó contra GLPI: no se encontró el CSV de esa extracción para este periodo "
@@ -347,6 +361,13 @@ def verificar(reconciliadas, pendientes, hubo_cruce, columna_cruce_vacia=False, 
         problemas.append(
             f"{len(pendientes)} indisponibilidad(es) de Acción Fiduciaria en el periodo sin NUMERO CASO "
             "GLPI diligenciado en el Excel."
+        )
+    if duplicados:
+        ejemplos = "; ".join(f"{d} ({'/'.join(str(v) for v in valores)})" for d, valores in list(duplicados.items())[:5])
+        problemas.append(
+            f"{len(duplicados)} NUMERO CASO GLPI aparece(n) en más de una fila del log con «Atribuible a "
+            f"SETI» distinto — se usó la última fila leída para cada uno, sin resolverlo a ciegas: {ejemplos}"
+            f"{'…' if len(duplicados) > 5 else ''}. Revisa y deja una sola fila por caso en el Excel."
         )
     return problemas
 
@@ -406,7 +427,7 @@ def main():
         print(f"Aviso: no encontré {ruta_glpi} — corre extraer_glpi.py primero para el mismo periodo si quieres el cruce. "
               "Se reporta el log de indisponibilidades solo.", file=sys.stderr)
 
-    reconciliadas = reconciliar(todas, incidentes_glpi or {})
+    reconciliadas, duplicados = reconciliar(todas, incidentes_glpi or {})
     pendientes = [f for f in del_periodo if not solo_digitos(f.get("caso_glpi"))]
     # Lo que de verdad falta por registrar: incidentes de GLPI sin fila en el
     # Excel de indisponibilidades. Es la señal que decide si el archivo
@@ -460,7 +481,7 @@ def main():
     # mantiene correcto el conteo de «atribuible a SETI» en vivo aunque todo
     # ya esté registrado y el archivo visible haya desaparecido.
     if hubo_cruce:
-        paquete["archivos"]["indisponibilidades"] = archivo_de(bytes_csv, nombre, f"{ruta.name} · hoja {nombre_hoja}")
+        paquete["archivos"]["indisponibilidades"] = archivo_de(bytes_csv, nombre, f"{ruta.name} · hoja {nombre_hoja}", periodo=args.periodo)
     else:
         paquete["archivos"].pop("indisponibilidades", None)
     # El campo «historico» ya quedó en `paquete` tal cual lo dejaron
@@ -468,7 +489,7 @@ def main():
     # lee el insumos-af.js existente) — no se toca ni se reescribe aquí.
     escribir_paquete(js, paquete)
 
-    problemas = verificar(reconciliadas, pendientes, hubo_cruce, columna_cruce_vacia, len(todas))
+    problemas = verificar(reconciliadas, pendientes, hubo_cruce, columna_cruce_vacia, len(todas), duplicados)
     print(f"\n{len(reconciliadas)} incidente(s) reconciliado(s).")
     print(f"Archivo standalone: {destino if destino.exists() else '(no existe: nada pendiente por registrar)'}")
     print(f"Copia de resguardo: {resguardo if resguardo else '(sin copia — RUTA_ONEDRIVE no configurada, o nada pendiente)'}")
