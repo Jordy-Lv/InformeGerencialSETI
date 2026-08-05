@@ -43,6 +43,10 @@ editar el HTML o el perfil entregado.
 - Un `HTMLParser` sobre `export-f4.html` → `Modal de autoría en DOM: no`.
   La cadena permanece solamente en el código del motor para crear el selector
   durante la autoría; no aparece como interfaz entregada al cliente.
+- Tras la validación manual se corrigió el filtro de PDF: una tarjeta fuera
+  del preset se confundía con una página fija y todavía se exportaba. Ahora el
+  filtro parte de **todo** el inventario y solo captura una diapositiva de
+  tarjeta si está seleccionada y es exportable.
 
 ## Archivos tocados
 

@@ -112,7 +112,9 @@ class TestInventarioDesplegado(unittest.TestCase):
         self.assertIn("function aplicarPresetTarjetas(ids", HTML)
 
     def test_pdf_y_exportado_usan_la_seleccion_efectiva(self):
-        self.assertIn("const seleccionadas=new Map(TARJETAS_SELECCIONADAS.map", HTML)
+        self.assertIn("const tarjetasPorSlide=new Map(INVENTARIO_TARJETAS.map", HTML)
+        self.assertIn("const seleccionadas=new Set(TARJETAS_SELECCIONADAS.map", HTML)
+        self.assertIn("return tarjeta ? seleccionadas.has(s.id)&&tarjeta.exportable : true", HTML)
         self.assertIn("jsonEmbebible(perfilEfectivo())", HTML)
         self.assertIn("tarjeta.hidden=!activas.has(t.id)", HTML)
 
