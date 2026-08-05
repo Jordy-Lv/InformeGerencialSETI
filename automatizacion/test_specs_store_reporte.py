@@ -60,11 +60,11 @@ class TestStoreDesplegado(unittest.TestCase):
                 "invalido",
             ],
         )
-        # F3 conserva el mismo store, pero los dominios ahora nacen del
-        # inventario de tarjetas; su contenido y orden se prueba en la
-        # capacidad inventario-tarjetas, no con otra lista fija aquí.
+        # F4 conserva el store completo del preset predeterminado aunque una
+        # selección temporal oculte tarjetas: los parsers no pierden su
+        # destino. El contenido se prueba en la capacidad inventario-tarjetas.
         self.assertIn(
-            "constDOMINIOS=[...newSet(TARJETAS_SELECCIONADAS.flatMap(t=>t.dominios))];",
+            "constDOMINIOS=[...newSet(TARJETAS_PREDETERMINADAS.flatMap(t=>t.dominios))];",
             _compacto(HTML),
         )
         self.assertIn(

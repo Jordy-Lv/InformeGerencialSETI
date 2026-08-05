@@ -3,8 +3,8 @@
 ## Lista cerrada de archivos
 
 - `informe-accion-fiduciaria 1.html`
-- `perfiles/accion-fiduciaria.js`
 - `automatizacion/test_specs_inventario_tarjetas.py`
+- `automatizacion/test_specs_store_reporte.py`
 - `openspec/changes/2026-08-05-f4-plantilla-preset/`
 - `openspec/specs/inventario-tarjetas/spec.md`
 - `openspec/specs/preset-tarjetas/spec.md`
@@ -18,13 +18,14 @@ estos archivos productivos.
 
 ## Implementación
 
-- [ ] Extender el descriptor con la presentación necesaria para la plantilla.
-- [ ] Generar las tarjetas del panel desde los descriptores sin mover las
+- [x] Extender el descriptor con la presentación necesaria para la plantilla.
+- [x] Generar las tarjetas del panel desde los descriptores sin mover las
   diapositivas legado.
-- [ ] Añadir el modal de preset, dependencias y resumen de criterios.
-- [ ] Persistir y restaurar una selección válida por perfil.
-- [ ] Exportar la selección efectiva y derivar de ella las páginas del PDF.
-- [ ] Añadir autopruebas y pruebas estáticas para presets mínimo, máximo y
+- [x] Añadir el modal de preset, dependencias y resumen de criterios.
+- [x] Persistir y restaurar una selección válida por perfil.
+- [x] Exportar la selección efectiva y derivar de ella las páginas del PDF.
+- [x] Añadir autopruebas y pruebas estáticas para presets mínimo, máximo y
   restauración del predeterminado.
-- [ ] Ejecutar suite, comprobaciones de sintaxis y A/B real contra `main`.
-- [ ] Actualizar las specs vigentes y el documento de sesión.
+- [x] Ejecutar suite y comprobaciones de sintaxis.
+- [ ] Ejecutar validación visual y A/B real contra `main`.
+- [x] Actualizar las specs vigentes y el documento de sesión.

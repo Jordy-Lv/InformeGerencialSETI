@@ -17,6 +17,14 @@ DELTA_STORE = (
     RAIZ
     / "openspec/changes/2026-08-05-f3-inventario-tarjetas/specs/store-reporte/spec.md"
 ).read_text(encoding="utf-8")
+DELTA_F4_INVENTARIO = (
+    RAIZ
+    / "openspec/changes/2026-08-05-f4-plantilla-preset/specs/inventario-tarjetas/spec.md"
+).read_text(encoding="utf-8")
+DELTA_F4_PRESET = (
+    RAIZ
+    / "openspec/changes/2026-08-05-f4-plantilla-preset/specs/preset-tarjetas/spec.md"
+).read_text(encoding="utf-8")
 
 IDS = ["c3", "c4", "c5", "c6", "c7", "c8", "c8m", "c9", "c11", "c12"]
 CRITERIOS = [
@@ -32,7 +40,13 @@ CRITERIOS = [
 
 class TestContratoOpenSpec(unittest.TestCase):
     def test_cada_requisito_tiene_shall_y_escenario(self):
-        for nombre, documento in (("spec actual", SPEC), ("delta inventario", DELTA), ("delta store", DELTA_STORE)):
+        for nombre, documento in (
+            ("spec actual", SPEC),
+            ("delta inventario", DELTA),
+            ("delta store", DELTA_STORE),
+            ("delta F4 inventario", DELTA_F4_INVENTARIO),
+            ("delta F4 preset", DELTA_F4_PRESET),
+        ):
             bloques = re.split(r"(?=^### Requirement:)", documento, flags=re.M)[1:]
             self.assertGreater(len(bloques), 0, nombre)
             for bloque in bloques:
@@ -64,7 +78,7 @@ class TestInventarioDesplegado(unittest.TestCase):
         self.assertNotIn("const c=CARGA.consolidado;\n  return [", HTML)
 
     def test_listas_fijas_se_derivan_del_inventario(self):
-        self.assertIn("const DOMINIOS=[...new Set(TARJETAS_SELECCIONADAS.flatMap", HTML)
+        self.assertIn("const DOMINIOS=[...new Set(TARJETAS_PREDETERMINADAS.flatMap", HTML)
         self.assertIn("TARJETAS_SELECCIONADAS.flatMap(t=>t.fuentes)", HTML)
         self.assertIn("const RENDERIZADORES_TARJETA=", HTML)
         self.assertIn("TARJETAS_SELECCIONADAS.forEach(t=>{", HTML)
@@ -83,6 +97,24 @@ class TestInventarioDesplegado(unittest.TestCase):
     def test_autoprueba_embebida_coteja_inventario_y_dom(self):
         self.assertIn("Inventario: las diez tarjetas declaradas corresponden al DOM legado", HTML)
         self.assertIn("Inventario: los siete criterios se derivan de las tarjetas", HTML)
+
+    def test_plantilla_y_preset_se_construyen_desde_el_inventario(self):
+        for tarjeta in IDS:
+            with self.subTest(tarjeta=tarjeta):
+                self.assertRegex(
+                    HTML,
+                    rf"(?s)id:'{re.escape(tarjeta)}'.*?presentacion:\{{.*?\}}",
+                )
+        self.assertIn("function montarTarjetasDesdeInventario()", HTML)
+        self.assertIn("function resumenTarjeta(t)", HTML)
+        self.assertIn("const CLAVE_PRESET_TARJETAS=claveAlmacen('preset-tarjetas')", HTML)
+        self.assertIn("function resolverPresetGuardado()", HTML)
+        self.assertIn("function aplicarPresetTarjetas(ids", HTML)
+
+    def test_pdf_y_exportado_usan_la_seleccion_efectiva(self):
+        self.assertIn("const seleccionadas=new Map(TARJETAS_SELECCIONADAS.map", HTML)
+        self.assertIn("jsonEmbebible(perfilEfectivo())", HTML)
+        self.assertIn("tarjeta.hidden=!activas.has(t.id)", HTML)
 
 
 if __name__ == "__main__":
