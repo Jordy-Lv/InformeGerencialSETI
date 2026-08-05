@@ -14,8 +14,17 @@ después.
 El desarrollo de todo esto vive en el Mac de Yordy, pero la tarea programada
 mensual va a correr en el Windows corporativo. Qué es compatible tal cual, qué
 había que adaptar (el envoltorio de la tarea programada) y cómo instalarlo
-ahí, paso a paso, está en
-[`../docs/2026-07-28-desarrollo-mac-despliegue-windows.md`](../docs/2026-07-28-desarrollo-mac-despliegue-windows.md).
+ahí, paso a paso, estaba documentado en
+`docs/2026-07-28-desarrollo-mac-despliegue-windows.md`.
+
+> **Referencia no resuelta (05/08/2026):** ese documento **no existe en el
+> repositorio** y no figura en la tabla de borrados autorizados del
+> [relevo del 29/07](../docs/2026-07-29-relevo-sesion-28-julio.md): o nunca
+> se subió, o se perdió. Mientras tanto, la fuente vigente sobre el
+> despliegue en Windows es
+> [`../docs/2026-07-29-pruebas-en-windows-y-correcciones-en-vivo.md`](../docs/2026-07-29-pruebas-en-windows-y-correcciones-en-vivo.md),
+> que narra la puesta en marcha real. Es el mismo tipo de hallazgo que el ya
+> registrado más abajo sobre dos `.docx` referenciados y ausentes.
 
 La primera puesta en marcha real en Windows (29/07/2026) encontró y corrigió
 varios bugs en vivo con datos reales del cliente — crash de consola, el
