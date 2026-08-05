@@ -1,10 +1,14 @@
-# F7a — Adaptador Aranda y perfil Bancóldex (datos + canónico)
+# F7 — Adaptador Aranda y perfil Bancóldex (F7a datos + F7b integración real)
 
 **Rama:** `f7/bancoldex-aranda-perfil`, creada desde el cierre de F5
 (`db3d368` / `origin/codex/f5-adaptadores-canonico`), en un worktree
 aislado (`/private/tmp/f7-bancoldex-aranda`) para no interferir con el
 trabajo en curso de F6 (Novaventa, `codex/f6-perfil-novaventa`, con
 cambios sin confirmar al momento de abrir esta rama).
+
+Este documento cubre dos sesiones seguidas el 05/08/2026: F7a (modelo de
+datos) y F7b (integración real con los archivos de Bancóldex, priorizada
+explícitamente por el usuario). La sección "F7b" es la más reciente.
 
 ## Contexto
 
@@ -167,24 +171,138 @@ No se tocó ningún archivo productivo de `main` fuera de los listados; no se
 aplicó el delta a `openspec/specs/` todavía (el change sigue abierto: falta
 F7b y la coordinación de merge con F6).
 
+## F7b — Integración real (misma fecha, sesión siguiente)
+
+### Contexto de esta sesión
+
+El usuario pidió explícitamente continuar con Bancóldex como prioridad
+máxima y, en el camino, mostró una captura del directorio principal: un
+cliente "Bancóldex" creado a través de un **administrador de clientes por
+interfaz** que Codex agregó a F6 (no en el plan original de F6 —
+`docs/2026-08-05-registro-persistente-clientes.md`), fallando al cargar el
+consolidado con "Formato no permitido". El diagnóstico: ese cliente usaba
+la plantilla de Acción Fiduciaria o Novaventa (las únicas dos que existían
+entonces), que exige GLPI y hojas de consolidado con la forma de AF —
+Bancóldex no tiene ninguna de las dos. Se intentó agregar `perfiles/base.js`
+y `perfiles/bancoldex.js` directamente en el directorio principal para que
+esa herramienta pudiera ofrecer "Bancóldex" como plantilla real; el editor
+detectó que Codex modificaba `informe-accion-fiduciaria 1.html`
+**activamente y en simultáneo** (diff comparado antes/después del propio
+guardado). Ante esa evidencia, se preguntó al usuario cómo proceder; eligió
+que el resto de F7 se completara en esta rama aislada, dejando los dos
+archivos de perfil ya agregados al directorio principal tal cual, para que
+el equipo los reconcilie cuando F6 cierre.
+
+### Qué se implementó
+
+1. **`cargarCasosOGlpi()`** — la misma entrada de archivo que hoy recibe
+   GLPI despacha al adaptador de Aranda cuando el perfil declara
+   `fuentes.casos`; conectada en los tres sitios que llamaban `cargarGlpi`
+   directo (persistencia de insumos, restauración automática, revalidación
+   al cambiar de periodo). `cargarGlpi()` no se tocó.
+2. **`cargarIndicadores()` generalizado** — hoja y taxonomía de métricas
+   (`definicionIndicador()`) declaradas por el perfil; sin declarar, AF
+   conserva `ETIQUETA_INDICADOR` y el nombre de hoja de siempre.
+3. **`cargarBackups()` generalizado** — hoja/columna declaradas por el
+   perfil; sin declarar, AF conserva `'Backups'`/`'instancias'`.
+4. **`cargarDisponibilidadTabla()`** — nueva, para disponibilidad por
+   motor/sistema (estrategia `tabla-con-fechas`); `cargarDisponibilidad()`
+   despacha a ella solo si el perfil la declara.
+5. **`PERFIL.lineaBase` en `renderC3()`** — cierra el "gap preexistente" de
+   F7a: un perfil con `lineaBase` declarada presenta su propia ficha
+   contractual; AF, sin declararla, conserva la suya exacta.
+6. **`presentarTarjetaPerfil()` / `PERFIL.tarjetas.presentacion`** — un
+   perfil puede sobrescribir el resumen colapsado de una tarjeta que
+   selecciona (usado por `c3`, `c4`, `c6`, `c7`, `c11`, `c12` de Bancóldex).
+7. **`actualizarTarjetaBackups()` con meta configurable** — `PERFIL.metas.backups`
+   nulo/no declarado se distingue de un valor real (95 % para Bancóldex).
+8. **`perfiles/bancoldex.js` ampliado** — `tarjetas.seleccionadas: ['c3',
+   'c4', 'c6', 'c7', 'c8', 'c8m', 'c9', 'c11', 'c12']` (sin `c5`: sus
+   criterios exigen `glpi`+`alertas`, que Bancóldex no tiene; sin `c10`:
+   Bancóldex no declara capacidad).
+
+### Dos bugs reales encontrados y corregidos al verificar contra los archivos
+
+- **Columna «BD» coincidía con un valor de fila, no con la cabecera.**
+  `filaCabecera()` hace `c.includes(alias)` y se queda con la **última**
+  fila que matchea. La instancia real `BCOEXCCBD27` contiene "bd" como
+  subcadena, así que la cabecera resuelta era esa fila de datos, no la fila
+  0. Se corrigió el lector de backups a una coincidencia exacta. Ver
+  `design.md` para el detalle completo.
+- **`TARJETA_PENDIENTE` era un tercer lugar con texto de AF quemado.**
+  Además del `presentacion` del inventario (ya cubierto por
+  `presentarTarjetaPerfil`), `actualizarTarjetasDesdeStore()` usa un mapa
+  aparte para repintar una tarjeta sin cifra — con la meta de AF fija. Se
+  generalizó para consultar `PERFIL.tarjetas.presentacion` también ahí.
+  Verificado en navegador: antes del fix, `c6` de Bancóldex bloqueada
+  mostraba "Meta 99,30%"; después, "Meta 99,98%".
+
+### Hallazgo real (no un bug): `Disponibilidad Real` sin corte vigente
+
+La hoja `Disponibilidad Real` existe, con su tabla por motor (MY SQL,
+ORACLE, SQLSERVER, WEB LOGIC), y `cargarDisponibilidadTabla()` la resuelve
+correctamente — pero sus columnas de fecha en el archivo real de
+junio-2026 **solo llegan hasta jun-25**. El motor bloquea el consolidado
+con un mensaje explícito, comportamiento correcto y esperado (no se
+inventan cifras). **Esto es información para reportar al equipo de
+Bancóldex/SETI**, no un pendiente de ingeniería.
+
+### Verificación realizada (F7b)
+
+- `node --check` sobre el HTML completo y sobre `perfiles/bancoldex.js` →
+  sin errores, en cada iteración de esta sesión.
+- `python3 -m unittest discover -s automatizacion -p 'test_*.py'` → **77
+  pruebas, OK** (68 de F7a + 9 nuevas de F7b; se actualizó 1 aserción de
+  F7a que dependía de la selección `['c9']` anterior).
+- **Carga real en navegador con ambos archivos reales de junio-2026**
+  (`Bancoldex/Data consolidada junio_Bancoldex 2026.xlsx` y `Bancoldex/Casos
+  + tareas BD junio 2026.xlsx`, inyectados vía `fetch()`+`DataTransfer` al
+  input real, mismo camino que usaría una persona):
+  - Con el periodo del informe en junio de 2026: **indicadores** publica
+    los 3 valores esperados (100 %/100 %/100 %, metas 99,98 %/97 %/99 %);
+    **backups** publica 11 instancias al 100 %; **casos** (por la entrada
+    de GLPI) publica 72 casos con los mismos agregados por tipo, motor y
+    SLA que F7a ya había verificado por separado.
+  - **disponibilidad** queda bloqueada con el hallazgo real de arriba — es
+    el único error restante al cargar el consolidado completo.
+  - Acción Fiduciaria, recargada en la misma sesión sin `?perfil=`: mismo
+    título, `CN-21012025` en `c3`, `Meta 99,30%` en `c6`, consola sin
+    errores nuevos. **F7b no altera a AF.**
+
+### Archivos tocados (F7b, adicionales a F7a)
+
+- `informe-accion-fiduciaria 1.html` (generalizaciones listadas arriba,
+  todas con el mismo valor por defecto que AF ya tenía)
+- `perfiles/bancoldex.js` (ampliado)
+- `automatizacion/test_specs_adaptadores_fuente.py`,
+  `automatizacion/test_specs_perfil_cliente.py` (pruebas nuevas)
+- `openspec/changes/2026-08-05-f7-bancoldex-aranda/` (proposal, design,
+  tasks y ambos deltas de spec, ampliados)
+- Además, en el **directorio principal** (fuera de esta rama, sin
+  confirmar por el usuario todavía): `perfiles/base.js`,
+  `perfiles/bancoldex.js` y 4 líneas de `<script>` en
+  `informe-accion-fiduciaria 1.html` — agregados antes de detectar la
+  edición concurrente de Codex, dejados tal cual por decisión del usuario.
+
 ## Pendiente
 
-- **F7b:** tarjeta visual de casos de Bancóldex (cuatro categorías, no dos),
-  conectar `cargarCasosAranda()` al centro de carga y a `REPORTE`, y los
-  lectores de consolidado (`Indicador` con cabecera de dos filas, `Ejecucion
-  Backups` por `BD`, `Linea Base` con `AMBIENTE`, `Disponibilidad Real` por
-  motor).
-- **Coordinar el orden de merge con F6** antes de llevar esta rama a `main`
-  (ambas tocan `informe-accion-fiduciaria 1.html`; el conflicto esperado en
-  `PERFILES_REGISTRADOS`/`ID_PERFIL_ACTIVO` es trivial de resolver, ver
-  `design.md`).
-- **Gap preexistente de `c3`** (contrato/instancias/bases de datos no
-  derivados del perfil, campo editable en el DOM): no es un bloqueo para
-  F7a ni específico de Bancóldex, pero cualquier fase futura que quiera
-  cerrarlo debe declarar el delta de spec correspondiente.
-- Decidir si `TYA` (86 filas, `Integrante | Actividad | Horas Reportadas`)
-  puede automatizar la bolsa de Bancóldex — bloqueado por la regla de "dos
-  clientes con evidencia real" (`openspec/project.md`).
+- **Tarjeta visual de casos** (`c5`-equivalente, 4 categorías de
+  Bancóldex): `renderC5()` y sus criterios siguen escritos para AF/
+  Novaventa. El adaptador ya lee y valida el archivo real.
+- **Reportar a Bancóldex/SETI:** la hoja `Disponibilidad Real` de su
+  consolidado no tiene columna para junio-2026 (llega hasta jun-25).
+- **Reconciliar con el directorio principal:** cuando F6 cierre, decidir
+  si `perfiles/base.js`/`bancoldex.js` ahí se reemplazan por los de esta
+  rama (más completos) o se fusionan; y si el registro de clientes de F6
+  ofrece "Bancóldex" como tercera plantilla usando este perfil.
+- **Coordinar el orden de merge con F6** antes de llevar esta rama a
+  `main` — ver la regla de conjuntos de archivos disjuntos en
+  `openspec/AGENTS.md`.
+- Lector dinámico de la hoja `Linea Base` (hoy `PERFIL.lineaBase` es
+  declaración estática verificada contra el PDF, no un parser).
+- Decidir si `TYA` (86 filas) puede automatizar la bolsa de Bancóldex —
+  bloqueado por la regla de "dos clientes con evidencia real"
+  (`openspec/project.md`).
 - Cotejo A/B formal contra `main` con `verificar_ab.py`, si el equipo lo
   quiere además de la verificación en navegador ya realizada.
 - Publicar la rama remota y coordinar el PR.
