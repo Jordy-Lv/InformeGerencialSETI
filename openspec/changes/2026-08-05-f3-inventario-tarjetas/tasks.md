@@ -20,6 +20,14 @@ F2 quedó registrado en el commit `38530c5`. Los otros changes abiertos no reser
 - [x] Declarar las diez tarjetas y el orden de Acción Fiduciaria.
 - [x] Derivar dominios, extensiones, criterios y renderizadores.
 - [x] Validar el inventario contra el DOM y añadir pruebas de conformidad.
-- [ ] Ejecutar A/B con exportaciones completas.
+- [x] Ejecutar A/B con exportaciones completas.
 - [x] Ejecutar pruebas y comprobaciones de sintaxis.
 - [x] Actualizar specs y documentación con resultados reales.
+
+## Evidencia de cierre
+
+El 5 de agosto de 2026 se exportaron ambos informes con los mismos insumos
+reales completos de Acción Fiduciaria: `export-main-f3.html` desde `main`
+(`404408c`) y `export-f3.html` desde F3 (`a0b0fdb`). La ejecución de
+`python3 automatizacion/verificar_ab.py` informó `0 diferencias`. Los
+exportes e insumos permanecen fuera del repositorio.

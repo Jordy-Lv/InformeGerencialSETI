@@ -37,6 +37,11 @@ describiera exactamente la interfaz que F4 deberá generar.
 - Se intentó abrir el HTML local para validación interactiva en el navegador
   integrado, pero la política del entorno bloquea rutas `file://`. No se usó
   una alternativa que eludiera esa restricción.
+- `python3 automatizacion/verificar_ab.py '/Users/yordypardopajaro/Downloads/Otros/export-main-f3.html' '/Users/yordypardopajaro/Downloads/Otros/export-f3.html'`
+  → `0 diferencias entre export-main-f3.html y export-f3.html.` Ambas
+  exportaciones se produjeron el 5 de agosto de 2026 con los mismos insumos
+  reales completos; `export-f3.html` contiene `INVENTARIO_TARJETAS` y la
+  exportación de `main` no, como corresponde a cada versión.
 
 ## Archivos tocados
 
@@ -53,8 +58,5 @@ describiera exactamente la interfaz que F4 deberá generar.
 
 ## Pendiente
 
-- Generar una exportación completa de `main` y otra de F3 con el mismo
-  paquete de insumos e insumos manuales reales, y comprobar
-  `automatizacion/verificar_ab.py` con resultado de `0 diferencias`.
-- Solo después de ese A/B se marca F3 como completa y se inicia F4, que
-  generará el HTML desde este inventario y añadirá el preset editable.
+- F3 está cerrada. La siguiente fase, F4, reemplazará el HTML legado de las
+  tarjetas por la plantilla única del inventario y añadirá el preset editable.
