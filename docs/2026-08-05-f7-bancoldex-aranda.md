@@ -1,10 +1,16 @@
 # F7 — Adaptador Aranda y perfil Bancóldex (F7a datos + F7b integración real)
 
-**Rama:** `f7/bancoldex-aranda-perfil`, creada desde el cierre de F5
-(`db3d368` / `origin/codex/f5-adaptadores-canonico`), en un worktree
+**Rama de cierre:** `codex/bancoldex-completo`, creada desde el relevo
+documentado de `f7/bancoldex-aranda-perfil` (`4f822c3`), en un worktree
 aislado (`/private/tmp/f7-bancoldex-aranda`) para no interferir con el
 trabajo en curso de F6 (Novaventa, `codex/f6-perfil-novaventa`, con
 cambios sin confirmar al momento de abrir esta rama).
+
+**Estado final:** Bancóldex queda funcional para junio de 2026 con el preset
+`c3, c4, c5, c7, c8, c8m`, tres fuentes originales, restauración persistente,
+salida autocontenida y visualización ejecutiva de casos. Las secciones F7a,
+F7b y «Relevo final de Claude» se conservan como historial; sus pendientes
+quedan resueltos o descartados explícitamente en «Cierre Codex» al final.
 
 Este documento cubre dos sesiones seguidas el 05/08/2026: F7a (modelo de
 datos) y F7b (integración real con los archivos de Bancóldex, priorizada
@@ -17,8 +23,8 @@ adaptador de Aranda (carga manual) y el perfil Bancóldex. Ya existía un
 reconocimiento completo (`docs/2026-08-05-reconocimiento-bancoldex.md`) con
 evidencia real de los cuatro insumos de Bancóldex (`Bancoldex/`, ignorados
 por git) y del PDF de referencia de junio de 2026. Esta sesión retoma ese
-reconocimiento para implementar la primera porción verificable: el modelo de
-datos (perfil + adaptador de casos), no la integración visual completa.
+reconocimiento para implementar el modelo de datos y, después, completar la
+integración visual y funcional del perfil.
 
 `openspec/changes/2026-08-05-f6-perfil-novaventa/tasks.md` seguía abierto y
 reserva `informe-accion-fiduciaria 1.html`; esta rama también lo toca (solo
@@ -284,25 +290,133 @@ Bancóldex/SETI**, no un pendiente de ingeniería.
   `informe-accion-fiduciaria 1.html` — agregados antes de detectar la
   edición concurrente de Codex, dejados tal cual por decisión del usuario.
 
-## Pendiente
+## Relevo final de Claude — disponibilidad (sesión interrumpida)
 
-- **Tarjeta visual de casos** (`c5`-equivalente, 4 categorías de
-  Bancóldex): `renderC5()` y sus criterios siguen escritos para AF/
-  Novaventa. El adaptador ya lee y valida el archivo real.
-- **Reportar a Bancóldex/SETI:** la hoja `Disponibilidad Real` de su
-  consolidado no tiene columna para junio-2026 (llega hasta jun-25).
-- **Reconciliar con el directorio principal:** cuando F6 cierre, decidir
-  si `perfiles/base.js`/`bancoldex.js` ahí se reemplazan por los de esta
-  rama (más completos) o se fusionan; y si el registro de clientes de F6
-  ofrece "Bancóldex" como tercera plantilla usando este perfil.
-- **Coordinar el orden de merge con F6** antes de llevar esta rama a
-  `main` — ver la regla de conjuntos de archivos disjuntos en
-  `openspec/AGENTS.md`.
-- Lector dinámico de la hoja `Linea Base` (hoy `PERFIL.lineaBase` es
-  declaración estática verificada contra el PDF, no un parser).
-- Decidir si `TYA` (86 filas) puede automatizar la bolsa de Bancóldex —
-  bloqueado por la regla de "dos clientes con evidencia real"
-  (`openspec/project.md`).
-- Cotejo A/B formal contra `main` con `verificar_ab.py`, si el equipo lo
-  quiere además de la verificación en navegador ya realizada.
-- Publicar la rama remota y coordinar el PR.
+Esta sección separa la evidencia ya cerrada del experimento local y del
+ajuste que quedó sin validar cuando Claude agotó sus tokens.
+
+### Prueba controlada sin alterar el insumo real
+
+Se creó una copia local, ignorada por Git, del consolidado:
+
+- Original: `Bancoldex/Data consolidada junio_Bancoldex 2026.xlsx`.
+- Fixture: `Bancoldex/Data consolidada junio_Bancoldex 2026
+  (prueba-disponibilidad-jun26).xlsx`.
+
+El original conserva la tabla `Disponibilidad Real` hasta junio de 2025. La
+copia agrega una columna para junio de 2026 con 100 % en los cuatro motores
+(`MY SQL`, `ORACLE`, `SQLSERVER`, `WEB LOGIC`). La revisión directa de ambos
+libros confirma que la nueva fecha está insertada antes de `PROMEDIO` solo en
+el fixture. La copia sirve para recorrer el flujo de la interfaz; **no es
+evidencia del servicio ni corrige el archivo entregado por el cliente**.
+
+Con esa copia, el lector publicó disponibilidad global 100,0 %, meta 99,98 %
+y cuatro de cuatro motores en cumplimiento. La prueba descubrió un cuarto
+literal de Acción Fiduciaria en el resumen colapsado de `c11`, que todavía
+decía 99,30 %. Ese defecto sí quedó corregido y confirmado en el commit
+`4f822c3`: el resumen ahora lee `ci.datos.meta` y conserva 99,3 % como valor
+por defecto para Acción Fiduciaria.
+
+### Interpretación correcta del modal `c6`
+
+- `Disponibilidad SETI: sin dato` es deliberado para Bancóldex: el insumo no
+  entrega una serie SETI independiente. Copiar `Disponibilidad Real` a SETI
+  inventaría una equivalencia que la fuente no demuestra.
+- El histórico SETI del modal queda vacío por la misma razón:
+  `cargarDisponibilidadTabla()` no publica `tablas.seti.historico`. El
+  histórico respaldado por la fuente es el detalle por motor de `c11`.
+- La meta contractual 99,98 % aparecía como 100 % en `c6` por usar
+  `pct(meta)` sin decimales. Esto es un problema de presentación, no de
+  cálculo ni de lectura del Excel.
+
+### Cambio local pendiente, no confirmado
+
+El árbol de trabajo conserva un único cambio de código sin commit en
+`informe-accion-fiduciaria 1.html`: para perfiles cuya disponibilidad usa la
+estrategia `tabla-con-fechas`, el modal formatea la meta con dos decimales;
+los demás perfiles mantienen el formato anterior. La intención es mostrar
+99,98 % para Bancóldex sin cambiar el 99 % que hoy muestra Acción
+Fiduciaria.
+
+Claude alcanzó a iniciar la comprobación en navegador, pero encontró estado
+persistido de pruebas anteriores en IndexedDB. Ese estado se restauraba al
+recargar e impedía atribuir el resultado al fixture actual. La sesión terminó
+antes de limpiar IndexedDB y repetir la prueba; por tanto, el cambio **no debe
+considerarse validado ni listo para commit**.
+
+### Secuencia exacta para retomar
+
+1. Limpiar IndexedDB y cualquier estado persistido de la aplicación de
+   prueba; recargar `?perfil=bancoldex` desde un estado vacío.
+2. Seleccionar junio de 2026 y cargar el fixture etiquetado arriba.
+3. Verificar en `c6` meta 99,98 %, disponibilidad cliente 100 % y SETI
+   `Sin dato`; no fabricar histórico SETI.
+4. Verificar en `c11` cuatro de cuatro motores y meta 99,98 %.
+5. Recargar Acción Fiduciaria y comprobar que `c6` conserva su presentación
+   anterior (meta 99 %) y que el resumen de `c11` conserva su meta real.
+6. Agregar una prueba de regresión para la precisión por estrategia, ejecutar
+   la suite completa y la validación sintáctica; solo entonces confirmar el
+   cambio pendiente.
+7. Mantener separado el fixture y reportar como hallazgo de fuente que el
+   consolidado real no contiene junio de 2026 en `Disponibilidad Real`.
+
+## Cierre Codex — Bancóldex terminado
+
+### Insumos originales aceptados
+
+1. `Data consolidada junio_Bancoldex 2026.xlsx`: tres indicadores al 100 %
+   con metas 99,98 %/97 %/99 %, y 11 backups al 100 % con meta 95 %.
+2. `Casos + tareas BD junio 2026.xlsx`: 72 casos; tipos 33/32/5/2; motores
+   Oracle 52, SQL Server 19 y WebLogic 1; SLA 71/72 (98,61 %).
+3. `Logros_Mitigacion_TYA Bencoldex_junio.xlsx`: 5 logros y 2 mitigaciones;
+   todas las mitigaciones tienen fecha de entrega 30/06/2026.
+
+La carga del consolidado es selectiva: el preset requiere indicadores y
+backups, por lo que la tabla `Disponibilidad Real` (que termina en jun-25) no
+bloquea esas dos fuentes válidas. El fixture que agrega jun-26 solo documenta
+la capacidad del lector; nunca se usa como evidencia del informe.
+
+### Presentación final
+
+- `c3`: contrato `CN-2024112`, 257 activos y vigencia hasta 14/11/2026,
+  respaldados por el PDF aprobado. La hoja Excel de línea base no reemplaza
+  esa evidencia porque sus totales 220/161 contradicen 237/257 del PDF.
+- `c4`: indicadores del servicio con las metas contractuales de Bancóldex.
+- `c5`: reutiliza la tarjeta, el modal y la gráfica apilada de Acción
+  Fiduciaria. Se añadieron una dona por motor, barras por categoría, SLA y
+  análisis narrativo. No contiene tablas de Excel ni exporta filas/IDs de
+  tickets.
+- `c7`: 11 bases de datos, ejecución de backups 100 %, meta 95 %.
+- `c8`/`c8m`: el mismo libro mensual alimenta Logros y Mitigación.
+
+No se seleccionan `c6/c11` (disponibilidad original desactualizada), `c9`
+(TYA de sep-25 sin horas contratadas/saldo para jun-26) ni `c12` (sin insumo
+mensual exportable). Son exclusiones basadas en evidencia, no pendientes del
+entregable.
+
+### Errores de integración corregidos
+
+- El paquete automático `insumos-af.js` ya no se procesa para perfiles con
+  fuente propia de casos; no puede cambiar junio Bancóldex por julio de Acción
+  Fiduciaria.
+- El periodo se fija sin revalidación antes de restaurar IndexedDB. Tras una
+  recarga, junio-2026 y los tres archivos reaparecen por la misma ruta de
+  validación manual.
+- El HTML de cliente rehidrata casos Aranda, indicadores, backups y
+  cualitativos desde el estado embebido; la entrega no depende de los Excel,
+  IndexedDB ni de un servidor.
+
+### Evidencia final
+
+- Navegador real: dashboard de seis tarjetas, periodo junio-2026, centro de
+  carga 2/2 fuentes obligatorias y exportaciones habilitadas.
+- Modal de casos: 72 total, 98,61 % SLA, gráficas por tipo/motor/categoría y
+  análisis automático con cifras consistentes.
+- Recarga completa: periodo e insumos restaurados sin contaminación del
+  paquete AF.
+- Suite: 84 pruebas correctas.
+- Sintaxis: perfiles y bloques JavaScript internos válidos.
+- Formato: `git diff --check` sin errores.
+
+Lo único no ejecutado por decisión de alcance es publicar la rama o abrir un
+PR; requiere una instrucción separada del equipo.

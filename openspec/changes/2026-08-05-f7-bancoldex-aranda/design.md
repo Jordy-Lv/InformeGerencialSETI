@@ -39,6 +39,23 @@ corrigió a leer `ci.datos.meta` (que `cargarDisponibilidadTabla()` ya
 publica desde `PERFIL.metas.disponibilidad`), con el mismo valor 99,3 %
 como default cuando el dominio no lo declara — AF sin cambios.
 
+### Precisión de la meta en el modal `c6` (soporte fuera del preset final)
+
+La prueba controlada con una copia del consolidado que agrega junio de 2026
+mostró que `c6` redondea la meta 99,98 % a 100 % mediante `pct(meta)`. Esto
+vuelve visualmente indistinguibles la meta contractual y un cumplimiento
+perfecto. El árbol de trabajo contiene una solución local: usar dos decimales
+cuando la estrategia declarada es `tabla-con-fechas` y conservar el formato
+existente en los demás perfiles.
+
+La decisión semántica es independiente del formato: Bancóldex debe seguir
+mostrando SETI `Sin dato` y sin histórico SETI, porque la fuente solo respalda
+`Disponibilidad Real` por motor. No se copiará esa serie a SETI para llenar el
+modal. El formato a dos decimales se conserva como soporte para la estrategia
+`tabla-con-fechas`, pero `c6`/`c11` se excluyen del preset final: el único
+libro original termina en jun-25 y el fixture con jun-26 no es evidencia. Por
+ello esta ruta no bloquea ni aporta cifras al informe Bancóldex entregable.
+
 ### Tercer lugar con texto de AF quemado: `TARJETA_PENDIENTE`
 
 Además del `presentacion.items` de `INVENTARIO_TARJETAS` (ya cubierto por
@@ -96,25 +113,11 @@ Extiende `base`. Declara (datos, sin funciones):
 - `fuentes.casos` (ver abajo) — **no** `fuentes.glpi`: Bancóldex no tiene GLPI.
 - `almacen.prefijo = 'informeBancoldex'`.
 - `textos` con las mismas claves que ya usan AF/Novaventa.
-- `tarjetas.seleccionadas: ['c9']` — hallazgo al verificar en navegador:
-  `resolverTarjetasPerfil()` (motor, F3) exige al menos una tarjeta;
-  `tarjetas.seleccionadas: []` no es un estado soportado y hace fallar el
-  arranque (`El perfil "bancoldex" requiere tarjetas.seleccionadas.`), a
-  diferencia de lo que sugiere leer el requisito de `inventario-tarjetas`
-  aislado — ese requisito describe qué pasa cuando un perfil **no
-  selecciona una tarjeta puntual** (como `c10` en AF), no cuando la lista
-  completa está vacía. Además, casi todas las tarjetas del inventario
-  compartido llevan texto de presentación **estático**, heredado de Acción
-  Fiduciaria y todavía no derivado del perfil activo (c3: contrato
-  «CN-21012025»; c4: metas «99,30 %/95 %/90 %»; c12: «Informe mensual
-  Oracle») — mostrarlas bajo la marca Bancóldex expondría una cifra ajena
-  antes de que exista un dato real. `c9` (bolsa de horas) es la única cuya
-  presentación ya es genérica (`'Dato no disponible'`,
-  `'Sin fuente oficial de bolsa de horas'`) y cuyo renderizador (`renderC9`)
-  es un editor manual sin dependencia de GLPI ni del consolidado — la única
-  tarjeta que Bancóldex puede activar hoy sin mostrar nada falso. F7b añade
-  la tarjeta de casos (4 categorías) y los lectores de consolidado; esta
-  lista crecerá entonces.
+- `tarjetas.seleccionadas: ['c3','c4','c5','c7','c8','c8m']`. Es el preset
+  de cierre respaldado por el PDF aprobado y los tres libros originales del
+  corte. `c6`/`c11` quedan fuera por disponibilidad desactualizada; `c9` por
+  un TYA de otro periodo sin contrato/saldo; `c12` por no existir insumo
+  mensual exportable. Ninguna tarjeta vacía se usa como relleno.
 
 ## Fuente `casos` (Aranda)
 
@@ -153,21 +156,20 @@ verificó con el arnés Node de este change (ver "Verificación de F7a")
 contra el export real: encabezado resuelto en la fila 0, 72 filas
 adaptadas.
 
-### `cargarCasosAranda()` no publica en `REPORTE` (hallazgo al implementar)
+### `cargarCasosAranda()` publica en el dominio compartido `casos`
 
-`REPORTE.publicar(dominio,…)` valida `dominio` contra `this.dominios`, que se
-construye una sola vez a partir de `DOMINIOS =
-[...new Set(TARJETAS_PREDETERMINADAS.flatMap(t=>t.dominios))]` (F3). Como
-Bancóldex no tiene todavía una tarjeta que declare un dominio de casos propio
-(ver "Fuera de alcance" en `proposal.md`), no existe ningún nombre de dominio
-válido al que publicar sin editar a mano esa lista derivada — exactamente la
-segunda lista fija que F3 eliminó. Por eso `cargarCasosAranda()` **devuelve**
-`{estado, casos, agregados, fuente, notas}` en vez de publicar, y F7b lo
-conecta a `REPORTE` cuando defina el dominio y la tarjeta. Tampoco depende de
-`EXTENSIONES_INSUMO` (deriva de `TARJETAS_SELECCIONADAS.flatMap(t=>t.fuentes)`;
-la única tarjeta de Bancóldex en F7a, `c9`, declara `fuentes:[]`, así que esa
-lista sigue sin una entrada `aranda`): valida la extensión `.xlsx`/`.xls`
-directamente, la misma que ya usa `consolidado`.
+El cierre configura `c5` declarativamente con `dominios: ['casos']`; por eso
+`DOMINIOS` incorpora el destino sin agregar una segunda lista fija.
+`cargarCasosAranda()` publica un objeto `modo: 'aranda-tipo-motor'` con
+agregados por tipo, motor, categoría de requerimiento y SLA. El store no
+persiste ni exporta identificadores o filas crudas de tickets: el entregable
+solo recibe los agregados necesarios para explicar las gráficas.
+
+`renderC5()` conserva la tarjeta, el modal y el componente
+`montarHistorico()` de Acción Fiduciaria. La adaptación Bancóldex agrega una
+dona por motor, barras horizontales por categoría y un análisis narrativo;
+no presenta tablas de Excel. Con un único corte real no se inventan meses
+históricos: la barra apilada muestra solo jun-26.
 
 ### Por qué `adaptador: 'aranda-export'` y no una nueva `PERFIL.fuentes.glpi`
 
@@ -240,6 +242,38 @@ F7a **no** implementa esta estrategia todavía: no hay lector de consolidado
 que la use hasta F7b. Queda declarada aquí para que F7b no tenga que
 rediseñarla, y su ausencia de código no bloquea F7a porque nada la invoca
 todavía.
+
+## Cierre end-to-end
+
+### Consolidado selectivo
+
+El cargador ejecuta únicamente los lectores cuyos dominios pertenecen al
+preset activo. Para Bancóldex procesa `indicadores` y `backups`, pero no
+invoca la tabla `Disponibilidad Real` desactualizada. Así un dominio excluido
+no bloquea evidencia válida de otro dominio del mismo libro.
+
+### Un libro cualitativo, dos dominios
+
+La fuente `cualitativos` declara una sola entrada y las hojas exactas
+`Logros`/`Mitigación`. El lector publica ambos dominios y exige que todas las
+fechas de entrega de mitigaciones pertenezcan al periodo seleccionado. Esta
+decisión evita pedir dos archivos artificiales y conserva la validación del
+corte.
+
+### Restauración y periodo
+
+En el arranque, `aplicarPeriodo({revalidarInsumos:false})` fija el periodo sin
+revalidar antes de que IndexedDB restaure los archivos. Después cada insumo se
+procesa por su ruta normal. Además, el paquete automático `insumos-af.js` se
+omite cuando el perfil declara una fuente propia de casos; de otro modo los
+insumos de Acción Fiduciaria podían reemplazar junio de Bancóldex por julio.
+
+### Salida autocontenida
+
+El estado exportable rehidrata indicadores, casos Aranda, backups, logros y
+mitigaciones antes de pintar tarjetas y gráficas. El perfil y los agregados
+viajan embebidos; no se requieren Excel, IndexedDB ni un servidor en la
+entrega al cliente.
 
 ## Gap preexistente: diapositivas «constantes» no dependen de la selección
 

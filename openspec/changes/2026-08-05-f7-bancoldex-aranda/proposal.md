@@ -57,36 +57,48 @@ misma rama, la misma sesión:
 10. `PERFIL.lineaBase` — `renderC3()` presenta la ficha contractual real del
     perfil cuando la declara; AF (sin declararla) conserva su ficha legado
     exacta. Cierra el "gap preexistente" identificado durante F7a.
-11. `presentarTarjetaPerfil()` / `PERFIL.tarjetas.presentacion` — un perfil
-    puede sobrescribir la presentación (resumen colapsado) de una tarjeta
-    que selecciona, sin tocar su lógica ni el inventario compartido.
-12. Selección ampliada de Bancóldex: `c3, c4, c6, c7, c8, c8m, c9, c11, c12`
-    (`c5` casos y `c10` capacidad quedan fuera — ver `design.md`).
-13. Todo verificado end-to-end en navegador real, cargando los dos archivos
-    reales de Bancóldex de junio-2026 sin errores de consola.
+11. `presentarTarjetaPerfil()` / `PERFIL.tarjetas.configuracion` y
+    `.presentacion` — un perfil puede declarar los dominios, fuentes,
+    criterios y resumen colapsado de una tarjeta compartida, sin funciones
+    en el perfil ni ramas por cliente en el inventario.
+12. Preset final de Bancóldex: `c3, c4, c5, c7, c8, c8m`. Incluye únicamente
+    secciones respaldadas por los insumos originales del corte: línea base,
+    indicadores, casos, backups, logros y mitigaciones.
+13. `c5` publica los agregados de Aranda en el dominio compartido `casos` y
+    reutiliza la tarjeta, el modal, la gráfica apilada y el análisis de Acción
+    Fiduciaria. Los desgloses propios de Bancóldex se adaptan como gráficas de
+    motor y categoría; el entregable no presenta tablas de Excel.
+14. Un único libro cualitativo publica las hojas `Logros` y `Mitigación`, con
+    validación del periodo en la fecha de entrega de las mitigaciones.
+15. Todo verificado end-to-end en navegador real con los tres archivos
+    originales de junio-2026: consolidado, Aranda y cualitativos.
 
-## Fuera de alcance (queda pendiente)
+## Decisiones de cierre y exclusiones deliberadas
 
-- Tarjeta visual de casos (`c5`-equivalente) con las cuatro categorías de
-  Bancóldex: `renderC5()`/sus criterios (`glpi`+`alertas`) siguen escritos
-  para AF/Novaventa. El adaptador ya lee y valida el archivo; falta dónde
-  pintarlo.
+- La tarjeta visual de casos **sí queda cerrada**. Reutiliza los componentes
+  visuales existentes de Acción Fiduciaria y no replica el Excel como tabla.
 - `Linea Base` como lector de hoja: `PERFIL.lineaBase` es hoy una
-  declaración estática (verificada contra el PDF), no un parser de la hoja
-  homónima del consolidado — ningún perfil la lee dinámicamente todavía.
-- La decisión de si `TYA` puede automatizar la bolsa de horas (bloqueada:
-  ningún segundo cliente lo necesita todavía, ver `openspec/project.md`).
-- Cualquier cambio a Acción Fiduciaria o Novaventa.
+  declaración estática verificada contra el PDF aprobado (237 → 257), no un
+  parser de la hoja homónima: el Excel original arroja totales incompatibles
+  (220/161) y no reemplaza la evidencia aprobada.
+- `c6`/`c11` no forman parte del preset: la tabla original `Disponibilidad
+  Real` termina en jun-25. El fixture local con jun-26 prueba el lector, pero
+  no constituye evidencia del servicio.
+- `c9` no forma parte del preset: el libro TYA entregado corresponde a sep-25
+  y no acredita horas contratadas ni saldo para jun-26.
+- `c12` no se selecciona porque no existe un insumo mensual exportable que
+  la respalde en este flujo.
+- Acción Fiduciaria conserva su ruta de carga y presentación por defecto; los
+  cambios compartidos están condicionados por perfil y cubiertos por pruebas
+  de regresión.
 
 ## Coordinación con F6
 
-`openspec/changes/2026-08-05-f6-perfil-novaventa/tasks.md` sigue abierto y
-reserva `informe-accion-fiduciaria 1.html`. Este change también lo toca
-(solo con funciones nuevas y generalizaciones con valor por defecto
-idéntico al de AF, nunca reescribiendo lógica existente de GLPI/AF/
-Novaventa). Se desarrolla en la rama independiente
-`f7/bancoldex-aranda-perfil`, creada desde el cierre de F5 (`db3d368`,
-`origin/codex/f5-adaptadores-canonico`), no desde F6.
+El trabajo se retomó desde `f7/bancoldex-aranda-perfil` en la rama aislada
+`codex/bancoldex-completo`. El change toca el HTML compartido mediante
+funciones nuevas y generalizaciones cuyos valores por defecto conservan
+Acción Fiduciaria; `cargarGlpi()` sigue intacto. La revisión visual y la
+suite completa comprueban ambos perfiles antes de integrar esta rama con F6.
 
 **F6 creció durante esta misma sesión** mucho más allá de "perfil
 Novaventa": Codex agregó un administrador de clientes por interfaz

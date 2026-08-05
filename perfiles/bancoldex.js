@@ -13,13 +13,11 @@
    ambos archivos reales antes de escribirse aquí — ver
    docs/2026-08-05-f7-bancoldex-aranda.md.
 
-   No se selecciona c5 (casos): su renderizador y sus criterios (dominios
-   «glpi» + «alertas») están escritos para el par requerimiento/incidente de
-   AF/Novaventa y para un cliente con AlertsList — ninguno de los dos aplica
-   a las cuatro categorías de Aranda. El adaptador ya lee y valida el
-   archivo (misma entrada que hoy recibe GLPI, ver cargarCasosOGlpi() en el
-   motor); la tarjeta visual de casos queda para un siguiente change. No se
-   selecciona c10 (capacidad): Bancóldex no declara esa hoja. */
+   El preset final solo selecciona secciones respaldadas por los insumos
+   originales de junio de 2026. La disponibilidad contractual se presenta en
+   Indicadores (c4); c6/c11 no se seleccionan porque «Disponibilidad Real»
+   termina en jun-25. Tampoco se selecciona c9: el TYA entregado corresponde
+   a sep-25 y no acredita bolsa contratada/saldo para jun-26. */
 window.PERFIL_BANCOLDEX = {
   id: 'bancoldex',
   nombre: 'Bancóldex',
@@ -34,6 +32,10 @@ window.PERFIL_BANCOLDEX = {
 
   lineaBase: {
     alcance: 'Administración de Bases de Datos y Servidores de Aplicación Oracle.',
+    exportacion: {
+      servicios: '13 CI',
+      activos: '257 activos',
+    },
     estadisticas: [
       {etiqueta: 'Alcance', valor: 'Admin. BD y Oracle', meta: 'Producción y Desarrollo/Pruebas'},
       {etiqueta: 'Activos gestionados', valor: '257', meta: 'Línea base junio 2026 (contrato: 237)'},
@@ -50,10 +52,20 @@ window.PERFIL_BANCOLDEX = {
   metas: {disponibilidad: 0.9998, gestionServicio: 0.97, entregables: 0.99, backups: 0.95},
 
   tarjetas: {
-    seleccionadas: ['c3', 'c4', 'c6', 'c7', 'c8', 'c8m', 'c9', 'c11', 'c12'],
+    seleccionadas: ['c3', 'c4', 'c5', 'c7', 'c8', 'c8m'],
+    configuracion: {
+      c5: {
+        dominios: ['casos'],
+        fuentes: ['glpi'],
+        criterios: [{texto: 'Aranda: casos, motores y SLA del periodo', regla: 'resuelto', dominio: 'casos'}],
+      },
+      // El mismo libro mensual trae Logros y Mitigación en hojas separadas.
+      c8m: {fuentes: ['logros']},
+    },
     presentacion: {
-      c3: {items: [['Línea base'], ['Activos gestionados', '257'], ['Motores', 'Oracle · SQL Server'], ['Vigencia', 'Hasta 14/11/2026']], chip: ['ok', 'Vigente']},
+      c3: {items: [['Línea base'], ['Contrato', 'CN-2024112'], ['Activos gestionados', '257'], ['Motores', 'Oracle · SQL Server'], ['Vigencia', 'Hasta 14/11/2026']], chip: ['ok', 'Vigente']},
       c4: {items: [['Indicadores del servicio'], ['Disponibilidad', '—', 'Meta 99,98%'], ['Gestión del Servicio', '—', 'Meta 97%'], ['Entregables', '—', 'Meta 99%']]},
+      c5: {valor: 'Pendiente de cargar', meta: 'Requiere el export de Aranda del periodo'},
       c6: {meta: 'Meta 99,98% · requiere el consolidado'},
       c7: {meta: 'Ejecución de backups por BD · Meta 95%'},
       c11: {meta: 'Meta 99,98% por motor · requiere el consolidado'},
@@ -88,6 +100,15 @@ window.PERFIL_BANCOLDEX = {
       filtroCliente: {estrategia: 'archivo-alcance-unico'},
       jerarquia: {separador: '.'},
       sla: {estrategia: 'columna-cumplimiento', verdaderos: ['cumple'], falsos: ['no cumple']},
+      interfaz: {
+        etiqueta: '2. Exportación Aranda',
+        ayuda: 'Excel de Aranda con Número del caso, Fecha de registro, Tipo de caso, Motor e Indicador de cumplimiento.',
+      },
+    },
+    cualitativos: {
+      entrada: 'logros',
+      alcance: 'archivo-alcance-unico',
+      hojas: {logros: 'Logros', mitigaciones: 'Mitigación'},
     },
     consolidado: {
       // Verificado contra el archivo real: la fila con «INDICADOR»/«META»

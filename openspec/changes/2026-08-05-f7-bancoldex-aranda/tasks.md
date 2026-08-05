@@ -1,6 +1,7 @@
 # F7 — Adaptador Aranda y perfil Bancóldex (F7a datos + F7b integración)
 
-Rama `f7/bancoldex-aranda-perfil`, creada desde el cierre de F5 (`db3d368`).
+Rama de cierre `codex/bancoldex-completo`, creada desde el estado documentado
+de `f7/bancoldex-aranda-perfil` (`4f822c3`).
 F6 sigue abierto (en el directorio principal, sin confirmar) y reserva
 `informe-accion-fiduciaria 1.html`; este change también lo lista (ver
 "Coordinación con F6" en `proposal.md`) porque F7 solo añade funciones
@@ -35,9 +36,8 @@ reescribiendo lógica existente de GLPI/AF/Novaventa. Antes de mergear a
 - [x] Implementar `adaptarArandaACanonico()` reutilizando `casoCanonico()` y
   el clasificador `clasificarTipoAranda()`.
 - [x] Implementar la estrategia SLA `columna-cumplimiento`.
-- [x] Implementar `cargarCasosAranda()`, que lee, adapta y agrega los casos
-  de Aranda y devuelve el resultado (no publica en `REPORTE`: no hay dominio
-  derivado todavía — ver design.md), sin modificar `cargarGlpi()`.
+- [x] Implementar `cargarCasosAranda()`, que lee, adapta, agrega y publica los
+  casos de Aranda en `REPORTE.casos`, sin modificar `cargarGlpi()`.
 - [x] Agregar `ID_PERFIL_ACTIVO` (hallazgo: al cierre de F5 el perfil activo
   estaba fijo en `'accion-fiduciaria'`, sin mecanismo `?perfil=`; sin esto
   `base`/`bancoldex` quedaban inalcanzables).
@@ -71,19 +71,46 @@ reescribiendo lógica existente de GLPI/AF/Novaventa. Antes de mergear a
   + `tarjetas.presentacion`, incluida la generalización de
   `TARJETA_PENDIENTE` (tercer lugar con texto de AF quemado, hallazgo al
   verificar en navegador).
-- [x] **F7b** — Ampliar `tarjetas.seleccionadas` de Bancóldex a `c3, c4, c6,
-  c7, c8, c8m, c9, c11, c12`.
+- [x] **Cierre** — Fijar el preset respaldado por insumos originales:
+  `c3, c4, c5, c7, c8, c8m`.
 - [x] **F7b** — Verificación end-to-end en navegador con los dos archivos
   reales de junio-2026 (consolidado + Aranda): indicadores, backups y casos
   cargan correctamente; disponibilidad reporta su hallazgo real; AF sin
   cambios (mismo `CN-21012025`, misma `Meta 99,30%`, consola limpia).
 - [x] Ejecutar la suite completa tras F7b → 77 pruebas, OK.
-- [ ] Coordinar el orden de merge con quien cierre F6 y publicar la rama
-  remota (pendiente, requiere acción del equipo).
+- [x] Crear una copia local y claramente etiquetada del consolidado con una
+  columna simulada de junio de 2026; comprobar con ella 100 % global y 4/4
+  motores, sin tratar el fixture como evidencia del servicio.
+- [x] Corregir el cuarto literal de meta AF en el resumen de `c11` para leer
+  la meta del dominio (`4f822c3`) y ejecutar la suite completa → 78 pruebas,
+  OK.
+- [x] Configurar `c5` declarativamente para Aranda y reutilizar la tarjeta,
+  modal, gráfica apilada y análisis de Acción Fiduciaria.
+- [x] Reemplazar los desgloses tabulares de Aranda por gráficas: dona por
+  motor y barras horizontales por categoría.
+- [x] Procesar un solo libro cualitativo con hojas `Logros` y `Mitigación` y
+  validar que las fechas de entrega correspondan a jun-26.
+- [x] Evitar que `insumos-af.js` se autocargue en Bancóldex y corrija el
+  periodo del cliente con un paquete de Acción Fiduciaria.
+- [x] Restaurar periodo e insumos persistidos sin una revalidación prematura;
+  recargar y confirmar junio-2026, 2/2 fuentes obligatorias y exportaciones
+  habilitadas.
+- [x] Rehidratar las tarjetas/gráficas desde el estado embebido del HTML para
+  que el entregable sea autocontenido.
+- [x] Verificar visualmente en navegador el dashboard y el modal final de
+  casos: 72 total, 71/72 SLA, 52 Oracle y 16 en la categoría principal.
+- [x] Ejecutar suite final de 84 pruebas, validación de sintaxis JavaScript y
+  `git diff --check`.
+- [ ] Publicar la rama remota/PR (no solicitado; requiere decisión del
+  usuario/equipo).
 
-## Explícitamente fuera de esta lista
+## Exclusiones deliberadas del preset
 
-- Tarjeta visual de casos (`c5`-equivalente, 4 categorías de Bancóldex).
 - Lector dinámico de la hoja `Linea Base` (hoy `PERFIL.lineaBase` es
-  declaración estática verificada contra el PDF).
-- Decisión sobre `TYA` y la bolsa de horas.
+  declaración estática verificada contra el PDF aprobado; el Excel original
+  presenta totales incompatibles).
+- `c6`/`c11`: el original de `Disponibilidad Real` termina en jun-25; el
+  fixture de prueba no se usa como evidencia.
+- `c9`: TYA corresponde a sep-25 y no acredita contrato/saldo de horas para
+  jun-26.
+- `c12`: no existe insumo mensual exportable en el flujo entregado.

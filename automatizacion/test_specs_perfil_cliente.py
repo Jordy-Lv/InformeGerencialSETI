@@ -189,17 +189,23 @@ class TestPerfilBaseYBancoldex(unittest.TestCase):
         self.assertRegex(BANCOLDEX, r"vigenciaHasta\s*:\s*['\"]2026-11-14['\"]")
 
     def test_bancoldex_selecciona_tarjetas_con_presentacion_propia(self):
-        # F7b: con PERFIL.lineaBase (c3) y tarjetas.presentacion (resto),
-        # ninguna tarjeta seleccionada muestra ya texto o cifras de AF.
-        # c5 (casos) sigue fuera: sus criterios exigen glpi+alertas, que
-        # Bancóldex no tiene.
-        for id_tarjeta in ['c3', 'c4', 'c6', 'c7', 'c8', 'c8m', 'c9', 'c11', 'c12']:
+        # Cierre funcional: solo se seleccionan secciones respaldadas por los
+        # insumos originales de junio-2026; c5 se adapta declarativamente a
+        # Aranda y el mismo libro alimenta c8/c8m.
+        for id_tarjeta in ['c3', 'c4', 'c5', 'c7', 'c8', 'c8m']:
             self.assertIn(f"'{id_tarjeta}'", BANCOLDEX)
-        self.assertNotRegex(BANCOLDEX, r"seleccionadas\s*:[^\]]*'c5'")
-        self.assertNotRegex(BANCOLDEX, r"seleccionadas\s*:[^\]]*'c10'")
+        seleccion=re.search(r"seleccionadas\s*:\s*\[([^\]]+)\]",BANCOLDEX).group(1)
+        for fuera in ['c6','c9','c10','c11','c12']:
+            self.assertNotIn(f"'{fuera}'",seleccion)
         self.assertIn('lineaBase:', BANCOLDEX)
         self.assertIn("presentacion:", BANCOLDEX)
         self.assertRegex(BANCOLDEX, r"c3:\s*\{items:")
+        self.assertRegex(BANCOLDEX, r"c5:\s*\{\s*dominios:\s*\['casos'\]")
+        self.assertIn("c8m: {fuentes: ['logros']}", BANCOLDEX)
+
+    def test_bancoldex_declara_un_libro_cualitativo_de_dos_hojas(self):
+        self.assertIn("alcance: 'archivo-alcance-unico'", BANCOLDEX)
+        self.assertIn("hojas: {logros: 'Logros', mitigaciones: 'Mitigación'}", BANCOLDEX)
 
     def test_bancoldex_declara_las_cuatro_metas_del_pdf(self):
         # Disponibilidad 99,98%, Cumplimiento tiempos de Atención 97%,

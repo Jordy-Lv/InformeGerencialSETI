@@ -57,3 +57,45 @@ Fiduciaria cuando el perfil no declare `lineaBase`.
 - **WHEN** se renderiza la tarjeta de línea base
 - **THEN** conserva su ficha legado exacta, incluida la lectura desde los
   campos editables del DOM
+
+### Requirement: configuración funcional de tarjeta por perfil
+
+El motor SHALL permitir que un perfil sobrescriba declarativamente los
+dominios, fuentes y criterios de una tarjeta compartida, además de su
+presentación, sin incluir funciones en el archivo del perfil.
+
+#### Scenario: Bancóldex reutiliza c5 con Aranda
+
+- **GIVEN** `bancoldex` configura `c5` con dominio `casos`, fuente física
+  `glpi` y criterio Aranda resuelto
+- **WHEN** se resuelven las tarjetas del perfil
+- **THEN** `c5` usa la misma tarjeta y el mismo modal compartido, pero valida
+  el export Aranda como su única fuente de casos
+
+### Requirement: preset respaldado por evidencia del corte
+
+El perfil Bancóldex SHALL seleccionar únicamente tarjetas respaldadas por el
+PDF aprobado y los insumos originales del periodo, y SHALL excluir fuentes
+desactualizadas o pertenecientes a otro periodo.
+
+#### Scenario: preset final de junio de 2026
+
+- **GIVEN** el consolidado, Aranda y libro cualitativo originales
+- **WHEN** se resuelve `PERFIL_BANCOLDEX.tarjetas.seleccionadas`
+- **THEN** el resultado es `c3, c4, c5, c7, c8, c8m`; no incluye `c6/c11`
+  (disponibilidad hasta jun-25), `c9` (TYA sep-25) ni `c12` (sin insumo
+  exportable)
+
+### Requirement: salida Bancóldex autocontenida
+
+El HTML de cliente SHALL rehidratar desde su estado embebido el periodo, los
+agregados de casos, indicadores, backups, logros y mitigaciones antes de
+pintar tarjetas y gráficas, sin depender de IndexedDB ni de los libros fuente.
+
+#### Scenario: apertura del HTML exportado sin Excel
+
+- **GIVEN** un informe Bancóldex exportado después de cargar las tres fuentes
+  obligatorias
+- **WHEN** el cliente abre el HTML sin servidor ni archivos Excel vecinos
+- **THEN** observa junio de 2026 y las mismas cifras y gráficas aprobadas en
+  autoría

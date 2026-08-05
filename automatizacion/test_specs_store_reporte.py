@@ -99,14 +99,23 @@ class TestStoreDesplegado(unittest.TestCase):
         self.assertIn("suscriptor falló", bloque)
 
     def test_cambio_de_periodo_limpia_store_y_confirmaciones(self):
-        bloque = _entre("function aplicarPeriodo(){", "let colaRevalidacion")
+        bloque = _entre(
+            "function aplicarPeriodo({revalidarInsumos=true}={}){",
+            "let colaRevalidacion",
+        )
         self.assertIn("periodoActivo&&periodoActivo!==firma", bloque)
         self.assertIn("DOMINIOS.forEach(d=>REPORTE.limpiar(d))", bloque)
         self.assertIn("REPORTE.reconciliaciones=[]", bloque)
         self.assertIn("CARGA.logros.confirmado=false", bloque)
         self.assertIn("CARGA.mitigaciones.confirmado=false", bloque)
         self.assertIn("REPORTE.periodo={mes,anio,etiqueta}", bloque)
-        self.assertIn("void revalidar()", bloque)
+        self.assertIn("if(revalidarInsumos) void revalidar()", bloque)
+
+    def test_arranque_no_revalida_antes_de_restaurar_los_insumos(self):
+        self.assertGreaterEqual(
+            HTML.count("aplicarPeriodo({revalidarInsumos:false})"),
+            2,
+        )
 
     def test_rehidratacion_ocurre_antes_de_load_y_completa_vacio(self):
         marca = "if(window.__INFORME_CLIENTE__ && window.__ESTADO__){"

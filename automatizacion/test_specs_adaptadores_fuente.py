@@ -85,7 +85,7 @@ class TestAdaptadorAranda(unittest.TestCase):
         self.assertIn("async function cargarGlpi(file){\n  reset('glpi');", HTML)
         bloque_glpi = HTML[
             HTML.index("async function cargarGlpi"):
-            HTML.index("/* F7a — cargador de casos de Aranda")
+            HTML.index("/* Cierre Bancóldex: Aranda publica")
         ]
         self.assertNotIn("aranda", bloque_glpi.lower())
 
@@ -105,10 +105,23 @@ class TestAdaptadorAranda(unittest.TestCase):
         bloque = HTML[HTML.index("function adaptarArandaACanonico"):HTML.index("function metricasSlaCanonico")]
         self.assertIn("jerarquiaTexto.split(config.jerarquia.separador)", bloque)
 
-    def test_cargador_no_publica_dominio_inexistente(self):
+    def test_cargador_publica_en_dominio_casos_derivado(self):
         bloque = HTML[HTML.index("async function cargarCasosAranda"):HTML.index("window.cargarCasosAranda")]
-        self.assertNotIn("REPORTE.publicar(", bloque)
+        self.assertIn("REPORTE.publicar('casos'", bloque)
+        self.assertNotIn("REPORTE.publicar('aranda'", bloque)
+        self.assertIn("modo:'aranda-tipo-motor'", bloque)
         self.assertIn("return {", bloque)
+
+    def test_modal_aranda_reutiliza_graficas_y_no_tablas(self):
+        bloque = HTML[
+            HTML.index("if(x.modo==='aranda-tipo-motor'){"):
+            HTML.index("const m=metricasCasos(x);")
+        ]
+        self.assertIn("montarHistorico", bloque)
+        self.assertIn("dash-chart-aranda-motores", bloque)
+        self.assertIn("dash-chart-aranda-categorias", bloque)
+        self.assertIn("montarAnalisis", bloque)
+        self.assertNotIn("<table", bloque)
 
     def test_bancoldex_declara_fuente_casos_aranda(self):
         for fragmento in (
@@ -151,7 +164,7 @@ class TestLectoresConsolidadoGeneralizados(unittest.TestCase):
             self.assertIn(sitio, HTML)
         # cargarGlpi() en sí no cambió: sigue siendo la de F5, sin ninguna
         # mención a Aranda dentro de su cuerpo.
-        bloque_glpi = HTML[HTML.index("async function cargarGlpi"):HTML.index("/* F7a — cargador de casos de Aranda")]
+        bloque_glpi = HTML[HTML.index("async function cargarGlpi"):HTML.index("/* Cierre Bancóldex: Aranda publica")]
         self.assertNotIn("aranda", bloque_glpi.lower())
 
     def test_indicadores_usa_definicion_declarada_con_default_af(self):
@@ -188,10 +201,29 @@ class TestLectoresConsolidadoGeneralizados(unittest.TestCase):
         self.assertIn("if(!ficha){", bloque)
         self.assertIn("CN-'+con", bloque)  # rama legado de AF intacta
 
-    def test_presentacion_de_tarjeta_es_solo_visual_no_logica(self):
+    def test_configuracion_de_tarjeta_es_declarativa(self):
         self.assertIn("function presentarTarjetaPerfil(tarjeta){", HTML)
+        self.assertIn("const configuracion=PERFIL.tarjetas?.configuracion?.[tarjeta.id];", HTML)
         self.assertIn("const ajuste=PERFIL.tarjetas?.presentacion?.[tarjeta.id];", HTML)
         self.assertIn("return ids.map(id=>presentarTarjetaPerfil(INDICE_TARJETAS.get(id)));", HTML)
+
+    def test_consolidado_solo_exige_dominios_seleccionados(self):
+        self.assertIn("const requiereIndicadores=DOMINIOS.includes('indicadores');", HTML)
+        self.assertIn("const requiereDisponibilidad=DOMINIOS.includes('disponibilidad')||DOMINIOS.includes('ci');", HTML)
+        self.assertIn("const requiereBackups=DOMINIOS.includes('backups');", HTML)
+
+    def test_bancoldex_no_autocarga_el_paquete_local_de_accion_fiduciaria(self):
+        bloque = HTML[
+            HTML.index("async function cargarInsumosAutomaticos()"):
+            HTML.index("function revalidar()")
+        ]
+        self.assertIn("if(PERFIL.fuentes?.casos) return;", bloque)
+
+    def test_libro_cualitativo_bancoldex_publica_dos_dominios(self):
+        self.assertIn("function extraerCualitativosPorHojasPerfil(wb)", HTML)
+        self.assertIn("registrarContenido('logros',datos.logros", HTML)
+        self.assertIn("registrarContenido('mitigaciones',datos.mitigaciones", HTML)
+        self.assertIn("filasMit.every(r=>esPeriodo(r[cFecha],periodo().mes,periodo().anio))", HTML)
 
     def test_resumen_de_ci_usa_la_meta_del_dominio_no_un_literal(self):
         # Cuarto lugar con «99,30%» quemado, encontrado al probar en

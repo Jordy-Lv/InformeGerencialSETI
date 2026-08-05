@@ -96,3 +96,61 @@ la declara.
 - **WHEN** se carga su consolidado
 - **THEN** el motor sigue leyendo las hojas `Indicadores`/`Inidcadores` y
   `Backups`/`Instancias` exactamente como antes de este change
+
+### Requirement: casos Aranda publicados y explicados con gráficas compartidas
+
+Cuando el perfil configura `c5` con el dominio `casos`, el cargador Aranda
+SHALL publicar sus agregados en ese dominio. El modal SHALL reutilizar el
+componente gráfico de casos existente y SHALL representar los desgloses por
+motor y categoría como gráficas, sin tablas de Excel ni filas crudas de
+tickets en el estado exportable.
+
+#### Scenario: export real de junio de 2026
+
+- **GIVEN** el export Aranda original con 72 casos de Bancóldex
+- **WHEN** se carga y se abre `c5`
+- **THEN** el modal muestra 72 casos, SLA 71/72, una barra apilada por tipo,
+  una gráfica por motor y una gráfica por categoría, sin ningún elemento
+  `<table>` en la rama Aranda
+
+### Requirement: consolidado procesado por dominios seleccionados
+
+El cargador del consolidado SHALL ejecutar únicamente los lectores requeridos
+por los dominios del preset activo, de forma que una hoja excluida y sin corte
+vigente no bloquee dominios válidos del mismo archivo.
+
+#### Scenario: disponibilidad desactualizada fuera del preset Bancóldex
+
+- **GIVEN** el consolidado original donde `Disponibilidad Real` termina en
+  jun-25 y el preset de jun-26 solo requiere indicadores y backups
+- **WHEN** se carga el consolidado
+- **THEN** se publican tres indicadores y 11 backups, y no se exige una
+  columna jun-26 a la hoja de disponibilidad excluida
+
+### Requirement: libro cualitativo de alcance único
+
+Un perfil SHALL poder declarar un solo archivo cualitativo con hojas exactas
+para logros y mitigaciones. El lector SHALL publicar ambos dominios y SHALL
+rechazar mitigaciones cuya fecha de entrega no pertenezca al periodo activo.
+
+#### Scenario: libro cualitativo Bancóldex de junio de 2026
+
+- **GIVEN** un libro con hojas `Logros` y `Mitigación`, cinco logros y dos
+  mitigaciones con fecha de entrega 30/06/2026
+- **WHEN** se carga para junio de 2026
+- **THEN** los dominios publican 5 y 2 registros respectivamente desde la
+  misma entrada de archivo
+
+### Requirement: perfil con fuente propia no autocarga insumos ajenos
+
+El arranque SHALL omitir el paquete automático de Acción Fiduciaria cuando el
+perfil activo declara una fuente propia de casos, y SHALL restaurar el periodo
+antes de revalidar sus insumos persistidos.
+
+#### Scenario: Bancóldex persiste junio mientras existe insumos-af.js de julio
+
+- **GIVEN** Bancóldex guardado en junio de 2026 y un paquete local de Acción
+  Fiduciaria de julio de 2026
+- **WHEN** la página se recarga
+- **THEN** conserva junio, restaura sus archivos Bancóldex y no procesa el
+  paquete ajeno
