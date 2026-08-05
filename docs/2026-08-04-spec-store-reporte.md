@@ -20,6 +20,8 @@ PR #12, que continúa reservando el perfil de Acción Fiduciaria y el HTML.
 - Una spec canónica con siete requisitos `SHALL` y escenarios verificables:
   dominios y estados, publicación, semántica de cifra, notificaciones,
   cambio de periodo, rehidratación y concordancia de vistas.
+- El índice de capacidades actualizado para distinguir la spec ya
+  documentada del pendiente de exportación offline.
 - Ocho pruebas estáticas que confrontan la spec con las invariantes que ya
   existen en el HTML, sin ejecutar ni reescribir JavaScript.
 - La prueba usa únicamente la librería estándar de Python.
@@ -43,6 +45,7 @@ PR #12, que continúa reservando el perfil de Acción Fiduciaria y el HTML.
 - `openspec/changes/2026-08-04-especificar-store-reporte/design.md`
 - `openspec/changes/2026-08-04-especificar-store-reporte/tasks.md`
 - `openspec/changes/2026-08-04-especificar-store-reporte/specs/store-reporte/spec.md`
+- `openspec/specs/README.md`
 - `openspec/specs/store-reporte/spec.md`
 - `automatizacion/test_specs_store_reporte.py`
 - `docs/2026-08-04-spec-store-reporte.md`
