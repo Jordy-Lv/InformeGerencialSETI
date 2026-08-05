@@ -607,7 +607,16 @@ goldens.
 
 ## Estado de ejecución
 
+**Nota operativa (04/08/2026):** el plan se ejecutó con varias IAs en
+paralelo desde el inicio, tal como preveía este documento — la mayor parte
+de F0 no se hizo en la rama `refactor/multicliente-f0-fundacion` sino en
+ramas hermanas, cada una con su PR propio, revisadas y mergeadas a `main`
+por separado. Esta rama terminó aportando solo el propio plan y un ajuste
+de `.gitignore`. Quien retome el trabajo: la fuente de verdad es siempre
+`main`, no esta rama.
+
 | Fase | Estado |
 |---|---|
-| F0 | En curso (rama `refactor/multicliente-f0-fundacion`) |
-| F1–F11 | Pendientes |
+| F0 | **Casi completo.** Renombre del repo a `InformeGerencialSETI` (hecho) · `openspec/project.md` + `AGENTS.md` (PR #11, mergeado) · inventario de tarjetas recuperado a `docs/` (PR #7, mergeado) · arnés `automatizacion/verificar_ab.py` (PR #10, mergeado) — **pero incompleto**: falta correrlo contra un export real completo de AF con insumos de junio-2026 (hoy solo probado con `--autoprueba` y fixtures) y falta el mecanismo `dorados/<cliente>-<periodo>.json`. Sin esto, el criterio de aceptación exacto de F0 no está verificado todavía. |
+| F1 | **En curso**, adelantada por otra sesión sin coordinación explícita con este documento — PR #12 (`f1/perfil-accion-fiduciaria`), primer incremento: `perfiles/accion-fiduciaria.js`, `resolverPerfil()`, `fusionarProfundo` a ámbito global, `REPORTE.cliente`, claves de almacén migradas. El propio PR marca el criterio de aceptación de F1 como no cumplido todavía (quedan ~20 literales de interfaz sin hidratar). **Quedó en conflicto (`CONFLICTING`) contra `main`** porque PR #2 y #4 (fixes independientes, sin relación con el plan multicliente) tocaron el mismo `informe-accion-fiduciaria 1.html` y se mergearon primero — es el riesgo #5 de este plan materializándose en la práctica: la regla de "conjuntos de archivos disjuntos" de `openspec/AGENTS.md` no cubre PRs que no pasan por el proceso de `changes/`. Pendiente de resolver antes de sumar más manos (Codex) al mismo archivo. |
+| F2–F11 | Pendientes |
