@@ -40,5 +40,10 @@ window.PERFIL_ACCION_FIDUCIARIA = {
     marcaTopbar: 'Informe Acción Fiduciaria',
     clienteHero: 'ACCIÓN FIDUCIARIA',
     confidencialidad: 'Documento confidencial preparado por SETI para Acción Fiduciaria.',
+    // Sin tilde a propósito: nombre de archivo (PDF/HTML exportado). El
+    // nombre original ya se generaba así (probablemente por seguridad de
+    // nombre de archivo entre sistemas) — se conserva ese valor exacto,
+    // no se deriva de `nombre` para no cambiar el nombre del entregable.
+    nombreArchivo: 'Accion Fiduciaria',
   },
 };

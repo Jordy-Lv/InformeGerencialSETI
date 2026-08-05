@@ -77,6 +77,29 @@ La arquitectura real no era la que se asumía en el plan:
    documento de sesión, el estado del plan maestro, la lista de archivos y la
    descripción remota de la PR. Las verificaciones no ejecutadas deben quedar
    declaradas como pendientes.
+10. **Segunda parte (esta sesión): ~30 literales de texto de interfaz
+    eliminados**, con dos mecanismos distintos según el caso:
+    - **HTML estático nunca antes conectado a JS** (`<title>`, marca del
+      topbar, `CLIENTE:` de la portada): se marcan con
+      `data-perfil-titulo` / `data-perfil-texto="<clave>"` y una función
+      nueva, `hidratarTextosPerfil()`, los sobrescribe con
+      `PERFIL.textos.*` al arrancar. El texto que ya estaba en el HTML se
+      deja como resguardo visual (nunca se ve, porque la hidratación corre
+      antes de pintar), no porque siga siendo la fuente de verdad.
+    - **Los ~25 mensajes de validación/aviso, filtros y metadatos**
+      (`avisar`, `marcar`, `bloquear`, `filtroCliente`, `pdf.setProperties`,
+      nombres de archivo, el aviso de confidencialidad del export, y dos
+      arreglos de datos sintéticos dentro de las propias autopruebas) ahora
+      interpolan `${REPORTE.cliente}` en vez de repetir el literal.
+    - **Hallazgo real en el camino**: los nombres de archivo (`pdf.save`,
+      export HTML) usaban `"Accion Fiduciaria"` **sin tilde** — un primer
+      intento de usar `${REPORTE.cliente}` (con tilde) ahí habría cambiado
+      el nombre del entregable. Se agregó `PERFIL.textos.nombreArchivo`
+      como campo separado, sin tilde, con el valor exacto que ya se
+      generaba — detectado y corregido antes de seguir, no después.
+    - **Deliberadamente sin tocar**: la tabla estática de logros/mitigaciones
+      de ejemplo (líneas ~884-889) — sigue siendo la decisión correcta, ver
+      más abajo.
 
 ## Verificación realizada
 
@@ -122,35 +145,34 @@ archivo de producción, puede introducir — y la razón por la que cada paso
 de este documento se verificó por separado en vez de aplicar todos los
 cambios y revisar al final.
 
-## Pendiente (no es "F1 completo" todavía)
+## Pendiente
 
 El criterio de aceptación de F1 exige **cero literales "Acción Fiduciaria"
-fuera de `perfiles/accion-fiduciaria.js` y la tabla de textos**. Lo que
-falta, sin tocar todavía:
+fuera de `perfiles/accion-fiduciaria.js` y la tabla de textos**. Con el
+punto 10 de arriba, ya no quedan literales pendientes de conocimiento —
+`grep -n "Acci[oó]n Fiduciaria\|ACCION FIDUCIARIA\|Accion Fiduciaria"` solo
+encuentra: el resguardo visual de HTML estático (hidratado al arrancar), la
+tabla de ejemplo deliberadamente intacta (ver abajo), y comentarios de
+código (no se renderizan, no cuentan).
 
-- `<title>` (línea ~15), marca del topbar (línea ~527), `CLIENTE:` de la
-  portada (`.hero2__client`, línea ~605) — HTML estático, nunca antes
-  actualizado por JS; requiere una función de hidratación nueva, no solo
-  mover una referencia.
-- ~15 mensajes de validación/aviso (`avisar`, `marcar`, `bloquear`) que
-  interpolan "Acción Fiduciaria" como texto plano en vez de
-  `${REPORTE.cliente}`.
-- Metadatos y nombres de archivo del PDF/HTML exportado (`pdf.save(...)`,
-  `pdf.setProperties(...)`, el nombre del export HTML).
-- El aviso de confidencialidad embebido en el HTML exportado.
-- La tabla estática de logros/mitigaciones de ejemplo (líneas ~938-943) —
-  **decisión deliberada de NO tocarla**: es contenido editable ya cargado
-  (datos reales del período, no un placeholder genérico), no un literal de
-  lógica de negocio. Cambiarla arriesgaría el criterio de "0 cifras
-  distintas" sin beneficio arquitectónico real.
-- **`automatizacion/verificar_ab.py` contra un export real de `main` no se
-  corrió todavía** — sigue bloqueado por lo mismo que en F0 (el export
-  real exige todos los dominios cargados; no hay archivos reales de AF a
-  mano con el período correcto). La verificación de este PR es funcional
-  (comportamiento idéntico probado caso por caso), no un diff A/B de
-  archivo completo.
-- La PR no debe fusionarse hasta que esa comparación real informe cero
-  diferencias.
+- **La tabla estática de logros/mitigaciones de ejemplo (líneas ~884-889)
+  sigue intacta, a propósito**: es contenido editable ya cargado (datos
+  reales del período — nombres de filesystem, TS_TABLE_DEB, CHEETA — no un
+  placeholder genérico), no un literal de lógica de negocio. Cambiarla
+  arriesgaría el criterio de "0 cifras distintas" sin beneficio
+  arquitectónico real. Si se necesita generalizar, es una decisión de
+  producto (¿se resetea la tabla de ejemplo por cliente nuevo?), no una
+  omisión técnica.
+- **`automatizacion/verificar_ab.py` contra un export real y completo de
+  Acción Fiduciaria (todos los dominios cargados) sigue sin correrse** —
+  mismo bloqueo que en F0: no hay a mano los archivos mensuales reales
+  (consolidado, logros) con el período correcto. La verificación de este
+  incremento es funcional y estructural (comportamiento idéntico probado
+  caso por caso, exports en frío comparados sin diferencias — ver sesión
+  anterior de Yordy Pardo, arriba), no un A/B con insumos reales completos.
+- **La PR no debe fusionarse hasta que esa comparación real informe cero
+  diferencias** — se mantiene la misma condición que dejó la sesión
+  anterior.
 
 ## Archivos tocados
 
