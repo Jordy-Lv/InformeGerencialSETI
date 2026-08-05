@@ -188,11 +188,33 @@ class TestPerfilBaseYBancoldex(unittest.TestCase):
         self.assertRegex(BANCOLDEX, r"inicio\s*:\s*['\"]2024-11-14['\"]")
         self.assertRegex(BANCOLDEX, r"vigenciaHasta\s*:\s*['\"]2026-11-14['\"]")
 
-    def test_bancoldex_selecciona_solo_c9(self):
-        # resolverTarjetasPerfil() exige al menos una tarjeta (hallazgo al
-        # verificar en navegador); c9 es la única sin texto estático
-        # heredado de AF. Ver design.md, "Gap preexistente".
-        self.assertRegex(BANCOLDEX, r"seleccionadas\s*:\s*\[\s*['\"]c9['\"]\s*\]")
+    def test_bancoldex_selecciona_tarjetas_con_presentacion_propia(self):
+        # F7b: con PERFIL.lineaBase (c3) y tarjetas.presentacion (resto),
+        # ninguna tarjeta seleccionada muestra ya texto o cifras de AF.
+        # c5 (casos) sigue fuera: sus criterios exigen glpi+alertas, que
+        # Bancóldex no tiene.
+        for id_tarjeta in ['c3', 'c4', 'c6', 'c7', 'c8', 'c8m', 'c9', 'c11', 'c12']:
+            self.assertIn(f"'{id_tarjeta}'", BANCOLDEX)
+        self.assertNotRegex(BANCOLDEX, r"seleccionadas\s*:[^\]]*'c5'")
+        self.assertNotRegex(BANCOLDEX, r"seleccionadas\s*:[^\]]*'c10'")
+        self.assertIn('lineaBase:', BANCOLDEX)
+        self.assertIn("presentacion:", BANCOLDEX)
+        self.assertRegex(BANCOLDEX, r"c3:\s*\{items:")
+
+    def test_bancoldex_declara_las_cuatro_metas_del_pdf(self):
+        # Disponibilidad 99,98%, Cumplimiento tiempos de Atención 97%,
+        # Cumplimiento entregables 99%, Ejecución de Backups 95% — página
+        # «Indicadores» de Bancoldex/reporte-bancoldex-2026-07-02.pdf.
+        self.assertRegex(BANCOLDEX, r"disponibilidad\s*:\s*0\.9998")
+        self.assertRegex(BANCOLDEX, r"gestionServicio\s*:\s*0\.97\b")
+        self.assertRegex(BANCOLDEX, r"entregables\s*:\s*0\.99\b")
+        self.assertRegex(BANCOLDEX, r"backups\s*:\s*0\.95\b")
+
+    def test_bancoldex_declara_lectores_de_consolidado(self):
+        self.assertIn("hojas: ['Indicador']", BANCOLDEX)
+        self.assertRegex(BANCOLDEX, r"aliases:\s*\['cumplimiento tiempos de atencion'\]")
+        self.assertIn("hoja: 'Ejecucion Backups', columna: 'bd'", BANCOLDEX)
+        self.assertIn("estrategia: 'tabla-con-fechas', hoja: 'Disponibilidad Real', tabla: 'Disponibilidad Real'", BANCOLDEX)
 
     def test_perfil_activo_se_puede_elegir_por_url(self):
         # F7a: sin esto, 'base'/'bancoldex' quedan registrados pero

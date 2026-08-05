@@ -134,5 +134,65 @@ class TestAdaptadorAranda(unittest.TestCase):
         self.assertIn("'bancoldex': ()=>PERFIL_EMBEBIDO?.id==='bancoldex'?PERFIL_EMBEBIDO:window.PERFIL_BANCOLDEX", HTML)
 
 
+class TestLectoresConsolidadoGeneralizados(unittest.TestCase):
+    """F7b — indicadores/backups/disponibilidad parametrizados por perfil,
+    con el mismo valor por defecto que AF tenía codificado (0 diferencias)."""
+
+    def test_cargar_casos_o_glpi_no_toca_cargarglpi(self):
+        self.assertIn(
+            "function cargarCasosOGlpi(file){ return PERFIL.fuentes?.casos ? cargarCasosAranda(file) : cargarGlpi(file); }",
+            HTML,
+        )
+        for sitio in (
+            "cargar:f=>cargarCasosOGlpi(f)",
+            "procesarFuente('glpi','fileGlpi','glpi',cargarCasosOGlpi,'la sábana de casos')",
+            "procesar('glpi',fg.files[0],cargarCasosOGlpi)",
+        ):
+            self.assertIn(sitio, HTML)
+        # cargarGlpi() en sí no cambió: sigue siendo la de F5, sin ninguna
+        # mención a Aranda dentro de su cuerpo.
+        bloque_glpi = HTML[HTML.index("async function cargarGlpi"):HTML.index("/* F7a — cargador de casos de Aranda")]
+        self.assertNotIn("aranda", bloque_glpi.lower())
+
+    def test_indicadores_usa_definicion_declarada_con_default_af(self):
+        self.assertIn(
+            "const metricas=PERFIL.fuentes?.consolidado?.indicadores?.metricas||ETIQUETA_INDICADOR;",
+            HTML,
+        )
+        self.assertIn(
+            "const nombresHoja=PERFIL.fuentes?.consolidado?.indicadores?.hojas||['indicadores','inidcadores'];",
+            HTML,
+        )
+        self.assertIn("const datos=rows.slice(h+1).filter(r=>!!definicionIndicador(r[cIndicador]));", HTML)
+
+    def test_backups_usa_hoja_y_columna_declaradas_con_default_af(self):
+        self.assertIn("const nombreHojaBackups=declaracionBackups?.hoja||'Backups';", HTML)
+        self.assertIn("const nombreColBackups=norm(declaracionBackups?.columna||'instancias');", HTML)
+
+    def test_meta_de_backups_configurable_por_perfil(self):
+        self.assertIn(
+            "const metaBackups=metaDeclarada===null?null:(metaDeclarada===undefined?99.3:Number(metaDeclarada)*100);",
+            HTML,
+        )
+
+    def test_disponibilidad_por_tabla_despacha_sin_afectar_af(self):
+        self.assertIn("function cargarDisponibilidadTabla(wb,declaracion){", HTML)
+        self.assertIn(
+            "if(declaracionDispo?.estrategia==='tabla-con-fechas') return cargarDisponibilidadTabla(wb,declaracionDispo);",
+            HTML,
+        )
+
+    def test_linea_base_de_perfil_no_reemplaza_la_ficha_legado_de_af(self):
+        self.assertIn("const ficha=PERFIL.lineaBase;", HTML)
+        bloque = HTML[HTML.index("function renderC3()"):HTML.index("function renderC3()") + 2000]
+        self.assertIn("if(!ficha){", bloque)
+        self.assertIn("CN-'+con", bloque)  # rama legado de AF intacta
+
+    def test_presentacion_de_tarjeta_es_solo_visual_no_logica(self):
+        self.assertIn("function presentarTarjetaPerfil(tarjeta){", HTML)
+        self.assertIn("const ajuste=PERFIL.tarjetas?.presentacion?.[tarjeta.id];", HTML)
+        self.assertIn("return ids.map(id=>presentarTarjetaPerfil(INDICE_TARJETAS.get(id)));", HTML)
+
+
 if __name__ == "__main__":
     unittest.main()

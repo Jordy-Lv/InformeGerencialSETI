@@ -1,18 +1,24 @@
-# F7a — Adaptador Aranda y perfil Bancóldex (datos + canónico)
+# F7 — Adaptador Aranda y perfil Bancóldex (F7a datos + F7b integración)
 
 Rama `f7/bancoldex-aranda-perfil`, creada desde el cierre de F5 (`db3d368`).
-F6 sigue abierto y reserva `informe-accion-fiduciaria 1.html`; este change
-también lo lista (ver "Coordinación con F6" en `proposal.md`) porque F7a solo
-añade funciones nuevas sin tocar las de GLPI/AF/Novaventa. Antes de mergear a
+F6 sigue abierto (en el directorio principal, sin confirmar) y reserva
+`informe-accion-fiduciaria 1.html`; este change también lo lista (ver
+"Coordinación con F6" en `proposal.md`) porque F7 solo añade funciones
+nuevas y generalizaciones con valor por defecto idéntico al de AF, nunca
+reescribiendo lógica existente de GLPI/AF/Novaventa. Antes de mergear a
 `main`, coordinar el orden con quien cierre F6.
 
 ## Lista cerrada de archivos
 
 - `perfiles/base.js` (nuevo)
 - `perfiles/bancoldex.js` (nuevo)
-- `informe-accion-fiduciaria 1.html` (solo funciones nuevas: registro de
+- `informe-accion-fiduciaria 1.html` (funciones nuevas: registro de
   perfiles `base`/`bancoldex`, `ID_PERFIL_ACTIVO`, `clasificarTipoAranda`,
-  `adaptarArandaACanonico`, `cargarCasosAranda`)
+  `adaptarArandaACanonico`, `cargarCasosAranda`, `cargarCasosOGlpi`,
+  `cargarDisponibilidadTabla`, `presentarTarjetaPerfil`; generalizaciones
+  con default idéntico a AF: `definicionIndicador`/`cargarIndicadores`,
+  `cargarBackups`, `actualizarTarjetaBackups`, `renderC3`,
+  `actualizarTarjetasDesdeStore`/`TARJETA_PENDIENTE`)
 - `automatizacion/test_specs_adaptadores_fuente.py`
 - `automatizacion/test_specs_perfil_cliente.py`
 - `openspec/changes/2026-08-05-f7-bancoldex-aranda/`
@@ -50,13 +56,34 @@ añade funciones nuevas sin tocar las de GLPI/AF/Novaventa. Antes de mergear a
   vacío no es un estado soportado por `resolverTarjetasPerfil()`.
 - [x] Registrar la evidencia de cierre y actualizar
   `docs/2026-08-04-plan-multicliente.md`.
+- [x] **F7b** — Enrutar la entrada de archivo de casos por perfil
+  (`cargarCasosOGlpi`) en los tres sitios que llamaban `cargarGlpi` directo.
+- [x] **F7b** — Generalizar `cargarIndicadores()` (hoja y métricas por
+  perfil, default AF intacto) y verificar contra `Indicador` real: 3
+  métricas, meta y valores de junio-2026 correctos.
+- [x] **F7b** — Generalizar `cargarBackups()` (hoja/columna por perfil) y
+  corregir el bug real de coincidencia de columna «bd» con datos (ver
+  design.md); verificado: 11 BD, 100 %.
+- [x] **F7b** — `cargarDisponibilidadTabla()` para disponibilidad por motor;
+  verificado que la hoja real no tiene columna para jun-26 (hallazgo, no
+  bug — ver design.md).
+- [x] **F7b** — `PERFIL.lineaBase` en `renderC3()` y `presentarTarjetaPerfil()`
+  + `tarjetas.presentacion`, incluida la generalización de
+  `TARJETA_PENDIENTE` (tercer lugar con texto de AF quemado, hallazgo al
+  verificar en navegador).
+- [x] **F7b** — Ampliar `tarjetas.seleccionadas` de Bancóldex a `c3, c4, c6,
+  c7, c8, c8m, c9, c11, c12`.
+- [x] **F7b** — Verificación end-to-end en navegador con los dos archivos
+  reales de junio-2026 (consolidado + Aranda): indicadores, backups y casos
+  cargan correctamente; disponibilidad reporta su hallazgo real; AF sin
+  cambios (mismo `CN-21012025`, misma `Meta 99,30%`, consola limpia).
+- [x] Ejecutar la suite completa tras F7b → 77 pruebas, OK.
 - [ ] Coordinar el orden de merge con quien cierre F6 y publicar la rama
   remota (pendiente, requiere acción del equipo).
 
-## Explícitamente fuera de esta lista (F7b, change futuro)
+## Explícitamente fuera de esta lista
 
-- Integración de `cargarCasosAranda()` con el centro de carga y una tarjeta
-  visual para las cuatro categorías de Bancóldex.
-- Lectores de consolidado: `Indicador` (cabecera de dos filas), `Ejecucion
-  Backups`, `Linea Base`, `Disponibilidad Real` por motor.
+- Tarjeta visual de casos (`c5`-equivalente, 4 categorías de Bancóldex).
+- Lector dinámico de la hoja `Linea Base` (hoy `PERFIL.lineaBase` es
+  declaración estática verificada contra el PDF).
 - Decisión sobre `TYA` y la bolsa de horas.

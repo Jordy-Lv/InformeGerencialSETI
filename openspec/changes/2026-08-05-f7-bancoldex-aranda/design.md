@@ -1,4 +1,53 @@
-# Diseño — F7a adaptador Aranda y perfil Bancóldex
+# Diseño — F7 adaptador Aranda y perfil Bancóldex
+
+## F7b — lectores de consolidado (hallazgos al verificar contra los archivos reales)
+
+### Bug real: coincidencia de columna «BD» con datos, no con la cabecera
+
+`cargarBackups()` generalizado usaba `filaCabecera()` para ubicar la fila
+con la columna declarada (`'bd'` para Bancóldex). `filaCabecera()` hace
+`c===a||c.includes(a)` y **se queda con la última fila que matchea**, no la
+primera. La instancia real `BCOEXCCBD27` normaliza a `bcoexccbd27`, que
+`.includes('bd')` — así que la "cabecera" resuelta era la primera fila de
+datos, no la fila 0 real. Se corrigió a una búsqueda de coincidencia
+**exacta** (`norm(c)===nombreColBackups`) en vez de reusar `filaCabecera()`
+para este lector. Verificado contra `Bancoldex/Data consolidada
+junio_Bancoldex 2026.xlsx`: 11 BD, promedio 100 %, coincide con la hoja
+real.
+
+### Hallazgo real: `Disponibilidad Real` sin corte vigente
+
+La hoja existe y su tabla («DISPONIBILIDAD REAL», filas por motor: MY SQL,
+ORACLE, SQLSERVER, WEB LOGIC) se resuelve correctamente con
+`cargarDisponibilidadTabla()`, pero sus columnas de fecha en el archivo de
+junio-2026 solo llegan hasta **jun-25** — un año de rezago en el propio
+archivo del cliente, no un error de lectura. El motor bloquea el
+consolidado con `"La tabla «Disponibilidad Real» no tiene una columna para
+jun-26."`, comportamiento correcto (la restricción inviolable #2 exige no
+inventar cifras). **Queda como hallazgo para reportar a Bancóldex/SETI**,
+no como pendiente de este change.
+
+### Tercer lugar con texto de AF quemado: `TARJETA_PENDIENTE`
+
+Además del `presentacion.items` de `INVENTARIO_TARJETAS` (ya cubierto por
+`presentarTarjetaPerfil()`), `actualizarTarjetasDesdeStore()` usa un mapa
+aparte, `TARJETA_PENDIENTE`, para repintar una tarjeta cuando su dominio
+sigue sin cifra — con el texto de meta de AF quemado ("Meta 99,30%..."). Se
+verificó en navegador: con `disponibilidad` bloqueada (hallazgo anterior),
+la tarjeta `c6` de Bancóldex mostraba la meta de AF. Se generalizó
+`TARJETA_PENDIENTE` para consultar el mismo
+`PERFIL.tarjetas.presentacion[id]` antes de usar su valor por defecto.
+
+### Por qué `PERFIL.lineaBase` no lee la hoja «Linea Base»
+
+El reconocimiento identificó que `Linea Base` trae `AMBIENTE` y dos columnas
+`CANTIDAD` (contrato vs. corte). No se escribió un lector para esa hoja en
+F7b: `PERFIL.lineaBase` (usado por `renderC3()`, heredado de la rama F6)
+es una declaración **estática** del perfil, verificada a mano contra la
+página «Control línea base» del PDF de referencia (Total General 237→257),
+igual que ya lo es para AF y Novaventa. Ningún perfil, incluido Bancóldex,
+tiene hoy un lector dinámico de esa hoja — construirlo sin un segundo
+cliente que lo justifique violaría la regla de `project.md`.
 
 ## `perfiles/base.js`
 
