@@ -85,10 +85,35 @@ señal de que una capacidad está mal delimitada — no una razón para crear
 
 ## Al terminar
 
-- Deja un `docs/<AAAA-MM-DD>-<tema>.md` con: Contexto / Qué se implementó /
-  Verificación realizada (con el comando al lado de cada afirmación — una
-  afirmación sin el comando que la prueba no se distingue de una plausible)
-  / Archivos tocados / Pendiente.
+Una tarea no está terminada solo porque el código funciona. **La documentación
+es parte del cambio y se actualiza en el mismo commit/PR.** Antes de declarar
+una implementación completa, verifica esta definición de terminado:
+
+1. **Change de OpenSpec:** `proposal.md`, `design.md` y `tasks.md` reflejan lo
+   que realmente se implementó, incluidas decisiones nuevas, alternativas
+   descartadas, riesgos, archivos tocados y pendientes. Si el alcance cambió,
+   se corrigen antes de cerrar la tarea; no se deja la propuesta contando una
+   versión anterior del diff.
+2. **Spec vigente:** todo comportamiento normativo nuevo o modificado está en
+   el delta y en `openspec/specs/<capability>/spec.md`, con `SHALL` y escenarios
+   verificables. Si el cambio no altera comportamiento especificable, el
+   documento de sesión explica por qué la spec no aplica.
+3. **Documento de sesión:** existe `docs/<AAAA-MM-DD>-<tema>.md` con las
+   secciones `Contexto`, `Qué se implementó`, `Verificación realizada`,
+   `Archivos tocados` y `Pendiente`. Cada afirmación verificable lleva al lado
+   el comando ejecutado y su resultado; una prueba no ejecutada se marca como
+   pendiente, nunca como implícitamente aprobada.
+4. **Plan maestro:** si cambia el estado, riesgo, bloqueo o alcance de una fase,
+   se actualiza la tabla `Estado de ejecución` y la nota pertinente en
+   `docs/2026-08-04-plan-multicliente.md`.
+5. **PR remota:** título y descripción resumen el resultado real, enumeran las
+   verificaciones ejecutadas y separan claramente lo resuelto de lo pendiente.
+   Tras cada push material, se revisan también comentarios, revisiones y checks
+   para que la documentación no contradiga el estado de GitHub.
+6. **Trazabilidad de archivos:** la lista cerrada de `tasks.md` y la sección
+   `Archivos tocados` incluyen también los archivos de documentación y pruebas,
+   no solo el código productivo.
+
 - El change no se archiva hasta que la verificación A/B contra `main` con
   insumos reales dé cero diferencias, cuando aplique.
 - Abre PR contra `main`. La revisión la hace alguien distinto de quien

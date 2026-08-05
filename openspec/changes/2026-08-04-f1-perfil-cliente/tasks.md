@@ -10,6 +10,7 @@
 - `openspec/changes/2026-08-04-f1-perfil-cliente/specs/perfil-cliente/spec.md`
 - `openspec/specs/perfil-cliente/spec.md`
 - `openspec/specs/README.md`
+- `openspec/AGENTS.md`
 - `automatizacion/test_specs_perfil_cliente.py`
 - `docs/2026-08-04-f1-perfil-accion-fiduciaria.md`
 - `docs/2026-08-04-plan-multicliente.md`

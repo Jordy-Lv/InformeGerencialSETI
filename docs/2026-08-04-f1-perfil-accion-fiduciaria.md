@@ -72,6 +72,11 @@ La arquitectura real no era la que se asumía en el plan:
    a un selector de portada que no existe. Ahora comprueba los valores de las
    tarjetas, que son la vista real del estado sin insumos; no cambia el DOM ni
    ningún comportamiento visible.
+9. **Definición de terminado documental**: `openspec/AGENTS.md` ahora exige que
+   cada implementación mantenga sincronizados el change, la spec vigente, el
+   documento de sesión, el estado del plan maestro, la lista de archivos y la
+   descripción remota de la PR. Las verificaciones no ejecutadas deben quedar
+   declaradas como pendientes.
 
 ## Verificación realizada
 
@@ -96,6 +101,9 @@ La arquitectura real no era la que se asumía en el plan:
   diferencias. Esta prueba confirma la compatibilidad estructural del export,
   pero no reemplaza el A/B con insumos reales completos.
 - Diff sin errores de espacios — `git diff --check origin/main...HEAD`.
+- La definición de terminado contiene los seis puntos documentales y este
+  documento conserva las cinco secciones obligatorias — comprobación estática
+  con Python `pathlib` sobre `openspec/AGENTS.md` y este archivo.
 
 La comparación A/B real no se declara como realizada: falta el par de
 exportaciones completas con los mismos insumos reales.
@@ -154,6 +162,7 @@ falta, sin tocar todavía:
   y delta de spec)
 - `openspec/specs/perfil-cliente/spec.md`
 - `openspec/specs/README.md`
+- `openspec/AGENTS.md` (definición de terminado documental)
 - `automatizacion/test_specs_perfil_cliente.py`
 - `docs/2026-08-04-f1-perfil-accion-fiduciaria.md`
 - `docs/2026-08-04-plan-multicliente.md` (estado de ejecución actualizado)
