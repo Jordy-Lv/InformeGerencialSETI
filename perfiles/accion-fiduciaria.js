@@ -58,6 +58,9 @@ window.PERFIL_ACCION_FIDUCIARIA = {
       ],
       cabecera: {estrategia: 'primera-fila-con', campos: [['alert id', 'alertid'], ['created date', 'fecha'], ['escalation policy', 'escalation', 'response play']]},
     },
+    consolidado: {
+      indicadores: {hojas: ['Indicadores', 'Inidcadores'], cabecera: {estrategia: 'primera-fila-con', campos: [['indicador'], ['meta']]}},
+    },
   },
 
   almacen: {

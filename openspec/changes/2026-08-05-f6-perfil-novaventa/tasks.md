@@ -5,8 +5,8 @@ F6.
 
 ## Implementación
 
-- [ ] Declarar el perfil Novaventa y habilitar su resolución explícita.
-- [ ] Implementar `bloque-con-fechas` y migrar Indicadores a esa estrategia.
+- [x] Declarar el perfil Novaventa y habilitar su resolución explícita.
+- [x] Implementar `bloque-con-fechas` y migrar Indicadores a esa estrategia.
 - [ ] Declarar y cargar la fuente alternativa `Data_<mes>`.
 - [ ] Añadir capacidad desde la hoja homónima sin afectar la bolsa de AF.
 - [ ] Añadir spec, autopruebas y pruebas de conformidad.

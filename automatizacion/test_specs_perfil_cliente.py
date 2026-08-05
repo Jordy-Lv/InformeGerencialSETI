@@ -61,11 +61,10 @@ class TestPerfilDesplegado(unittest.TestCase):
             "window.__ESTADO__?.perfil:null",
             compacto,
         )
-        self.assertIn(
-            "'accion-fiduciaria':()=>PERFIL_EMBEBIDO||"
-            "window.PERFIL_ACCION_FIDUCIARIA",
-            compacto,
-        )
+        self.assertIn("'accion-fiduciaria':()=>PERFIL_EMBEBIDO?.id==='accion-fiduciaria'", compacto)
+        self.assertIn("window.PERFIL_ACCION_FIDUCIARIA", compacto)
+        self.assertIn("'novaventa':()=>PERFIL_EMBEBIDO?.id==='novaventa'", compacto)
+        self.assertIn("window.PERFIL_NOVAVENTA", compacto)
         self.assertIn("returnfusionarProfundo(padre,propio)", compacto)
         self.assertIn("Perfildesconocido", compacto)
         self.assertIn("Perfilesregistrados", compacto)
