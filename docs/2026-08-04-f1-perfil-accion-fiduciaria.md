@@ -59,25 +59,46 @@ La arquitectura real no era la que se asumía en el plan:
    - `BOLSA_STORE_PREFIX` (bolsa de horas, una clave por periodo): mismo
      patrón — nueva vía `claveAlmacen('bolsa')+':'`, lectura con fallback
      a la vieja, borrado limpia ambas.
+6. **Export autocontenido**: `codigoEstadoCliente()` adjunta el perfil resuelto
+   a `window.__ESTADO__` inmediatamente después del snapshot comparable,
+   `podarClon()` elimina el script vecino marcado con
+   `data-perfil-cliente`, y `resolverPerfil()` toma el perfil embebido al
+   abrir el entregable. El HTML exportado ya no depende de la carpeta
+   `perfiles/`.
+7. **Contrato OpenSpec de `perfil-cliente`**: change completo, spec
+   desplegada y pruebas que fijan pureza, resolución, export autocontenido,
+   compatibilidad de almacenamiento y equivalencia A/B obligatoria.
+8. **Autoprueba en frío reparada**: la aserción de estado pendiente apuntaba
+   a un selector de portada que no existe. Ahora comprueba los valores de las
+   tarjetas, que son la vista real del estado sin insumos; no cambia el DOM ni
+   ningún comportamiento visible.
 
 ## Verificación realizada
 
-- Consola sin errores al cargar el archivo completo (con todos los cambios
-  aplicados).
-- `PERFIL` resuelve con los 4 campos esperados; `REPORTE.cliente ===
-  PERFIL.nombre === 'Acción Fiduciaria'`; `fusionarProfundo` es función
-  global; `claveAlmacen('posiciones') === 'informe:accion-fiduciaria:posiciones'`.
-- `IDB_NAME === 'informeAF'` (idéntico al valor anterior — verificado, no
-  asumido).
-- Escritura real de bolsa de horas (`window.guardarBolsaHoras(...)`) cayó
-  en la clave nueva (`informe:accion-fiduciaria:bolsa:2026-07`), confirmado
-  leyendo `localStorage` directamente; se limpió después de la prueba.
-- **`esAccionFiduciaria()` y `esClienteAccion()` probadas con 11 casos**
-  (mayúsculas, tildes, el alias `"accion"` a secas, cadena vacía, `null`,
-  `undefined`, entidad ajena, texto con jerarquía `>`): el resultado de
-  cada caso coincide exactamente con lo que la lógica original hardcodeada
-  habría dado. No es "no truena" — es comportamiento verificado
-  idéntico.
+- Sintaxis del perfil válida —
+  `node --check perfiles/accion-fiduciaria.js`.
+- Sintaxis de todos los bloques internos del HTML válida — extracción de los
+   nueve `script` sin `src` y compilación individual con `new Function` en
+   Node.js.
+- Ejecución real en navegador sin archivos de datos: las 29 autopruebas pasan,
+  el clon exportado contiene cero scripts hacia `perfiles/`, vuelve a abrir en
+  modo cliente y resuelve `PERFIL.id === 'accion-fiduciaria'` — prueba
+  automatizada con Chromium/Playwright sobre el archivo local.
+- OpenSpec, perfil puro, resolución, transporte autocontenido y fallbacks de
+  almacenamiento conformes —
+  `python3 -m unittest automatizacion.test_specs_perfil_cliente -v`.
+- Suite completa de automatización sin regresiones —
+  `python3 -m unittest discover -s automatizacion -p 'test_*.py' -v`.
+- El arnés A/B detecta la regresión sintética deliberada y acepta el caso
+  idéntico — `python3 automatizacion/verificar_ab.py --autoprueba`.
+- Dos exports en frío, generados en Chromium desde `origin/main` y la rama y
+  enviados en memoria a `automatizacion.verificar_ab.comparar`, producen cero
+  diferencias. Esta prueba confirma la compatibilidad estructural del export,
+  pero no reemplaza el A/B con insumos reales completos.
+- Diff sin errores de espacios — `git diff --check origin/main...HEAD`.
+
+La comparación A/B real no se declara como realizada: falta el par de
+exportaciones completas con los mismos insumos reales.
 
 ## Un error cometido y corregido en el camino
 
@@ -120,10 +141,19 @@ falta, sin tocar todavía:
   mano con el período correcto). La verificación de este PR es funcional
   (comportamiento idéntico probado caso por caso), no un diff A/B de
   archivo completo.
+- La PR no debe fusionarse hasta que esa comparación real informe cero
+  diferencias.
 
 ## Archivos tocados
 
 - `perfiles/accion-fiduciaria.js` (nuevo)
 - `informe-accion-fiduciaria 1.html` (perfil, resolverPerfil,
   fusionarProfundo global, REPORTE.cliente, los 6 filtros de cliente,
-  claves de almacén)
+  claves de almacén y export autocontenido)
+- `openspec/changes/2026-08-04-f1-perfil-cliente/` (proposal, design, tasks
+  y delta de spec)
+- `openspec/specs/perfil-cliente/spec.md`
+- `openspec/specs/README.md`
+- `automatizacion/test_specs_perfil_cliente.py`
+- `docs/2026-08-04-f1-perfil-accion-fiduciaria.md`
+- `docs/2026-08-04-plan-multicliente.md` (estado de ejecución actualizado)
