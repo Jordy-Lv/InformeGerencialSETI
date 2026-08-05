@@ -19,8 +19,7 @@ clasificador, SLA y la precedencia de AlertOps sobre el consolidado histórico.
 La reconciliación existente entre AlertsList y consolidado continúa en
 `REPORTE.reconciliaciones`, fuera del informe de cliente.
 
-No se modificaron tarjetas, preset ni reglas visuales. Queda pendiente el
-cotejo A/B de un export real con el preset predeterminado.
+No se modificaron tarjetas, preset ni reglas visuales.
 
 ## Verificación ejecutada
 
@@ -28,3 +27,5 @@ cotejo A/B de un export real con el preset predeterminado.
   55 pruebas correctas.
 - `node --check perfiles/accion-fiduciaria.js` y comprobación bloque a bloque
   del HTML → 10 bloques internos válidos.
+- `python3 automatizacion/verificar_ab.py` entre `export-main-f3.html` y el
+  export real `export-f5.html` → **0 diferencias**.
