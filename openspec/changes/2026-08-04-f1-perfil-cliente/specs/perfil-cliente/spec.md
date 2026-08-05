@@ -62,6 +62,19 @@ Fiduciaria cuando la clave nueva no exista.
 - **WHEN** se restaura la bolsa del periodo
 - **THEN** se recupera el valor histórico sin reescribirlo
 
+### Requirement: textos de interfaz derivados del perfil
+
+El motor SHALL obtener del perfil activo los textos de presentación y los
+metadatos de exportación que identifican al cliente.
+
+#### Scenario: hidratación de Acción Fiduciaria
+
+- **GIVEN** el perfil `accion-fiduciaria` resuelto
+- **WHEN** se evalúa el motor en modo autoría
+- **THEN** el título, la marca y el cliente de portada se hidratan desde
+  `PERFIL.textos`, y los nombres de los entregables conservan el valor
+  histórico configurado en `PERFIL.textos.nombreArchivo`
+
 ### Requirement: equivalencia de Acción Fiduciaria
 
 La migración del perfil SHALL conservar todas las cifras, textos y

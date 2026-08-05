@@ -1,10 +1,10 @@
-# F1 (parte 1) — Perfil de Acción Fiduciaria extraído
+# F1 — Perfil de Acción Fiduciaria extraído
 
 **Fecha:** 4 de agosto de 2026
 
 ## Contexto
 
-Primer paso de F1 del plan de plataforma multicliente: extraer el perfil de
+Fase F1 del plan de plataforma multicliente: extraer el perfil de
 Acción Fiduciaria a datos, con `resolverPerfil()` + reutilización de
 `fusionarProfundo`, y claves de almacén con prefijo — sin cambiar una sola
 cifra del informe.
@@ -122,14 +122,23 @@ La arquitectura real no era la que se asumía en el plan:
 - Dos exports en frío, generados en Chromium desde `origin/main` y la rama y
   enviados en memoria a `automatizacion.verificar_ab.comparar`, producen cero
   diferencias. Esta prueba confirma la compatibilidad estructural del export,
-  pero no reemplaza el A/B con insumos reales completos.
+  y quedó complementada con el A/B real descrito a continuación.
+- **A/B real completo de julio de 2026:** se cargaron en Chromium los mismos
+  cuatro insumos reales no versionados sobre `main` (`6ee842d`) y la rama
+  (`c536853`). En ambos casos quedaron válidos los siete criterios: tres
+  indicadores, disponibilidad por CI, backups, GLPI, AlertsList, 5 logros y
+  7 mitigaciones; sin errores de carga. Las dos exportaciones temporales se
+  compararon con
+  `python3 automatizacion/verificar_ab.py /tmp/export-main-julio-2026.html /tmp/export-pr12-julio-2026.html`
+  y el resultado fue `0 diferencias` con código de salida 0.
+- Los insumos reales no entraron al índice de Git —
+  `git status --short --ignored 'Accion Fiduciaria'` desde el directorio de
+  trabajo que los contiene; la carpeta sigue fuera de la lista de archivos de
+  la PR.
 - Diff sin errores de espacios — `git diff --check origin/main...HEAD`.
 - La definición de terminado contiene los seis puntos documentales y este
   documento conserva las cinco secciones obligatorias — comprobación estática
   con Python `pathlib` sobre `openspec/AGENTS.md` y este archivo.
-
-La comparación A/B real no se declara como realizada: falta el par de
-exportaciones completas con los mismos insumos reales.
 
 ## Un error cometido y corregido en el camino
 
@@ -163,16 +172,13 @@ código (no se renderizan, no cuentan).
   arquitectónico real. Si se necesita generalizar, es una decisión de
   producto (¿se resetea la tabla de ejemplo por cliente nuevo?), no una
   omisión técnica.
-- **`automatizacion/verificar_ab.py` contra un export real y completo de
-  Acción Fiduciaria (todos los dominios cargados) sigue sin correrse** —
-  mismo bloqueo que en F0: no hay a mano los archivos mensuales reales
-  (consolidado, logros) con el período correcto. La verificación de este
-  incremento es funcional y estructural (comportamiento idéntico probado
-  caso por caso, exports en frío comparados sin diferencias — ver sesión
-  anterior de Yordy Pardo, arriba), no un A/B con insumos reales completos.
-- **La PR no debe fusionarse hasta que esa comparación real informe cero
-  diferencias** — se mantiene la misma condición que dejó la sesión
-  anterior.
+- **Revisión y fusión de la PR #12:** el criterio técnico de A/B real ya está
+  satisfecho; todavía aplica la protección de `main` y la revisión exigida por
+  GitHub antes de fusionar.
+- **Dorado de F0 para junio de 2026:** esta sesión cerró F1 con datos reales de
+  julio de 2026. No se crea ni se declara cerrado el dorado
+  `dorados/accion-fiduciaria-2026-06.json`, porque requiere los insumos reales
+  exactos de junio definidos por el plan maestro.
 
 ## Archivos tocados
 

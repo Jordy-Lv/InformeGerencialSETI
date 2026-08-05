@@ -95,6 +95,15 @@ class TestPerfilDesplegado(unittest.TestCase):
             compacto,
         )
 
+    def test_interfaz_y_exportacion_consumen_textos_del_perfil(self):
+        compacto = _compacto(HTML)
+        self.assertIn("functionhidratarTextosPerfil()", compacto)
+        self.assertIn("document.title=PERFIL.textos.tituloDocumento", compacto)
+        self.assertIn("data-perfil-texto=\"marcaTopbar\"", compacto)
+        self.assertIn("data-perfil-texto=\"clienteHero\"", compacto)
+        self.assertIn("PERFIL.textos.nombreArchivo", HTML)
+        self.assertRegex(PERFIL, r"\bnombreArchivo\s*:\s*['\"]Accion Fiduciaria['\"]")
+
 
 if __name__ == "__main__":
     unittest.main()

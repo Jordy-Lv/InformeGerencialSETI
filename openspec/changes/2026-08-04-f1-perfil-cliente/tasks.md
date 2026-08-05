@@ -26,11 +26,15 @@ changes ya fusionados no reservan ninguno de los archivos nuevos de esta lista.
 - [x] Combinar la migración de claves de bolsa con la herencia entre periodos.
 - [x] Transportar el perfil resuelto dentro del estado exportado.
 - [x] Eliminar del export la dependencia al archivo vecino del perfil.
+- [x] Hidratar desde el perfil los textos de interfaz y metadatos de exportación.
 - [x] Agregar requisitos `SHALL`, escenarios y pruebas de conformidad.
-- [ ] Ejecutar A/B con dos exportaciones reales completas y obtener 0 diferencias.
+- [x] Ejecutar A/B con dos exportaciones reales completas y obtener 0 diferencias.
 
-## Pendiente externo
+## Evidencia de cierre
 
-El último punto requiere los insumos reales no versionados y una exportación de
-referencia producida desde `main`. La PR no se debe fusionar hasta adjuntar esa
-evidencia de cero diferencias.
+El 4 de agosto de 2026 se generaron dos exportaciones de Acción Fiduciaria para
+julio de 2026, una desde `main` (`6ee842d`) y otra desde esta rama (`c536853`),
+con exactamente los mismos cuatro insumos reales no versionados. Los siete
+criterios quedaron válidos y `automatizacion/verificar_ab.py` informó
+`0 diferencias`. Los archivos reales y las exportaciones temporales permanecen
+fuera del repositorio.

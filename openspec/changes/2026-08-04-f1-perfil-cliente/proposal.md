@@ -17,13 +17,15 @@ esa dependencia cuando se exporta.
   este incremento.
 - Incluir el perfil resuelto en `window.__ESTADO__` y retirar del clon exportado
   el script vecino usado durante la autoría.
+- Hidratar desde `PERFIL.textos` los textos de presentación, mensajes y
+  metadatos de exportación que antes repetían el nombre del cliente.
 - Conservar la lectura de las claves históricas de posiciones y bolsa.
 - Fijar estas invariantes con autopruebas embebidas y pruebas estáticas en
   biblioteca estándar.
 
 ## Fuera de alcance
 
-- Hidratar los literales de presentación pendientes de F1 parte 2.
 - Agregar un segundo cliente o herencia entre perfiles reales.
 - Cambiar cifras, textos o comportamiento visible de Acción Fiduciaria.
-- Cerrar el pendiente externo de A/B con insumos reales de junio de 2026.
+- Crear el dorado de F0 para junio de 2026; la evidencia real disponible para
+  este change corresponde a julio de 2026.

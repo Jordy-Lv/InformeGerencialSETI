@@ -34,6 +34,14 @@ Se descartó copiar el contenido textual del archivo vecino dentro del clon:
 duplicaría dos representaciones del perfil. El objeto resuelto dentro del
 estado es la fuente que ya viaja con el resto de los datos del entregable.
 
+## Textos de interfaz derivados del perfil
+
+`hidratarTextosPerfil()` resuelve el título, la marca y el cliente de portada
+desde `PERFIL.textos` al evaluar el motor. Los mensajes de carga, filtros,
+propiedades PDF, nombres de archivo y aviso de confidencialidad consumen el
+mismo perfil. `nombreArchivo` permanece separado de `nombre` porque el nombre
+histórico del entregable no lleva tilde y cambiarlo violaría la equivalencia.
+
 ## Compatibilidad del almacenamiento
 
 Las escrituras nuevas de posiciones y bolsa usan `claveAlmacen()`. Las
@@ -46,5 +54,6 @@ Las autopruebas comprueban que la cabecera adjunta el perfil al estado y que la
 poda retira la dependencia externa. Una prueba Python estática fija además el
 contrato OpenSpec, la pureza del perfil y los fallbacks de almacenamiento.
 
-La equivalencia visible solo se puede cerrar con dos exportaciones completas
-producidas con los mismos insumos reales; esos insumos no están versionados.
+La equivalencia visible se cerró con dos exportaciones completas de julio de
+2026 producidas desde `main` y la rama con los mismos insumos reales no
+versionados. `automatizacion/verificar_ab.py` informó cero diferencias.
