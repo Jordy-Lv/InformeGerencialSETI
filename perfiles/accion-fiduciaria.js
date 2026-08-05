@@ -37,6 +37,29 @@ window.PERFIL_ACCION_FIDUCIARIA = {
   // inventa un alias nuevo.
   aliasCliente: ['accion'],
 
+  // F5: declaraciones de lectura, sin funciones. GLPI es la fuente de casos
+  // del periodo; AlertsList manda para alertas del mes en curso y el
+  // consolidado conserva el histórico. La precedencia hace explícita una
+  // regla que el cargador ya aplicaba manualmente.
+  fuentes: {
+    glpi: {
+      lector: 'tabular-xlsx',
+      cabecera: {estrategia: 'primera-fila-con', campos: [['entidad'], ['fecha de apertura', 'fecha apertura'], ['categoria', 'tipo']]},
+      columnas: {id: ['id'], entidad: ['entidad'], fecha: ['fecha de apertura', 'fecha apertura'], categoria: ['categoria'], tipo: ['tipo'], slaExcedido: ['tiempo para resolver excedido', 'tiempo para resolver', 'sla excedido']},
+      filtroCliente: {campo: 'entidad', estrategia: 'contiene-normalizado', valor: 'accion fiduciaria'},
+      jerarquia: {separador: '>'},
+      clasificador: 'glpi-por-categoria',
+      sla: {estrategia: 'columna-excedido', verdaderos: ['si', 'sí', 'yes', 'true', '1', 'vencido', 'excedido']},
+    },
+    alertas: {
+      origenes: [
+        {id: 'alertops', precedencia: 1, ambito: 'mes-en-curso'},
+        {id: 'consolidado-data', precedencia: 2, ambito: 'historico'},
+      ],
+      cabecera: {estrategia: 'primera-fila-con', campos: [['alert id', 'alertid'], ['created date', 'fecha'], ['escalation policy', 'escalation', 'response play']]},
+    },
+  },
+
   almacen: {
     // Prefijo de las claves en localStorage/IndexedDB. Las claves viejas
     // ('informeAF', 'informeAF:posiciones', 'informeAF:bolsa:') se siguen
