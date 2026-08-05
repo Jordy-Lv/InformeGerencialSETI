@@ -27,6 +27,10 @@ que el resto de `automatizacion/`.
 Uso:
     python3 automatizacion/verificar_ab.py informe-main.html informe-rama.html
     python3 automatizacion/verificar_ab.py --autoprueba
+    python3 automatizacion/verificar_ab.py --crear-dorado informe-exportado.html \
+        --cliente accion-fiduciaria --periodo 2026-06
+    python3 automatizacion/verificar_ab.py informe-exportado.html \
+        --contra-dorado dorados/accion-fiduciaria-2026-06.json
 
 `--autoprueba` no compara nada del proyecto: construye dos fixtures
 sintéticos en memoria, uno idéntico (debe dar 0 diferencias) y uno con un
@@ -36,6 +40,7 @@ lo dice.
 """
 
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -43,6 +48,10 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 _PATRON_ESTADO = re.compile(r"window\.__ESTADO__\s*=\s*(\{.*?\})\s*;", re.S)
+_PATRON_CLIENTE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+_PATRON_PERIODO = re.compile(r"^(\d{4})-(\d{2})$")
+
+ESQUEMA_DORADO = 1
 
 CLASES_OBJETIVO = (
     "tarjeta-kpi__valor",
@@ -187,13 +196,171 @@ def comparar(html_a, html_b):
 
 
 # --------------------------------------------------------------------------
+# Dorados persistentes: guardan huellas, nunca los datos reales en claro.
+# --------------------------------------------------------------------------
+
+class ErrorDorado(ValueError):
+    """El export o el archivo dorado no cumple su contrato verificable."""
+
+
+def _json_canonico(valor):
+    return json.dumps(
+        valor,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+
+
+def _sha256(valor):
+    return hashlib.sha256(_json_canonico(valor).encode("utf-8")).hexdigest()
+
+
+def _contar_hojas(valor):
+    if isinstance(valor, dict):
+        return sum(_contar_hojas(v) for v in valor.values())
+    if isinstance(valor, list):
+        return sum(_contar_hojas(v) for v in valor)
+    return 1
+
+
+def _validar_periodo(periodo):
+    m = _PATRON_PERIODO.fullmatch(periodo or "")
+    if not m or not 1 <= int(m.group(2)) <= 12:
+        raise ErrorDorado("Periodo inválido: usa AAAA-MM con un mes entre 01 y 12.")
+    return int(m.group(1)), int(m.group(2))
+
+
+def _validar_identidad(cliente, periodo):
+    if not _PATRON_CLIENTE.fullmatch(cliente or ""):
+        raise ErrorDorado(
+            "Cliente inválido: usa un id en minúsculas separado por guiones "
+            "(por ejemplo, accion-fiduciaria)."
+        )
+    return _validar_periodo(periodo)
+
+
+def _snapshot_para_dorado(html_texto, periodo):
+    estado = extraer_estado(html_texto)
+    if estado is None:
+        raise ErrorDorado(
+            "El HTML no trae window.__ESTADO__: debe ser un export real, no la plantilla editable."
+        )
+
+    anio, mes_uno = _validar_periodo(periodo)
+    periodo_estado = estado.get("periodo") if isinstance(estado, dict) else None
+    if not isinstance(periodo_estado, dict):
+        raise ErrorDorado("window.__ESTADO__.periodo no es un objeto válido.")
+    if periodo_estado.get("anio") != anio or periodo_estado.get("mes") != mes_uno - 1:
+        detectado = f"{periodo_estado.get('anio')}-{periodo_estado.get('mes')} (mes base cero)"
+        raise ErrorDorado(
+            f"El periodo declarado {periodo} no coincide con __ESTADO__.periodo: {detectado}."
+        )
+
+    return estado, extraer_texto_visible(html_texto)
+
+
+def crear_dorado(html_texto, cliente, periodo):
+    """Crea una referencia determinista sin guardar estado ni textos en claro."""
+    _validar_identidad(cliente, periodo)
+    estado, visible = _snapshot_para_dorado(html_texto, periodo)
+
+    componentes = {
+        "__ESTADO__": {
+            "elementos": _contar_hojas(estado),
+            "sha256": _sha256(estado),
+        }
+    }
+    for clave in sorted(visible):
+        textos = visible[clave]
+        componentes[f".{clave}"] = {
+            "elementos": len(textos),
+            "sha256": _sha256(textos),
+        }
+
+    snapshot = {"estado": estado, "texto_visible": visible}
+    return {
+        "esquema": ESQUEMA_DORADO,
+        "cliente": cliente,
+        "periodo": periodo,
+        "huella_total": _sha256(snapshot),
+        "componentes": componentes,
+    }
+
+
+def texto_dorado(dorado):
+    """Representación estable: el mismo export produce los mismos bytes."""
+    return json.dumps(dorado, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
+
+
+def _nombre_dorado(cliente, periodo):
+    return f"{cliente}-{periodo}.json"
+
+
+def guardar_dorado(ruta, dorado, reemplazar=False):
+    ruta = Path(ruta)
+    esperado = _nombre_dorado(dorado["cliente"], dorado["periodo"])
+    if ruta.name != esperado:
+        raise ErrorDorado(f"El dorado debe llamarse {esperado}, no {ruta.name}.")
+    if ruta.exists() and not reemplazar:
+        raise ErrorDorado(
+            f"El dorado ya existe: {ruta}. Usa --reemplazar-dorado solo si el cambio es intencional."
+        )
+    ruta.parent.mkdir(parents=True, exist_ok=True)
+    ruta.write_text(texto_dorado(dorado), encoding="utf-8")
+
+
+def cargar_dorado(ruta):
+    ruta = Path(ruta)
+    try:
+        dorado = json.loads(ruta.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise ErrorDorado(f"No existe el dorado: {ruta}") from exc
+    except json.JSONDecodeError as exc:
+        raise ErrorDorado(f"El dorado no contiene JSON válido: {ruta}: {exc}") from exc
+
+    if not isinstance(dorado, dict) or dorado.get("esquema") != ESQUEMA_DORADO:
+        raise ErrorDorado(
+            f"Esquema de dorado no soportado: se esperaba {ESQUEMA_DORADO}."
+        )
+    cliente, periodo = dorado.get("cliente"), dorado.get("periodo")
+    _validar_identidad(cliente, periodo)
+    esperado = _nombre_dorado(cliente, periodo)
+    if ruta.name != esperado:
+        raise ErrorDorado(f"El dorado debe llamarse {esperado}, no {ruta.name}.")
+    if not isinstance(dorado.get("componentes"), dict) or not dorado.get("huella_total"):
+        raise ErrorDorado("El dorado no trae huella_total y componentes válidos.")
+    return dorado
+
+
+def comparar_con_dorado(html_texto, dorado):
+    actual = crear_dorado(html_texto, dorado["cliente"], dorado["periodo"])
+    reporte = []
+    esperados, actuales = dorado["componentes"], actual["componentes"]
+    for nombre in sorted(set(esperados) | set(actuales)):
+        if nombre not in esperados:
+            reporte.append(f"{nombre}: componente extra en el export actual")
+        elif nombre not in actuales:
+            reporte.append(f"{nombre}: componente ausente en el export actual")
+        elif esperados[nombre] != actuales[nombre]:
+            ee = esperados[nombre].get("elementos")
+            ea = actuales[nombre].get("elementos")
+            reporte.append(
+                f"{nombre}: difiere (elementos esperados={ee}, actuales={ea}; huella SHA-256 distinta)"
+            )
+    if not reporte and dorado["huella_total"] != actual["huella_total"]:
+        reporte.append("huella_total: difiere aunque las huellas de componentes coinciden")
+    return reporte
+
+
+# --------------------------------------------------------------------------
 # Autoprueba: demuestra que el arnés SÍ detecta un cambio real, no solo que
 # nunca reporta diferencias. Ver docstring del módulo.
 # --------------------------------------------------------------------------
 
-def _fixture(valor_casos="54 casos", nota_extra=""):
+def _fixture(valor_casos="54 casos", nota_extra="", mes=6, anio=2026):
     estado = {
-        "periodo": {"mes": 6, "anio": 2026, "etiqueta": "jul-26"},
+        "periodo": {"mes": mes, "anio": anio, "etiqueta": "periodo-sintetico"},
         "dominios": {
             "casos": {"estado": "valido", "datos": {"total": 54 if valor_casos == "54 casos" else 999}},
         },
@@ -205,7 +372,7 @@ def _fixture(valor_casos="54 casos", nota_extra=""):
 <div class="tarjeta-kpi"><span class="tarjeta-kpi__valor">{valor_casos}</span>
 <span class="tarjeta-kpi__meta">46 alertas · 6 requerimientos{nota_extra}</span>
 <span class="tarjeta-kpi__chip">Vigente</span></div>
-<table><tr><td>CN-21012025</td><th>Vigencia</th></tr></table>
+<table><tr><td>CN-SINTETICO-001</td><th>Vigencia</th></tr></table>
 <div class="dashboard-detail">Ficha contractual detalle</div>
 </body></html>"""
 
@@ -263,15 +430,65 @@ def autoprueba():
     return True
 
 
-def main():
+def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("archivo_a", nargs="?", help="HTML exportado de referencia (típicamente, de main)")
     p.add_argument("archivo_b", nargs="?", help="HTML exportado a verificar (típicamente, de la rama)")
-    p.add_argument("--autoprueba", action="store_true", help="No compara nada del proyecto: prueba el arnés contra fixtures sintéticos")
-    args = p.parse_args()
+    modo = p.add_mutually_exclusive_group()
+    modo.add_argument("--autoprueba", action="store_true", help="No compara nada del proyecto: prueba el arnés contra fixtures sintéticos")
+    modo.add_argument("--crear-dorado", metavar="HTML", help="Crea un dorado desde un HTML exportado")
+    modo.add_argument("--contra-dorado", metavar="JSON", help="Compara archivo_a contra un dorado existente")
+    p.add_argument("--cliente", help="Id del cliente para --crear-dorado (por ejemplo, accion-fiduciaria)")
+    p.add_argument("--periodo", help="Periodo AAAA-MM para --crear-dorado")
+    p.add_argument("--salida", help="Ruta de salida de --crear-dorado; por defecto dorados/<cliente>-<periodo>.json")
+    p.add_argument("--reemplazar-dorado", action="store_true", help="Permite reemplazar explícitamente un dorado existente")
+    args = p.parse_args(argv)
 
     if args.autoprueba:
         return 0 if autoprueba() else 1
+
+    if args.crear_dorado:
+        if args.archivo_a or args.archivo_b:
+            p.error("--crear-dorado recibe el HTML en la propia opción, sin archivos posicionales.")
+        if not args.cliente or not args.periodo:
+            p.error("--crear-dorado requiere --cliente y --periodo.")
+        ruta_html = Path(args.crear_dorado)
+        if not ruta_html.exists():
+            print(f"No existe: {ruta_html}", file=sys.stderr)
+            return 2
+        salida = Path(args.salida) if args.salida else Path("dorados") / _nombre_dorado(args.cliente, args.periodo)
+        try:
+            dorado = crear_dorado(ruta_html.read_text(encoding="utf-8"), args.cliente, args.periodo)
+            guardar_dorado(salida, dorado, reemplazar=args.reemplazar_dorado)
+        except (ErrorDorado, UnicodeDecodeError) as exc:
+            print(f"No se pudo crear el dorado: {exc}", file=sys.stderr)
+            return 2
+        print(f"Dorado creado: {salida}.")
+        return 0
+
+    if args.contra_dorado:
+        if not args.archivo_a or args.archivo_b:
+            p.error("--contra-dorado requiere exactamente un HTML posicional.")
+        ruta_html = Path(args.archivo_a)
+        if not ruta_html.exists():
+            print(f"No existe: {ruta_html}", file=sys.stderr)
+            return 2
+        try:
+            dorado = cargar_dorado(args.contra_dorado)
+            diffs = comparar_con_dorado(ruta_html.read_text(encoding="utf-8"), dorado)
+        except (ErrorDorado, UnicodeDecodeError) as exc:
+            print(f"No se pudo verificar el dorado: {exc}", file=sys.stderr)
+            return 2
+        if not diffs:
+            print(f"0 diferencias contra {Path(args.contra_dorado).name}.")
+            return 0
+        print(f"{len(diffs)} diferencia(s) contra {Path(args.contra_dorado).name}:\n")
+        for d in diffs:
+            print(f"  {d}")
+        return 1
+
+    if args.cliente or args.periodo or args.salida or args.reemplazar_dorado:
+        p.error("--cliente, --periodo, --salida y --reemplazar-dorado solo aplican a --crear-dorado.")
 
     if not args.archivo_a or not args.archivo_b:
         p.print_usage(sys.stderr)
