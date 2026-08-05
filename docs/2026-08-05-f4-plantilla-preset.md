@@ -62,5 +62,8 @@ editar el HTML o el perfil entregado.
 
 ## Pendiente
 
-- Hacer la comprobación visual manual del preset mínimo y máximo, incluido el
-  PDF, porque la captura depende de las dimensiones reales del navegador.
+- F4 está cerrada. El 05/08/2026 el usuario verificó visualmente el PDF con
+  selección reducida y con el preset predeterminado restaurado: solo se
+  exportan las tarjetas elegidas y el informe completo se recupera al
+  restaurar. La siguiente fase es F5 (adaptadores de fuente y modelo
+  canónico).
