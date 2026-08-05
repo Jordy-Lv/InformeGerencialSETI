@@ -60,20 +60,12 @@ class TestStoreDesplegado(unittest.TestCase):
                 "invalido",
             ],
         )
-        self.assertEqual(
-            _arreglo_js("DOMINIOS"),
-            [
-                "casos",
-                "alertas",
-                "glpi",
-                "disponibilidad",
-                "backups",
-                "indicadores",
-                "ci",
-                "logros",
-                "mitigaciones",
-                "bolsa",
-            ],
+        # F3 conserva el mismo store, pero los dominios ahora nacen del
+        # inventario de tarjetas; su contenido y orden se prueba en la
+        # capacidad inventario-tarjetas, no con otra lista fija aquí.
+        self.assertIn(
+            "constDOMINIOS=[...newSet(TARJETAS_SELECCIONADAS.flatMap(t=>t.dominios))];",
+            _compacto(HTML),
         )
         self.assertIn(
             "constVACIO={estado:'no_cargado',datos:null,fuente:null,notas:[]};",

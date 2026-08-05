@@ -4,16 +4,17 @@
 
 ### Requirement: dominios inicializados con estado explícito
 
-El store `REPORTE` SHALL mantener los dominios `casos`, `alertas`, `glpi`,
-`disponibilidad`, `backups`, `indicadores`, `ci`, `logros`, `mitigaciones` y
-`bolsa`, e SHALL inicializar cada uno con `estado: no_cargado`, `datos: null`,
+El store `REPORTE` SHALL derivar sus dominios de las tarjetas resueltas del
+perfil e SHALL inicializar cada uno con `estado: no_cargado`, `datos: null`,
 `fuente: null` y `notas: []`.
 
 #### Scenario: sesión nueva sin insumos
 
-- **GIVEN** una apertura de la plantilla sin estado exportado
+- **GIVEN** el perfil de Acción Fiduciaria y sus diez tarjetas seleccionadas
 - **WHEN** se crea `REPORTE`
-- **THEN** los diez dominios existen y ninguno publica una cifra
+- **THEN** existen `casos`, `alertas`, `glpi`, `disponibilidad`, `backups`,
+  `indicadores`, `ci`, `logros`, `mitigaciones` y `bolsa`, y ninguno publica
+  una cifra
 
 ### Requirement: publicación validada por dominio y estado
 

@@ -24,6 +24,12 @@ window.PERFIL_ACCION_FIDUCIARIA = {
     entregables: 0.90,
   },
 
+  // F3: orden entregado de las tarjetas. Son ids de inventario, no selectores
+  // ni funciones; F4 añadirá los operadores de herencia y el preset editable.
+  tarjetas: {
+    seleccionadas: ['c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c8m', 'c9', 'c11', 'c12'],
+  },
+
   // Alias que también identifican a este cliente dentro de una columna de
   // "Cliente"/"Entidad" de un archivo cargado, además del nombre completo
   // normalizado. Existía ya como caso especial en esClienteAccion() (línea
