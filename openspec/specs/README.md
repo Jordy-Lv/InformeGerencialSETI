@@ -5,7 +5,9 @@ Cada subcarpeta es una capacidad del sistema (`perfil-cliente/`,
 `exportacion/`, `automatizacion-insumos/`, `reglas-de-negocio/`...), nunca
 un cliente — ver `openspec/AGENTS.md`.
 
-**Estado:** `store-reporte/spec.md` documenta el store `REPORTE`, sus cinco
+**Estado:** `perfil-cliente/spec.md` documenta los perfiles de datos, su
+resolución, almacenamiento compatible y transporte autocontenido en el export.
+`store-reporte/spec.md` documenta el store `REPORTE`, sus cinco
 estados por dominio, el agrupamiento por microtarea, el cambio de periodo y
 la rehidratación del entregable. `exportacion/spec.md` continúa pendiente:
 debe documentar que `exportarHTML()` clona el DOM vivo y demostrar que el
