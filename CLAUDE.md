@@ -9,6 +9,11 @@ y [`openspec/AGENTS.md`](openspec/AGENTS.md).** Este archivo resume y enlaza;
 esos dos mandan. Si algo aquí contradice a `project.md`, gana `project.md` y
 lo de aquí es un error que hay que corregir.
 
+**Antes de responder cualquier cosa, lee [`TASKS.md`](TASKS.md).** Es el
+único archivo con el estado activo (fase en curso, bloqueos, siguiente
+paso) y no se autocarga como este. Sin leerlo, cualquier afirmación sobre
+"en qué vamos" es una suposición, no un hecho.
+
 ---
 
 ## 1. Qué es esto
