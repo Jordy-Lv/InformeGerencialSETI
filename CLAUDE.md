@@ -14,6 +14,11 @@ lo de aquí es un error que hay que corregir.
 paso) y no se autocarga como este. Sin leerlo, cualquier afirmación sobre
 "en qué vamos" es una suposición, no un hecho.
 
+**Al terminar cualquier tarea, actualiza `TASKS.md` antes de cerrar la
+sesión** — el resultado, y cualquier bloqueo o pendiente nuevo que hayas
+encontrado en el camino, aunque no lo pidieran explícitamente. Ver
+`openspec/AGENTS.md` §«Al terminar», punto 4.
+
 ---
 
 ## 1. Qué es esto
