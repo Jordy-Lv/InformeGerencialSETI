@@ -11,6 +11,11 @@ window.PERFIL_BASE = {
   nombre: 'SETI',
   celula: null,
   extiende: null,
+  // No es un cliente: el administrador de clientes lo excluye de "Perfiles
+  // disponibles" y de "Tipo de insumos" (ver IDS_PERFILES_SELECCIONABLES en
+  // el motor). Activarlo directamente rompía la página porque contrato.inicio
+  // queda vacío a propósito — cada perfil que extiende base aporta el suyo.
+  seleccionable: false,
 
   contrato: {},
 
