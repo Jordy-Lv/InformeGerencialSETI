@@ -66,7 +66,7 @@ Al volver a cargar un insumo modificado, el informe SHALL recalcular todo lo
 que dependa de él. Fue un fallo real, diagnosticado y corregido el 4 de
 agosto de 2026.
 
-*Fuente:* `docs/2026-08-04-validacion-recarga-de-insumos.md` y su corrección.
+*Fuente:* `docs/archivo/2026-08-04-validacion-recarga-de-insumos.md` y su corrección.
 
 ### R2.3 Persistencia entre sesiones **[SPEC]**
 

@@ -2,7 +2,7 @@
 
 **Para:** quien continúe (Claude, en otra sesión, u otra persona).
 **Qué es esto:** el registro de la sesión que corrigió los cinco puntos que
-[`2026-08-04-validacion-recarga-de-insumos.md`](2026-08-04-validacion-recarga-de-insumos.md)
+[`2026-08-04-validacion-recarga-de-insumos.md`](archivo/2026-08-04-validacion-recarga-de-insumos.md)
 dejó en su lista «Qué convendría corregir» (P6, H6, P1+P2, H2+H3, P3). Léelo
 antes de tocar `incrustar_insumos()`, `cargarDispoGestion()`, `cargarCasos()`,
 `fijar_periodo()`/`archivo_de()`, o `reconciliar()` en

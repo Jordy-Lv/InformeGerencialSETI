@@ -39,7 +39,7 @@ esto es solo el resumen.**
 | **Entender el producto** | Este archivo → [`docs/requisitos-producto.md`](docs/requisitos-producto.md) |
 | **Escribir código (persona o IA)** | [`CLAUDE.md`](CLAUDE.md) → [`openspec/project.md`](openspec/project.md) → [`openspec/AGENTS.md`](openspec/AGENTS.md) |
 | **Tocar el HTML o una tarjeta** | [`DESIGN.md`](DESIGN.md) → [`openspec/specs/store-reporte/spec.md`](openspec/specs/store-reporte/spec.md) |
-| **Entender por qué está así** | [`docs/PATRONES.md`](docs/PATRONES.md) → [`docs/2026-08-04-plan-multicliente.md`](docs/2026-08-04-plan-multicliente.md) |
+| **Entender por qué está así** | [`docs/PATRONES.md`](docs/PATRONES.md) → [`docs/arquitectura-multicliente.md`](docs/arquitectura-multicliente.md) |
 | **Saber qué pasó y cuándo** | [`docs/README.md`](docs/README.md) — índice del histórico |
 | **Correr la automatización de insumos** | [`automatizacion/README.md`](automatizacion/README.md) |
 
@@ -123,15 +123,13 @@ implícitamente aprobada.
 
 ## Estado de la migración multicliente
 
-| Fase | Estado |
-|---|---|
-| **F0** — fundación (OpenSpec, arnés A/B, dorados) | Completo salvo el artefacto `dorados/accion-fiduciaria-2026-06.json`, que exige insumos reales de junio |
-| **F1** — perfil de cliente como datos puros | **Cerrado.** PR #12 fusionado, A/B con insumos reales de julio: 0 diferencias |
-| **F2** — contrato desacoplado del DOM | **En curso.** Implementado y con pruebas; falta un A/B en cero con estado de insumos idéntico |
-| **F3–F11** | Pendientes. Ver el plan maestro |
+El estado por fase, qué está bloqueado y el siguiente paso viven en
+[`TASKS.md`](TASKS.md) — es lo único que cambia cada sesión, por eso está
+separado de este README. El histórico de fases ya cerradas está en
+[`CHANGELOG.md`](CHANGELOG.md).
 
-Plan completo, con criterio de aceptación por fase:
-[`docs/2026-08-04-plan-multicliente.md`](docs/2026-08-04-plan-multicliente.md).
+Arquitectura objetivo, con criterio de aceptación por fase:
+[`docs/arquitectura-multicliente.md`](docs/arquitectura-multicliente.md).
 
 ### Deuda conocida
 

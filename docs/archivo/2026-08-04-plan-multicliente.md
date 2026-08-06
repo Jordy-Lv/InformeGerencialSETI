@@ -1,5 +1,16 @@
 # Plan maestro — de un cliente a plataforma multicliente (Informe Gerencial SETI)
 
+> **Archivado el 06/08/2026.** Este documento se partió en dos: la parte
+> estable (arquitectura, fases, riesgos) vive ahora en
+> [`docs/arquitectura-multicliente.md`](../arquitectura-multicliente.md), y
+> el estado de ejecución que cambia cada sesión vive en
+> [`TASKS.md`](../../TASKS.md). Los siete patrones de diseño ya estaban
+> duplicados aquí y en [`docs/PATRONES.md`](../PATRONES.md); esa es la única
+> copia que queda. **Se conserva este archivo completo por su valor
+> histórico** — enlazado desde varios documentos por ruta — pero no es la
+> fuente de verdad: si algo aquí contradice a los tres documentos de
+> arriba, ganan ellos.
+
 **Para:** quien continúe (Claude, otra IA, u otra persona del equipo).
 **Qué es esto:** el plan aprobado de la refactorización multicliente completa
 del proyecto. Es el documento de referencia único para todas las fases

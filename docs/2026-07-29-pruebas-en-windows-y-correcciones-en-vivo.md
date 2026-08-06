@@ -26,7 +26,7 @@ repetir el mismo diagnóstico.
 ## 0. Contexto: de qué partía esta sesión
 
 La sesión anterior (documentada en
-[`2026-07-29-relevo-sesion-28-julio.md`](2026-07-29-relevo-sesion-28-julio.md))
+[`2026-07-29-relevo-sesion-28-julio.md`](archivo/2026-07-29-relevo-sesion-28-julio.md))
 había construido y validado todo esto **en el Mac de Yordy**. El usuario pidió
 en esta sesión: (1) traer los cambios nuevos del repo, (2) configurarlos y
 probarlos en el equipo **Windows**, y, sobre la marcha, según iban apareciendo

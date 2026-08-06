@@ -37,7 +37,7 @@ proponiendo va en `openspec/changes/<change>/specs/`.
   incorporar Novaventa o Bancóldex sin ramas por cliente.
 - **`inventario-tarjetas`** — el descriptor de tarjetas y su derivación. El
   inventario levantado está en
-  `docs/2026-08-03-inventario-tarjetas-cardio-infantil.md`.
+  `docs/archivo/2026-08-03-inventario-tarjetas-cardio-infantil.md`.
 - **`automatizacion-insumos`** — el punto de entrada único, las sondas de
   reconocimiento y la regla de que los datos del cliente no se versionan.
 

@@ -5,6 +5,23 @@ negociables. Esto describe el *proceso*: cómo se propone, especifica,
 implementa y verifica un cambio, y qué mecanismos existen específicamente
 para que varias IAs trabajando en paralelo no se desvíen ni se pisen.
 
+## Qué leer según la tarea
+
+No cargues todo el repo en cada sesión. `CLAUDE.md` + `TASKS.md` es lo único
+que se autocarga; lo demás se abre bajo demanda:
+
+| Vas a… | Abre, además de lo de siempre |
+|---|---|
+| Empezar trabajo nuevo | `openspec/project.md`, este archivo |
+| Tocar una capacidad existente | `openspec/specs/<capacidad>/spec.md` |
+| Continuar una fase en curso | `openspec/changes/<change-abierto>/` (nunca `changes/archivo/`) |
+| Entender el porqué de una decisión | `docs/PATRONES.md`, `docs/arquitectura-multicliente.md` |
+| Auditar una sesión pasada | `docs/README.md` → el documento puntual que señale |
+
+**No cargues `docs/archivo/` ni `openspec/changes/archivo/` salvo que uno de
+los índices de arriba te mande a un documento concreto de ahí.** Son
+histórico cerrado, no contexto de trabajo activo.
+
 ## La spec es la puerta de revisión, no el diff
 
 Un PR que cambia comportamiento descrito en `openspec/specs/` sin su delta
@@ -103,9 +120,12 @@ una implementación completa, verifica esta definición de terminado:
    `Archivos tocados` y `Pendiente`. Cada afirmación verificable lleva al lado
    el comando ejecutado y su resultado; una prueba no ejecutada se marca como
    pendiente, nunca como implícitamente aprobada.
-4. **Plan maestro:** si cambia el estado, riesgo, bloqueo o alcance de una fase,
-   se actualiza la tabla `Estado de ejecución` y la nota pertinente en
-   `docs/2026-08-04-plan-multicliente.md`.
+4. **Estado activo:** si cambia el estado, riesgo, bloqueo o alcance de una
+   fase, se actualiza `TASKS.md` (la raíz). Si la fase **cierra**, su fila
+   sale de `TASKS.md` y entra como entrada de 3–5 líneas en `CHANGELOG.md`,
+   enlazando al documento de sesión. Si el cambio afecta a la arquitectura
+   objetivo misma (no solo su estado), se actualiza
+   `docs/arquitectura-multicliente.md`.
 5. **PR remota:** título y descripción resumen el resultado real, enumeran las
    verificaciones ejecutadas y separan claramente lo resuelto de lo pendiente.
    Tras cada push material, se revisan también comentarios, revisiones y checks
