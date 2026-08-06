@@ -439,7 +439,7 @@ acaso" es el que produce el bug de dos verdades.
 | **F3** | Descriptores de las 10 tarjetas **conviviendo** con el HTML a mano + autoprueba descriptor↔DOM; `criteriosCarga`/`EXTENSIONES_INSUMO`/`DOMINIOS`/`renderAll` derivados | La lista derivada produce **los mismos 7 criterios, en el mismo orden, con los mismos textos exactos**; A/B en 0 |
 | **F4** | HTML de tarjetas generado desde plantilla única; modal de selección; preset persistido | Deseleccionar «Bolsa de horas» retira su criterio y su página del PDF y el resto de cifras es idéntico; volver a seleccionarla restaura el export **byte a byte**; PDF correcto con preset mínimo (1 tarjeta) y máximo |
 | **F5** | Adaptadores + modelo canónico + fuentes alternativas con precedencia; AF migrado | A/B en 0; autoprueba que demuestra que `slaCumplido:null` **no** se cuenta como cumplido; encabezado ambiguo publica `invalido` con los candidatos |
-| **F6** | Perfil Novaventa (AlertOps + `Data_<mes>` como alternativa) | Las cifras cuadran con `Novaventa/Informe Novaventa Junio 2026.pptx`; goldens de AF en 0; sobrescribe <30 % de las claves de AF; **cero funciones nuevas** salvo `bloque-con-fechas` y la tarjeta `capacidad` |
+| **F6** | Perfil Novaventa (AlertOps + `Data_<mes>` como alternativa) y registro local guiado de clientes | Las cifras cuadran con `Novaventa/Informe Novaventa Junio 2026.pptx`; goldens de AF en 0; sobrescribe <30 % de las claves de AF; las reglas de fuentes se mantienen en plantillas validadas y el registro local solo persiste datos y presets de cliente |
 | **F7** | Adaptador Aranda (carga manual) + perfil Bancóldex | Los casos de junio-2026 cuadran con `Bancoldex/reporte-bancoldex-2026-07-02.pdf`; goldens de AF y Novaventa en 0; `cambio` y `ambiente` existen en el canónico **sin aparecer** en el informe de AF |
 | **F8** | Automatización multicliente: `--cliente`, `.env.<cliente>` con precedencia sobre `.env` común, `insumos.py` genérico, ledger con dimensión de cliente | `actualizar_informe.py --cliente accion-fiduciaria` produce **el mismo sha256 por fuente** que la corrida previa; el ledger migrado conserva los periodos de AF; `pytest` verde |
 | **F9** | Reglas compartidas JS↔Python (`reglas/casos.json` + hash) | La autoprueba falla si el hash de la tabla embebida no coincide — se verifica desincronizándola a propósito |
@@ -449,6 +449,15 @@ acaso" es el que produce el bug de dos verdades.
 Cada fase: un `change` de OpenSpec archivado y un `docs/AAAA-MM-DD-tema.md`
 con las secciones fijas del equipo (*Contexto / Qué se implementó /
 Verificación realizada / Archivos tocados / Pendiente*).
+
+### Regla permanente de trazabilidad
+
+**Todo cambio funcional se documenta en el mismo cambio.** Antes de marcarlo
+como terminado se actualizan, según corresponda: propuesta, diseño y tareas
+del change OpenSpec; delta y spec vigente con requisitos `SHALL` verificables;
+pruebas y documento de sesión. Si el cambio altera el estado, alcance, riesgo
+o bloqueo de una fase, también se actualiza esta tabla. No se considera
+entregado un ajuste que solo exista en el HTML o en una conversación.
 
 ### Notas sobre dos fases delicadas
 
@@ -623,4 +632,5 @@ de `.gitignore`. Quien retome el trabajo: la fuente de verdad es siempre
 | F3 | **Completada.** El perfil declara las diez tarjetas actuales y un inventario del motor deriva dominios, extensiones, criterios y renderizadores. La conformidad descriptor↔DOM está cubierta en `REPORTE.autopruebas` y `unittest`. El 05/08/2026, las exportaciones completas reales `export-main-f3.html` (`main` `404408c`) y `export-f3.html` (`a0b0fdb`) se cotejaron con `automatizacion/verificar_ab.py`: **0 diferencias**. |
 | F4 | **Completada.** El panel se genera desde la presentación declarativa del inventario, el selector persiste por perfil y el PDF/exportado usan la selección efectiva. El 05/08/2026, `export-main-f3.html` y `export-f4.html` dieron **0 diferencias**; el usuario verificó después el PDF con selección reducida y con el preset predeterminado restaurado. |
 | F5 | **Completada.** GLPI y AlertsList ya se adaptan a `CasoCanonico`; las cabeceras ambiguas se rechazan con sus candidatos y la autoprueba cubre SLA desconocido. El 05/08/2026, `export-main-f3.html` y el export real `export-f5.html` se cotejaron con `verificar_ab.py`: **0 diferencias**. |
-| F6–F11 | Pendientes |
+| F6 | **En verificación.** Novaventa ya resuelve por herencia, selecciona el bloque histórico de Indicadores y su tabla vigente `Disponibilidad Real`, admite `Data_<mes>` como alternativa de AlertOps sin borrar el respaldo de `Casos` si el Data es de otro corte, y publica la ocupación de filesystems desde `Capacidad` en la tarjeta `c10`, sin escribir en la bolsa manual. Además, el HTML permite seleccionar clientes y crear, editar o eliminar perfiles personalizados con presets persistentes; cada uno hereda una plantilla de validación comprobada. La suite está verde; faltan cotejo visual con el informe de junio, A/B real de Acción Fiduciaria y publicación remota. Ver [registro persistente de clientes](2026-08-05-registro-persistente-clientes.md). |
+| F7–F11 | Pendientes |

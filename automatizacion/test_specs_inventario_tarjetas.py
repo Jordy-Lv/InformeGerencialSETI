@@ -8,6 +8,7 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 HTML = (RAIZ / "informe-accion-fiduciaria 1.html").read_text(encoding="utf-8")
 PERFIL = (RAIZ / "perfiles/accion-fiduciaria.js").read_text(encoding="utf-8")
+NOVAVENTA = (RAIZ / "perfiles/novaventa.js").read_text(encoding="utf-8")
 SPEC = (RAIZ / "openspec/specs/inventario-tarjetas/spec.md").read_text(encoding="utf-8")
 DELTA = (
     RAIZ
@@ -24,6 +25,10 @@ DELTA_F4_INVENTARIO = (
 DELTA_F4_PRESET = (
     RAIZ
     / "openspec/changes/2026-08-05-f4-plantilla-preset/specs/preset-tarjetas/spec.md"
+).read_text(encoding="utf-8")
+DELTA_F6 = (
+    RAIZ
+    / "openspec/changes/2026-08-05-f6-perfil-novaventa/specs/inventario-tarjetas/spec.md"
 ).read_text(encoding="utf-8")
 
 IDS = ["c3", "c4", "c5", "c6", "c7", "c8", "c8m", "c9", "c11", "c12"]
@@ -46,6 +51,7 @@ class TestContratoOpenSpec(unittest.TestCase):
             ("delta store", DELTA_STORE),
             ("delta F4 inventario", DELTA_F4_INVENTARIO),
             ("delta F4 preset", DELTA_F4_PRESET),
+            ("delta F6", DELTA_F6),
         ):
             bloques = re.split(r"(?=^### Requirement:)", documento, flags=re.M)[1:]
             self.assertGreater(len(bloques), 0, nombre)
@@ -91,7 +97,7 @@ class TestInventarioDesplegado(unittest.TestCase):
             valores.update(re.findall(r"['\"]([^'\"]+)['\"]", grupo))
         self.assertEqual(
             valores,
-            {"casos", "alertas", "glpi", "disponibilidad", "backups", "indicadores", "ci", "logros", "mitigaciones", "bolsa"},
+            {"casos", "alertas", "glpi", "disponibilidad", "backups", "indicadores", "ci", "logros", "mitigaciones", "bolsa", "capacidad"},
         )
 
     def test_autoprueba_embebida_coteja_inventario_y_dom(self):
@@ -117,6 +123,16 @@ class TestInventarioDesplegado(unittest.TestCase):
         self.assertIn("return tarjeta ? seleccionadas.has(s.id)&&tarjeta.exportable : true", HTML)
         self.assertIn("jsonEmbebible(perfilEfectivo())", HTML)
         self.assertIn("tarjeta.hidden=!activas.has(t.id)", HTML)
+
+    def test_novaventa_activa_capacidad_y_af_no_la_crea(self):
+        self.assertRegex(NOVAVENTA, r"seleccionadas\s*:\s*\[(?s:.*?)'c10'")
+        self.assertIn("id:'c10'", HTML)
+        self.assertIn("function prepararTarjetaCapacidad()", HTML)
+        self.assertIn("if(!PERFIL.fuentes?.consolidado?.capacidad) return;", HTML)
+        self.assertIn("prepararTarjetaCapacidad();", HTML)
+        self.assertIn("c10:renderC10", HTML)
+        self.assertIn('class="capacity-chart"', HTML)
+        self.assertIn('Ocupación por filesystem', HTML)
 
 
 if __name__ == "__main__":
