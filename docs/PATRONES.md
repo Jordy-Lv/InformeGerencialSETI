@@ -2,7 +2,7 @@
 
 Las decisiones de arquitectura, con el motivo de cada una y las alternativas
 descartadas **con nombre**. Extraído de la sección 4 del
-[plan maestro](2026-08-04-plan-multicliente.md), donde estaba mezclado con el
+[plan maestro](arquitectura-multicliente.md), donde estaba mezclado con el
 cronograma de fases y era imposible de citar en una revisión.
 
 Un patrón aquí no es una preferencia: es una respuesta a un problema concreto

@@ -19,7 +19,7 @@ ahí, paso a paso, estaba documentado en
 
 > **Referencia no resuelta (05/08/2026):** ese documento **no existe en el
 > repositorio** y no figura en la tabla de borrados autorizados del
-> [relevo del 29/07](../docs/2026-07-29-relevo-sesion-28-julio.md): o nunca
+> [relevo del 29/07](../docs/archivo/2026-07-29-relevo-sesion-28-julio.md): o nunca
 > se subió, o se perdió. Mientras tanto, la fuente vigente sobre el
 > despliegue en Windows es
 > [`../docs/2026-07-29-pruebas-en-windows-y-correcciones-en-vivo.md`](../docs/2026-07-29-pruebas-en-windows-y-correcciones-en-vivo.md),
@@ -358,13 +358,13 @@ cruce contra GLPI, exista o no el archivo standalone — así el conteo de
 pendiente que mostrar en el archivo visible.
 
 Detalle completo del diseño original y las preguntas abiertas en
-[`../docs/2026-07-29-relevo-sesion-28-julio.md`](../docs/2026-07-29-relevo-sesion-28-julio.md)
+[`../docs/2026-07-29-relevo-sesion-28-julio.md`](../docs/archivo/2026-07-29-relevo-sesion-28-julio.md)
 §2 y §8.
 
 ## Histórico de casos (independiente de la hoja «Casos»)
 
 Encargo original del usuario (capturas de WhatsApp, ver
-docs/2026-07-29-relevo-sesion-28-julio.md §5.1, punto 1): *"que el HTML tenga
+docs/archivo/2026-07-29-relevo-sesion-28-julio.md §5.1, punto 1): *"que el HTML tenga
 conocimiento de los casos anteriores... independiente de esa hoja
 totalmente"*. Antes de esta sesión (29/07/2026) estaba solo diseñado, no
 construido — `cargarCasos()` en el HTML reconstruía todo el histórico

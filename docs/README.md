@@ -17,7 +17,8 @@ agosto puede estar superado por el del 5. Por eso esta tabla lleva estado.
 
 | Documento | Para qué |
 |---|---|
-| [Plan maestro multicliente](2026-08-04-plan-multicliente.md) | El documento más importante del repositorio: arquitectura objetivo, las once fases con criterio de aceptación, riesgos y estado de ejecución |
+| [Arquitectura multicliente](arquitectura-multicliente.md) | La parte estable del plan maestro: arquitectura objetivo, las once fases con criterio de aceptación, riesgos |
+| [`TASKS.md`](../TASKS.md) | El estado de ejecución **actual** por fase — separado del documento anterior porque cambia cada sesión |
 | [Patrones de diseño](PATRONES.md) | Los siete patrones adoptados y los descartados, con el motivo de cada uno |
 | [Requisitos del producto](requisitos-producto.md) | Qué debe hacer el informe y con qué se verifica cada requisito |
 
@@ -28,8 +29,9 @@ agosto puede estar superado por el del 5. Por eso esta tabla lleva estado.
 | Fecha | Documento | Estado | Tema |
 |---|---|---|---|
 | 05 | `2026-08-05-f2-contrato-perfil.md` — todavía en la rama `codex/f2-contrato-perfil`, no en `main` | En curso | `PERFIL.contrato.inicio` sustituye seis lecturas del DOM. **A/B en cero pendiente** |
+| 06 | Reorganización del contexto documental (este cambio) | Vigente | Partió el plan maestro en `arquitectura-multicliente.md` + `TASKS.md` + `CHANGELOG.md`; archivó histórico y changes cerrados |
 | 05 | [Fundación documental](2026-08-05-fundacion-documental.md) | Vigente | Esta capa de documentación: README, CLAUDE.md, DESIGN.md, índice y archivado de changes |
-| 04 | [Plan maestro multicliente](2026-08-04-plan-multicliente.md) | Vigente | Arquitectura objetivo, fases F0–F11, riesgos, estado de ejecución |
+| 04 | [Plan maestro multicliente](archivo/2026-08-04-plan-multicliente.md) | Superado | Partido el 06/08/2026 en `arquitectura-multicliente.md` (vigente) + `TASKS.md` (estado activo). Se conserva por el razonamiento original |
 | 04 | [F1 — perfil de Acción Fiduciaria](2026-08-04-f1-perfil-accion-fiduciaria.md) | Vigente | Perfil como datos puros, `resolverPerfil()`, claves de almacén. Cerrado con A/B en cero |
 | 04 | [F0 — dorados para el A/B](2026-08-04-f0-dorados-verificacion.md) | Vigente | Huellas SHA-256 versionables sin exponer cifras del cliente |
 | 04 | [F0 — arnés de verificación A/B](2026-08-04-f0-verificar-ab.md) | Vigente | `verificar_ab.py`, el instrumento que respalda la restricción #2 |
@@ -37,19 +39,19 @@ agosto puede estar superado por el del 5. Por eso esta tabla lleva estado.
 | 04 | [Spec del store `REPORTE`](2026-08-04-spec-store-reporte.md) | Vigente | Los cinco estados por dominio y la rehidratación del entregable |
 | 04 | [Bolsa de horas entre periodos](2026-08-04-bolsa-de-horas-persiste-entre-periodos.md) | Vigente | Corrección: la tarjeta persistía sin editar al cambiar de periodo |
 | 04 | [Corrección de recarga de insumos](2026-08-04-correccion-recarga-de-insumos.md) | Vigente | Arreglo de los hallazgos de la validación del mismo día |
-| 04 | [Validación de recarga de insumos](2026-08-04-validacion-recarga-de-insumos.md) | Superado | El diagnóstico; la corrección está en el documento anterior |
-| 03 | [Inventario de tarjetas](2026-08-03-inventario-tarjetas-cardio-infantil.md) | Referencia | Inventario completo de tarjetas y el razonamiento del PR #5 cerrado sin fusionar |
+| 04 | [Validación de recarga de insumos](archivo/2026-08-04-validacion-recarga-de-insumos.md) | Superado | El diagnóstico; la corrección está en el documento anterior |
+| 03 | [Inventario de tarjetas](archivo/2026-08-03-inventario-tarjetas-cardio-infantil.md) | Referencia | Inventario completo de tarjetas y el razonamiento del PR #5 cerrado sin fusionar |
 | 02 | [Corrección de la auditoría + A/B](2026-08-02-correccion-de-la-auditoria-y-verificacion-ab.md) | Vigente | Correcciones aplicadas y verificación A/B de la auditoría |
-| 02 | [Auditoría de insumos → HTML](2026-08-02-auditoria-insumos-glpi-alertops-disponibilidad.md) | Superado | El diagnóstico; las correcciones están en el documento anterior |
+| 02 | [Auditoría de insumos → HTML](archivo/2026-08-02-auditoria-insumos-glpi-alertops-disponibilidad.md) | Superado | El diagnóstico; las correcciones están en el documento anterior |
 
 ## Julio de 2026 — automatización e insumos
 
 | Fecha | Documento | Estado | Tema |
 |---|---|---|---|
 | 29 | [Pruebas en Windows y correcciones en vivo](2026-07-29-pruebas-en-windows-y-correcciones-en-vivo.md) | Vigente | Despliegue real en Windows. **Aquí se corrigió la regla de atribución SETI: solo un «SI» explícito cuenta** |
-| 29 | [Relevo de sesión del 28 de julio](2026-07-29-relevo-sesion-28-julio.md) | Referencia | Traspaso de contexto entre sesiones |
-| 28 | [Levantamiento de disponibilidad de BD](2026-07-28-disponibilidad-bd-levantamiento.md) | Referencia | Propuesta para automatizar la disponibilidad de bases de datos |
-| 28 | [Contrato técnico de extracción](2026-07-28-contrato-tecnico-mateo.md) | Referencia | Contrato con el tercero que provee la extracción de disponibilidad |
+| 29 | [Relevo de sesión del 28 de julio](archivo/2026-07-29-relevo-sesion-28-julio.md) | Referencia | Traspaso de contexto entre sesiones |
+| 28 | [Levantamiento de disponibilidad de BD](archivo/2026-07-28-disponibilidad-bd-levantamiento.md) | Referencia | Propuesta para automatizar la disponibilidad de bases de datos |
+| 28 | [Contrato técnico de extracción](archivo/2026-07-28-contrato-tecnico-mateo.md) | Referencia | Contrato con el tercero que provee la extracción de disponibilidad |
 | 23 | [Análisis por rango y redondeo](2026-07-23-analisis-por-rango-y-redondeo.md) | Vigente | El cumplimiento se juzga sobre el valor publicado, con un decimal |
 | 22 | [Backups adoptan el radar de CI](2026-07-22-backups-radar-ci.md) | Vigente | Unificación visual del modal de backups con el de Disponibilidad por CI |
 | 22 | [Bolsa de horas editable](2026-07-22-bolsa-horas-manual.md) | Vigente | Origen de la bolsa de horas manual |
@@ -101,6 +103,6 @@ razón**:
 | `2026-07-28-desarrollo-mac-despliegue-windows.md` | **Sin resolver.** No figura en la tabla de borrados autorizados: o nunca se subió, o se perdió. Lo citaba `automatizacion/README.md` como la guía de despliegue en Windows |
 
 Las dos primeras bajas están justificadas en la tabla de borrados del
-[relevo del 29 de julio](2026-07-29-relevo-sesion-28-julio.md), que también
+[relevo del 29 de julio](archivo/2026-07-29-relevo-sesion-28-julio.md), que también
 deja registrado —y sigue sin resolver— que `automatizacion/README.md`
 referencia dos `.docx` que tampoco existen en el repositorio.

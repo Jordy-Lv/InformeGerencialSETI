@@ -6,7 +6,7 @@
 
 ## Contexto
 
-El modal de backups estrenaba (mismo día, en `2026-07-22-backups-historico.md` — documento **eliminado a propósito** el 29/07/2026 porque describía la matriz que este mismo cambio reemplazó; ver la tabla de borrados en [`2026-07-29-relevo-sesion-28-julio.md`](2026-07-29-relevo-sesion-28-julio.md)) un hero verde de una fila + una **matriz de celdas** instancia × mes (✓/×/%). El de **Disponibilidad por CI** (`c11`) ya usaba el diseño que el cliente prefiere: hero azul de 4 estadísticas + **gráfica de cápsulas** de promedio mensual con línea de meta punteada + panel lateral con el valor exacto por sistema. El pedido fue unificar: dejar backups **igual** que CI.
+El modal de backups estrenaba (mismo día, en `2026-07-22-backups-historico.md` — documento **eliminado a propósito** el 29/07/2026 porque describía la matriz que este mismo cambio reemplazó; ver la tabla de borrados en [`2026-07-29-relevo-sesion-28-julio.md`](archivo/2026-07-29-relevo-sesion-28-julio.md)) un hero verde de una fila + una **matriz de celdas** instancia × mes (✓/×/%). El de **Disponibilidad por CI** (`c11`) ya usaba el diseño que el cliente prefiere: hero azul de 4 estadísticas + **gráfica de cápsulas** de promedio mensual con línea de meta punteada + panel lateral con el valor exacto por sistema. El pedido fue unificar: dejar backups **igual** que CI.
 
 Ese doc de la matriz queda como registro histórico del diseño anterior; esta intervención lo reemplaza.
 

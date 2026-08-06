@@ -9,6 +9,11 @@ y [`openspec/AGENTS.md`](openspec/AGENTS.md).** Este archivo resume y enlaza;
 esos dos mandan. Si algo aquí contradice a `project.md`, gana `project.md` y
 lo de aquí es un error que hay que corregir.
 
+**Antes de responder cualquier cosa, lee [`TASKS.md`](TASKS.md).** Es el
+único archivo con el estado activo (fase en curso, bloqueos, siguiente
+paso) y no se autocarga como este. Sin leerlo, cualquier afirmación sobre
+"en qué vamos" es una suposición, no un hecho.
+
 ---
 
 ## 1. Qué es esto
@@ -54,47 +59,21 @@ Para arrancar un change con la estructura correcta: `/nuevo-change`.
 
 ---
 
-## 4. Dato o código: la regla que decide
+## 4. Dato o código, y cómo se cierra una tarea
 
-> **Es dato** si al cambiarlo solo cambian números, etiquetas o rutas que un
-> algoritmo existente ya sabe procesar.
-> **Es código (estrategia registrada)** si al cambiarlo cambia *cómo se
-> decide algo* o *cómo se recorre una estructura*.
-> **Prueba práctica:** ¿podrías revisarlo con el líder de cuenta sin
-> explicarle qué es una función? Sí → dato. No → estrategia.
+La regla que decide qué es dato y qué es código, y la definición completa de
+«terminado» (los seis puntos que el mismo commit o PR debe cumplir) viven en
+`openspec/project.md` y `openspec/AGENTS.md` — no se repiten aquí para no
+tener dos copias que puedan divergir. En corto: **el código funcionando no es
+una tarea terminada**, y si tocaste el HTML, **0 diferencias** en
+`verificar_ab.py` contra `main` sobre exports reales.
 
-**Corolario duro:** ningún mecanismo nuevo se acepta sin **dos clientes con
-evidencia real** que lo necesiten. Con uno solo, es un campo opcional del
-modelo canónico — no una dimensión de primera clase.
-
----
-
-## 5. Cómo se cierra una tarea
-
-El código funcionando **no** es una tarea terminada. La definición completa
-está en `AGENTS.md`, sección «Al terminar». En corto, en el mismo commit o PR:
-
-- [ ] `proposal.md`, `design.md` y `tasks.md` reflejan lo que realmente se
-      implementó, incluidas decisiones nuevas y alternativas descartadas.
-- [ ] El comportamiento normativo está en el delta **y** en
-      `openspec/specs/<capacidad>/spec.md`, con `SHALL` + escenario.
-- [ ] Existe `docs/<AAAA-MM-DD>-<tema>.md` con las secciones `Contexto`,
-      `Qué se implementó`, `Verificación realizada`, `Archivos tocados` y
-      `Pendiente`.
-- [ ] **Cada afirmación verificable lleva al lado el comando ejecutado y su
-      resultado real.** Una prueba no ejecutada se marca como pendiente,
-      nunca como implícitamente aprobada.
-- [ ] Si cambia el estado o el riesgo de una fase, se actualiza la tabla del
-      plan maestro y el `README.md`.
-- [ ] `tasks.md` y «Archivos tocados» incluyen también documentación y
-      pruebas, no solo el código productivo.
-
-Y si tocaste el HTML: **0 diferencias** en `verificar_ab.py` contra `main`,
-sobre exports reales. Sin esa evidencia, la tarea no está cerrada.
+Si el estado de una fase cambia, se actualiza `TASKS.md` (la raíz) — no un
+plan maestro, ver `openspec/AGENTS.md` §«Al terminar».
 
 ---
 
-## 6. Cómo verificar
+## 5. Cómo verificar
 
 ```bash
 python3 -m unittest discover -s automatizacion -p 'test_*.py' -v
@@ -112,7 +91,7 @@ Al añadir pruebas al bloque «con archivos», **confirma que corren de verdad**
 
 ---
 
-## 7. Pruebas adversariales del contrato
+## 6. Pruebas adversariales del contrato
 
 Estas peticiones **deben ser rechazadas**. Cada una corresponde a algo que ya
 pasó aquí o que `project.md` anticipa. Si te encuentras a punto de aceptar
@@ -136,7 +115,7 @@ silencio. Se cambia en `project.md`, con su motivo, no en el diff.
 
 ---
 
-## 8. Idioma y convenciones
+## 7. Idioma y convenciones
 
 - Todo en **español**, con acentos correctos: código, comentarios,
   documentación, mensajes de commit y descripciones de PR.
