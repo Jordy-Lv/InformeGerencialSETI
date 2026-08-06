@@ -18,7 +18,7 @@ corridas se hicieron sobre una copia en un directorio temporal.
 > cada corrección, la verificación A/B contra `main` con insumos reales, y
 > tres hallazgos adicionales que salieron de esa verificación (dos bugs reales
 > + un comentario desactualizado, también corregidos) están documentados en
-> [`2026-08-02-correccion-de-la-auditoria-y-verificacion-ab.md`](2026-08-02-correccion-de-la-auditoria-y-verificacion-ab.md).
+> [`2026-08-02-correccion-de-la-auditoria-y-verificacion-ab.md`](../2026-08-02-correccion-de-la-auditoria-y-verificacion-ab.md).
 > F5–F9 y F11 (sección 3) **siguen pendientes**, sin tocar: son riesgo latente
 > no confirmado con datos reales (F5, F6, F7, F8), mejora operativa ajena al
 > código (F9), o mejora de QA general del repo (F11) — ver ese mismo documento,

@@ -2,7 +2,7 @@
 
 > **Actualización (mismo día):** los cinco puntos de la sección «Qué
 > convendría corregir» (P6, H6, P1+P2, H2+H3, P3) ya se corrigieron. Ver
-> [`2026-08-04-correccion-recarga-de-insumos.md`](2026-08-04-correccion-recarga-de-insumos.md).
+> [`2026-08-04-correccion-recarga-de-insumos.md`](../2026-08-04-correccion-recarga-de-insumos.md).
 
 **Para:** quien continúe (Claude, en otra sesión, u otra persona).
 **Qué es esto:** respuesta a una pregunta concreta del usuario: *"si ingreso
@@ -13,7 +13,7 @@ de código) contra el HTML y el pipeline Python, con hallazgos verificados
 empíricamente. **No se corrigió nada**: por decisión del usuario, esta sesión
 fue solo de validación y reporte.
 
-Relacionado: [`2026-08-02-correccion-de-la-auditoria-y-verificacion-ab.md`](2026-08-02-correccion-de-la-auditoria-y-verificacion-ab.md)
+Relacionado: [`2026-08-02-correccion-de-la-auditoria-y-verificacion-ab.md`](../2026-08-02-correccion-de-la-auditoria-y-verificacion-ab.md)
 (la sesión anterior que corrigió `HISTORICO_LEDGER`/`DATA_CASOS.labels`,
 relevante para los hallazgos de casos aquí).
 
@@ -47,7 +47,7 @@ repo. Pasos:
    HTTP para poder hacer `fetch()` de los `.xlsx` de prueba desde la consola
    y construir objetos `File` reales).
 2. Generé con `openpyxl` cuatro variantes de
-   [`Insumos/Disponibilidad Consolidado Mayo.xlsx`](../Insumos) a partir del
+   [`Insumos/Disponibilidad Consolidado Mayo.xlsx`](../../Insumos) a partir del
    original (**A**), cambiando valores del último periodo real del archivo
    (**junio-2026**, no julio: es el último mes con datos en las hojas
    `Disponibilidad`, `Backups`, `Casos` e `Inidcadores`):
@@ -61,7 +61,7 @@ repo. Pasos:
    un usuario**: asignando el archivo al `<input type="file">` real vía
    `DataTransfer` y disparando `input.dispatchEvent(new Event('change'))` —
    el mismo evento que escucha el listener de
-   [`informe-accion-fiduciaria 1.html:4527`](../informe-accion-fiduciaria%201.html).
+   [`informe-accion-fiduciaria 1.html:4527`](../../informe-accion-fiduciaria%201.html).
    Cada carga esperó a `revalidar()` (la cola de revalidación real del
    sistema), no a un timeout arbitrario.
 4. Capturé el estado completo (`REPORTE.dominios`, `DATA_CASOS`,
@@ -92,7 +92,7 @@ el hallazgo real que esto reveló.
 | **Core** | Recargar el consolidado con datos nuevos actualiza el mes actual del gráfico de Casos | **CONFIRMADO — funciona** (una vez aislado del efecto de abajo) | `DATA_CASOS.alertas[2]`: 61→999, `requerimientos[2]`: 0→777, `incidentes[2]`: 0→555 |
 | H2 | `cargarCasos()` con salida temprana (`return null`) deja `alertasConsolidadoMes` del consolidado ANTERIOR | **CONFIRMADO** | Cargué C (sin hoja `Casos`) tras B (Alertas=999): `alertasConsolidadoMes` siguió en `999`, sin aviso ni error, aunque C no tiene ninguna hoja `Casos` de la que sacar ese número |
 | H3 | Series de Casos se actualizan por fila (`if(A)/if(R)/if(I)`); una fila faltante deja esa serie desalineada con las etiquetas nuevas | **CONFIRMADO** | Cargué D (sin fila `Incidentes`) tras B: `DATA_CASOS.incidentes[2]` siguió en `555` (de B), sin aviso — el número mostrado no viene de D en absoluto |
-| H4 | El consolidado no reemplaza logros/mitigaciones si vinieron ya de un archivo mensual autoritativo del cliente | **DELIBERADO** (código con aviso explícito, no ejecutado empíricamente por no tener un archivo mensual de prueba con el formato exacto) | [`:3898`](../informe-accion-fiduciaria%201.html) `cualitativoAutoritativo()`; emite `avisar('logros', 'Se conservaron los logros del archivo mensual…')` |
+| H4 | El consolidado no reemplaza logros/mitigaciones si vinieron ya de un archivo mensual autoritativo del cliente | **DELIBERADO** (código con aviso explícito, no ejecutado empíricamente por no tener un archivo mensual de prueba con el formato exacto) | [`:3898`](../../informe-accion-fiduciaria%201.html) `cualitativoAutoritativo()`; emite `avisar('logros', 'Se conservaron los logros del archivo mensual…')` |
 | H5 | El histórico automático (`HISTORICO_LEDGER`) siempre pisa lo que trae el Excel, incluso para el mes actual | **DESCARTADO** (para el mes actual) — el código sí excluye el mes en curso del pisado (comentario "F2b" en `aplicarHistoricoAutomatico`, confirmado con prueba aislada). Para meses **pasados** sí manda el histórico sobre el Excel — pero eso es intencional y correcto: el histórico se corrige re-corriendo `extraer_glpi.py`/`extraer_alertas.py`, no editando el consolidado a mano | Ver metodología: sin la interferencia de GLPI/AlertOps pegados, B mostró 999/777/555 en el mes actual, no los valores del ledger |
 | — | Hallazgo nuevo (no estaba en la lista original): reprocesar GLPI/AlertsList «pegados» en sus inputs (auto-cargados al arrancar) al recargar solo el consolidado puede pisar la cifra de Alertas del mes actual, si esos archivos son de otro mes | **CONFIRMADO, real** | Antes de aislar la prueba: `DATA_CASOS.alertas[2]` quedó en `53` (el histórico) en vez de `999` (el Excel recién cargado), porque `cargarAlertas()` se reprocesó también y, al no encontrar filas de junio en el AlertsList de julio, cayó a `DATA_CASOS.historico.alertas` |
 | H6 | `window.ESTADO_DISPONIBILIDAD` y la tabla/medidor SETI (diapositiva 6) quedan con datos del consolidado anterior si el nuevo no trae la hoja `Grafica Dispo y Gestion` | **CONFIRMADO, con impacto visible** | Cargué E (sin esa hoja) tras B: `window.ESTADO_DISPONIBILIDAD.seti` siguió en `1` (100 %) y la tabla `#s6 .t-seti tbody` en el DOM siguió mostrando "100%" en todas las celdas — **visible en pantalla**, no solo en una variable interna. El store (`REPORTE.dominios.disponibilidad.datos.seti`) sí quedó correctamente en `null`: hay una desincronía real entre lo que el store sabe y lo que la diapositiva 6 muestra |

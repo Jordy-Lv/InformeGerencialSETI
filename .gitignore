@@ -45,3 +45,12 @@ Insumos*/
 # nunca estos archivos.
 Bancoldex/
 Novaventa/
+
+# Carpeta de trabajo con los insumos reales de Acción Fiduciaria (consolidado
+# de disponibilidad, sábana de GLPI, AlertsList, logros) y con exports
+# completos del informe, que incrustan window.__ESTADO__ con las cifras del
+# mes. Mismo criterio que Insumos*/, Bancoldex/ y Novaventa/: son datos de un
+# cliente real y no deben salir del equipo donde se preparan. Se añadió el
+# 05/08/2026, tras detectar en la auditoría documental que esta carpeta era
+# la única sin cubrir.
+Accion Fiduciaria/

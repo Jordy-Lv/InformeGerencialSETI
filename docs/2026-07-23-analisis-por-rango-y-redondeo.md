@@ -3,7 +3,7 @@
 **Fecha:** 23 de julio de 2026
 **Rama:** `main` (fusionado el mismo día; `feature/analisis-por-rango` se
 eliminó tras el merge — ver ajustes posteriores en
-[`2026-07-23-sesion-completa.md`, PARTE 7](2026-07-23-sesion-completa.md#parte-7--ajustes-posteriores-mismo-día-tarjeta-compacta-análisis-que-no-calla-variaciones-y-cierre-de-ramas))
+`2026-07-23-sesion-completa.md`, PARTE 7 — documento **eliminado a propósito** el 29/07/2026: era la versión larga de este mismo documento y se conservó la corta; ver la tabla de borrados en [`2026-07-29-relevo-sesion-28-julio.md`](archivo/2026-07-29-relevo-sesion-28-julio.md))
 **Origen:** Llamada de revisión del 23/07/2026 con Santiago Amaya Cely
 (`transcript.docx`) y las capturas enviadas después.
 

@@ -1,5 +1,16 @@
 # Plan maestro — de un cliente a plataforma multicliente (Informe Gerencial SETI)
 
+> **Archivado el 06/08/2026.** Este documento se partió en dos: la parte
+> estable (arquitectura, fases, riesgos) vive ahora en
+> [`docs/arquitectura-multicliente.md`](../arquitectura-multicliente.md), y
+> el estado de ejecución que cambia cada sesión vive en
+> [`TASKS.md`](../../TASKS.md). Los siete patrones de diseño ya estaban
+> duplicados aquí y en [`docs/PATRONES.md`](../PATRONES.md); esa es la única
+> copia que queda. **Se conserva este archivo completo por su valor
+> histórico** — enlazado desde varios documentos por ruta — pero no es la
+> fuente de verdad: si algo aquí contradice a los tres documentos de
+> arriba, ganan ellos.
+
 **Para:** quien continúe (Claude, otra IA, u otra persona del equipo).
 **Qué es esto:** el plan aprobado de la refactorización multicliente completa
 del proyecto. Es el documento de referencia único para todas las fases
@@ -627,10 +638,5 @@ de `.gitignore`. Quien retome el trabajo: la fuente de verdad es siempre
 | Fase | Estado |
 |---|---|
 | F0 | **Casi completo.** Renombre del repo a `InformeGerencialSETI` (hecho) · `openspec/project.md` + `AGENTS.md` (PR #11, mergeado) · inventario de tarjetas recuperado a `docs/` (PR #7, mergeado) · arnés `automatizacion/verificar_ab.py` (PR #10, mergeado) · mecanismo de dorados sin datos en claro (PR #14, mergeado). **Pendiente externo:** correrlo contra un export real completo de AF con insumos de junio-2026 y crear `dorados/accion-fiduciaria-2026-06.json`. Sin esa evidencia, el criterio de aceptación exacto de F0 no está cerrado. |
-| F1 | **Completada y fusionada en `main` (PR #12).** Perfil de datos, `resolverPerfil()`, `fusionarProfundo` global, `REPORTE.cliente`, filtros, claves de almacén y textos de interfaz migrados; la resolución del conflicto combina correctamente claves nuevas/viejas con herencia de bolsa entre periodos. El export transporta el perfil resuelto sin depender de `perfiles/`, y la capacidad `perfil-cliente` tiene change, spec y pruebas. El 04/08/2026 se generaron exportaciones de `main` (`6ee842d`) y la rama (`c536853`) con los mismos cuatro insumos reales completos de julio de 2026: los siete criterios validaron y `python3 automatizacion/verificar_ab.py /tmp/export-main-julio-2026.html /tmp/export-pr12-julio-2026.html` informó **0 diferencias**. Los insumos y exports permanecen fuera del repositorio. |
-| F2 | **Completada técnicamente.** El inicio contractual se movió de las seis lecturas del DOM a `PERFIL.contrato.inicio` y se valida sin fallback. El 05/08/2026 se compararon dos exportaciones reales completas — `main` `404408c` y esta rama — con el mismo paquete `automatizacion/salida/insumos-af.js`, que incluye `indisponibilidades-2026-07.csv`, y los mismos insumos manuales de Acción Fiduciaria: `verificar_ab.py` informó **0 diferencias**. |
-| F3 | **Completada.** El perfil declara las diez tarjetas actuales y un inventario del motor deriva dominios, extensiones, criterios y renderizadores. La conformidad descriptor↔DOM está cubierta en `REPORTE.autopruebas` y `unittest`. El 05/08/2026, las exportaciones completas reales `export-main-f3.html` (`main` `404408c`) y `export-f3.html` (`a0b0fdb`) se cotejaron con `automatizacion/verificar_ab.py`: **0 diferencias**. |
-| F4 | **Completada.** El panel se genera desde la presentación declarativa del inventario, el selector persiste por perfil y el PDF/exportado usan la selección efectiva. El 05/08/2026, `export-main-f3.html` y `export-f4.html` dieron **0 diferencias**; el usuario verificó después el PDF con selección reducida y con el preset predeterminado restaurado. |
-| F5 | **Completada.** GLPI y AlertsList ya se adaptan a `CasoCanonico`; las cabeceras ambiguas se rechazan con sus candidatos y la autoprueba cubre SLA desconocido. El 05/08/2026, `export-main-f3.html` y el export real `export-f5.html` se cotejaron con `verificar_ab.py`: **0 diferencias**. |
-| F6 | **En verificación.** Novaventa ya resuelve por herencia, selecciona el bloque histórico de Indicadores y su tabla vigente `Disponibilidad Real`, admite `Data_<mes>` como alternativa de AlertOps sin borrar el respaldo de `Casos` si el Data es de otro corte, y publica la ocupación de filesystems desde `Capacidad` en la tarjeta `c10`, sin escribir en la bolsa manual. Además, el HTML permite seleccionar clientes y crear, editar o eliminar perfiles personalizados con presets persistentes; cada uno hereda una plantilla de validación comprobada. La suite está verde; faltan cotejo visual con el informe de junio, A/B real de Acción Fiduciaria y publicación remota. Ver [registro persistente de clientes](2026-08-05-registro-persistente-clientes.md). |
-| F7–F11 | Pendientes |
+| F1 | **Completada y fusionada en `main` (PR #12, commit `404408c`).** Perfil de datos, `resolverPerfil()`, `fusionarProfundo` global, `REPORTE.cliente`, filtros, claves de almacén y textos de interfaz migrados; la resolución del conflicto combina correctamente claves nuevas/viejas con herencia de bolsa entre periodos. El export transporta el perfil resuelto sin depender de `perfiles/`, y la capacidad `perfil-cliente` tiene change, spec y pruebas. El 04/08/2026 se generaron exportaciones de `main` (`6ee842d`) y la rama (`c536853`) con los mismos cuatro insumos reales completos de julio de 2026: los siete criterios validaron y `python3 automatizacion/verificar_ab.py /tmp/export-main-julio-2026.html /tmp/export-pr12-julio-2026.html` informó **0 diferencias**. Los insumos y exports permanecen fuera del repositorio. |
+| F2–F11 | Pendientes de fusión a `main`. Hay trabajo avanzado en ramas separadas (`codex/f2-contrato-perfil`, `f3`, `f4`, `f5`, `f6-perfil-novaventa`) que este documento, por ser la copia en la rama de fundación documental, no refleja en detalle — la fuente de verdad de cada fase es su propia rama hasta que se fusione. |

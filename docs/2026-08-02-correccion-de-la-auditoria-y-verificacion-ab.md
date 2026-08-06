@@ -3,7 +3,7 @@
 **Para:** quien continúe (Claude, en otra sesión, u otra persona).
 **Qué es esto:** el registro de la sesión que corrigió los hallazgos
 confirmados de
-[`2026-08-02-auditoria-insumos-glpi-alertops-disponibilidad.md`](2026-08-02-auditoria-insumos-glpi-alertops-disponibilidad.md)
+[`2026-08-02-auditoria-insumos-glpi-alertops-disponibilidad.md`](archivo/2026-08-02-auditoria-insumos-glpi-alertops-disponibilidad.md)
 (F1, F2a, F2b, F3, F4, F10), más una verificación A/B independiente hecha por
 el usuario contra `main` con insumos reales, que encontró tres cosas más
 sobre el propio trabajo de esta sesión — dos bugs reales y un comentario

@@ -95,7 +95,7 @@ todos los clientes vean en la interfaz.
 
 Esto ya se probó una vez en sentido contrario: el PR #5 intentó sumar
 Cardio Infantil copiando `automatizacion/` completo (11 de 13 funciones
-duplicadas). Se cerró sin mergear — ver `docs/2026-08-03-inventario-tarjetas-cardio-infantil.md`
+duplicadas). Se cerró sin mergear — ver `docs/archivo/2026-08-03-inventario-tarjetas-cardio-infantil.md`
 y el historial de PRs #5–#10 para el razonamiento completo.
 
 ## Dónde vive cada cosa

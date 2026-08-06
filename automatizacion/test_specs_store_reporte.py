@@ -13,10 +13,26 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 HTML = (RAIZ / "informe-accion-fiduciaria 1.html").read_text(encoding="utf-8")
 SPEC = (RAIZ / "openspec/specs/store-reporte/spec.md").read_text(encoding="utf-8")
-DELTA = (
-    RAIZ
-    / "openspec/changes/2026-08-04-especificar-store-reporte/specs/store-reporte/spec.md"
-).read_text(encoding="utf-8")
+
+
+def _delta(change, capacidad):
+    """Lee el delta de un change, esté abierto o ya archivado.
+
+    Un change cerrado se mueve a `openspec/changes/archivo/` (convención
+    fijada el 05/08/2026, ver `openspec/changes/README.md`). Buscar en las
+    dos ubicaciones evita que archivar un change rompa esta prueba, que fue
+    exactamente lo que pasó al archivar este.
+    """
+    for base in ("openspec/changes", "openspec/changes/archivo"):
+        ruta = RAIZ / base / change / "specs" / capacidad / "spec.md"
+        if ruta.exists():
+            return ruta.read_text(encoding="utf-8")
+    raise FileNotFoundError(
+        f"No se encontró el delta de {change}/{capacidad} ni abierto ni archivado"
+    )
+
+
+DELTA = _delta("2026-08-04-especificar-store-reporte", "store-reporte")
 
 
 def _entre(inicio, fin):
