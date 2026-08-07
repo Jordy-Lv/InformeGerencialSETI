@@ -42,5 +42,3 @@ de cada fusión: confirmar A/B en 0 contra `main` con insumos reales.
 
 - `dorados/accion-fiduciaria-2026-06.json` no existe — requiere insumos
   reales de junio-2026 que no están en el repo (por diseño).
-- Cardio Infantil (F11) bloqueada hasta resolver 4 preguntas de sondeo —
-  ver `docs/arquitectura-multicliente.md`.

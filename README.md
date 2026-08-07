@@ -8,7 +8,7 @@ un entregable autocontenido en HTML o PDF.
 
 Hoy sirve a **Acción Fiduciaria** en producción. El repositorio está a mitad
 de una migración por fases hacia plataforma multicliente (Novaventa,
-Bancóldex, Cardio Infantil), sin que Acción Fiduciaria cambie una sola cifra.
+Bancóldex), sin que Acción Fiduciaria cambie una sola cifra.
 
 ---
 

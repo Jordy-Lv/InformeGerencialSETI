@@ -35,11 +35,11 @@ aportan a su cliente, con **presets por cliente**, validaciones propias según
 cómo llega su información, y **herencia** para que un cliente parecido a otro
 no cueste código nuevo.
 
-Ya hay evidencia real de tres clientes nuevos en el árbol (`Bancoldex/`,
-`Novaventa/`, y Cardio Infantil en ramas). El intento anterior de sumar un
-cliente (PR #5) lo hizo **copiando** el árbol de automatización — 11 de 13
-funciones duplicadas. Ese PR ya se cerró con feedback. Este plan es la
-alternativa: **multicliente por configuración, no por copia**.
+Ya hay evidencia real de dos clientes nuevos en el árbol (`Bancoldex/` y
+`Novaventa/`). El intento anterior de sumar un cliente (PR #5) lo hizo
+**copiando** el árbol de automatización — 11 de 13 funciones duplicadas. Ese
+PR ya se cerró con feedback. Este plan es la alternativa: **multicliente por
+configuración, no por copia**.
 
 El plan se ejecuta con varias IAs en paralelo. Por eso la especificación
 (OpenSpec) no es adorno: es el mecanismo que impide que se desvíen.
@@ -52,7 +52,7 @@ El plan se ejecuta con varias IAs en paralelo. Por eso la especificación
 |---|---|
 | **Casos de Bancóldex** | Export manual de Aranda (`Casos + tareas BD <mes>.xlsx`). Se construye adaptador de carga manual; **no** hay extractor automático en este alcance. El sondeo de una API de Aranda queda anotado como pregunta abierta, no bloquea. |
 | **Alertas de Novaventa** | AlertOps **ya está activado**, y además debe poder interpretarse desde el consolidado `Data_<mes>.xlsx`. → Un dominio admite **varias fuentes alternativas con precedencia**. |
-| **PR #5 / Cardio** | Cerrado con feedback. Se recupera el inventario de tarjetas (PR #1) a `docs/` y sus aportes reales entran como PRs pequeños al núcleo compartido. |
+| **PR #5** | Cerrado con feedback por duplicar `automatizacion/` en vez de parametrizar. Es el precedente que sostiene la prohibición de copiar el árbol por cliente. |
 | **Nombres** | Repo → `InformeGerencialSETI`. Artefacto → `informe.html` (plantilla) y `informe-<cliente>-<periodo>.html` (salida). |
 
 ---
@@ -81,7 +81,6 @@ perfiles/
   accion-fiduciaria.js     # extiende: 'base'
   novaventa.js             # extiende: 'accion-fiduciaria'
   bancoldex.js             # extiende: 'base'
-  cardio-infantil.js       # extiende: 'base'  (bloqueado hasta sondeo)
 ```
 
 Forma: `{ id, nombre, celula, extiende, contrato:{numero,inicio,fin,...},
@@ -130,9 +129,9 @@ merge**):
   lectura: si existen las viejas y no las nuevas, se leen sin reescribirlas.
 - El paquete de insumos conserva `window.__INSUMOS__` y suma un campo
   `perfil`; si no coincide con `PERFIL.id`, **se rechaza con error
-  visible**. (La rama de Cardio usaba `window.__INSUMOS_CARDIO__`: evita la
-  colisión, pero al precio de que cargar el paquete equivocado no haga
-  nada, en silencio.)
+  visible**. (La alternativa —una variable global distinta por cliente—
+  evita la colisión, pero al precio de que cargar el paquete equivocado no
+  haga nada, en silencio.)
 
 ### 2. Inventario de tarjetas — descriptor y derivación
 
@@ -169,9 +168,9 @@ en el doc de sesión.
 | recolección de páginas del PDF (6274) | filtro por `exportable` |
 
 Consecuencia: **añadir una tarjeta extiende la validación sola, y quitar una
-deja de bloquear el PDF por un insumo que nadie usa.** Hoy, sumar la tarjeta
-"Casos de Base de Datos" de Cardio exigiría tocar cinco listas a mano;
-olvidar una es un bug silencioso.
+deja de bloquear el PDF por un insumo que nadie usa.** Hoy, sumar una
+tarjeta nueva exigiría tocar cinco listas a mano; olvidar una es un bug
+silencioso.
 
 **Modal de selección** — reutiliza `dashboard-modal` (línea 6184). Reglas no
 opcionales: una tarjeta con `dependeDe` insatisfecho aparece deshabilitada
@@ -269,8 +268,7 @@ campos. Con la evidencia nueva eso es peligroso:
   `BANCOLDEX|SETI`). Un solo índice no puede describirlo.
 
 Estrategias registradas: `primera-fila-con` (comportamiento actual, literal)
-· `bloque-con-fechas` (Novaventa) · `cabecera-de-dos-filas` (Bancóldex) ·
-`por-hoja-de-origen` (Cardio, cuando se confirme).
+· `bloque-con-fechas` (Novaventa) · `cabecera-de-dos-filas` (Bancóldex).
 
 **Regla dura transversal:** si más de un candidato matchea y la estrategia no
 sabe desempatar, **no se elige ninguno** — el dominio se publica `invalido`
@@ -365,7 +363,6 @@ acaso" es el que produce el bug de dos verdades.
 | **F8** | Automatización multicliente: `--cliente`, `.env.<cliente>` con precedencia sobre `.env` común, `insumos.py` genérico, ledger con dimensión de cliente | `actualizar_informe.py --cliente accion-fiduciaria` produce **el mismo sha256 por fuente** que la corrida previa; el ledger migrado conserva los periodos de AF; `pytest` verde |
 | **F9** | Reglas compartidas JS↔Python (`reglas/casos.json` + hash) | La autoprueba falla si el hash de la tabla embebida no coincide — se verifica desincronizándola a propósito |
 | **F10** | *(Opcional)* Split `fuente/` + `construir_informe.py` | Reproduce el HTML vigente **byte a byte** antes de aceptar el split |
-| **F11** | Cardio Infantil | **Bloqueada** hasta resolver por sondeo las 4 preguntas abiertas del inventario. `clasificar_caso_cardio` conserva su `NotImplementedError` hasta entonces |
 
 Cada fase: un `change` de OpenSpec archivado y un `docs/AAAA-MM-DD-tema.md`
 con las secciones fijas del equipo (*Contexto / Qué se implementó /
@@ -481,8 +478,8 @@ goldens.
    falso** — metas entregadas como resultados. → Regla "más de un
    candidato ⇒ `invalido`" + autoprueba con la hoja real verificando que el
    bloque elegido es f7–f10.
-3. **La herencia degenera en fork** — no es hipotético: `insumos_cardio.py`
-   ya existió con 244 líneas duplicadas. → Métrica del 30 % como
+3. **La herencia degenera en fork** — no es hipotético: en el PR #5 ya
+   existió un `insumos_<cliente>.py` con 244 líneas duplicadas. → Métrica del 30 % como
    autoprueba; prohibición explícita en `project.md`; F8 **borra**, no deja
    "por ahora".
 4. **Deriva JS↔Python de las reglas** — con 4 clientes serían 8
@@ -505,10 +502,10 @@ goldens.
    mecanismo nuevo.
 9. **Reintroducir datos reales de cliente al repo** → fixtures sintéticos,
    `.gitignore`, revisión de `git diff --stat` antes de cada merge de fase.
-10. **Cardio Infantil sin fuentes confirmadas** — 4 de 8 tarjetas en 🔴,
-    Zabbix es candidato no hecho. → No se le abre perfil hasta tener insumo
-    confirmado. El `NotImplementedError` deliberado de
-    `clasificar_caso_cardio` es la actitud correcta y se conserva tal cual.
+10. **Abrir el perfil de un cliente sin fuentes confirmadas** → no se le abre
+    perfil a nadie hasta tener el insumo real en la mano. Un
+    `NotImplementedError` deliberado es preferible a un clasificador que
+    adivina.
 
 ---
 
@@ -521,5 +518,3 @@ goldens.
   Reportadas`) podría **automatizar la bolsa de horas**, que en AF es 100 %
   manual por diseño. Candidata a tarjeta/mecanismo nuevo — pero solo si un
   segundo cliente la necesita.
-- Cardio: entidad GLPI, equivalente de `Revisión Alerta`, `searchOptions`
-  reales, y si Zabbix expone disponibilidad/backups.

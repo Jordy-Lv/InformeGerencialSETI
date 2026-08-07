@@ -8,6 +8,14 @@
 output/
 outputs/
 tmp/
+_tmp_*/
+
+# Configuración y árboles de trabajo locales de la app de Claude Code. La
+# skill de `.claude/skills/` sí se versiona (es del proyecto); esto no: es
+# del equipo de cada quien, y `.claude/worktrees/` llegó a ocupar 5 MB de
+# copias del HTML sin que nadie lo notara.
+.claude/launch.json
+.claude/worktrees/
 
 # Evidencia de QA: vídeos, capturas y PDFs pesados.
 # Se conserva el informe de resultados, que sí es documentación.

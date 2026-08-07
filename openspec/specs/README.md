@@ -35,9 +35,7 @@ proponiendo va en `openspec/changes/<change>/specs/`.
 - **`adaptadores-fuente`** — el modelo canónico y las estrategias de
   clasificación, detección de encabezado y origen del SLA. Bloqueante para
   incorporar Novaventa o Bancóldex sin ramas por cliente.
-- **`inventario-tarjetas`** — el descriptor de tarjetas y su derivación. El
-  inventario levantado está en
-  `docs/archivo/2026-08-03-inventario-tarjetas-cardio-infantil.md`.
+- **`inventario-tarjetas`** — el descriptor de tarjetas y su derivación.
 - **`automatizacion-insumos`** — el punto de entrada único, las sondas de
   reconocimiento y la regla de que los datos del cliente no se versionan.
 
