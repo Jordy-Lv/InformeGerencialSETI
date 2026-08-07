@@ -41,7 +41,6 @@ agosto puede estar superado por el del 5. Por eso esta tabla lleva estado.
 | 04 | [Bolsa de horas entre periodos](2026-08-04-bolsa-de-horas-persiste-entre-periodos.md) | Vigente | Corrección: la tarjeta persistía sin editar al cambiar de periodo |
 | 04 | [Corrección de recarga de insumos](2026-08-04-correccion-recarga-de-insumos.md) | Vigente | Arreglo de los hallazgos de la validación del mismo día |
 | 04 | [Validación de recarga de insumos](archivo/2026-08-04-validacion-recarga-de-insumos.md) | Superado | El diagnóstico; la corrección está en el documento anterior |
-| 03 | [Inventario de tarjetas](archivo/2026-08-03-inventario-tarjetas-cardio-infantil.md) | Referencia | Inventario completo de tarjetas y el razonamiento del PR #5 cerrado sin fusionar |
 | 02 | [Corrección de la auditoría + A/B](2026-08-02-correccion-de-la-auditoria-y-verificacion-ab.md) | Vigente | Correcciones aplicadas y verificación A/B de la auditoría |
 | 02 | [Auditoría de insumos → HTML](archivo/2026-08-02-auditoria-insumos-glpi-alertops-disponibilidad.md) | Superado | El diagnóstico; las correcciones están en el documento anterior |
 

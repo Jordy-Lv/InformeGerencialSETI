@@ -66,8 +66,8 @@ Ejemplos ya decididos con evidencia real:
   hoja del consolidado · separador de jerarquía de categorías (`>` vs `.`) ·
   entidad GLPI · lista de CI y motores · orden y selección de tarjetas.
 - **Código (estrategia con nombre):** clasificar casos por categoría (Acción
-  Fiduciaria / Novaventa) vs por `TIPO_DE_CASO` (Bancoldex) vs por hoja de
-  origen (Cardio Infantil) · detección de encabezado (primera fila vs bloque
+  Fiduciaria / Novaventa) vs por `TIPO_DE_CASO` (Bancoldex) · detección de
+  encabezado (primera fila vs bloque
   con fechas vs cabecera de dos filas) · de dónde sale el SLA (columna
   "Tiempo para resolver excedido" vs `INDICARDOR DE CUMPLIMIENTO`).
 
@@ -93,10 +93,10 @@ todos los clientes vean en la interfaz.
   la lista de nombres desconocidos — una función mal escrita falla más
   tarde, ya con un número pintado en pantalla.
 
-Esto ya se probó una vez en sentido contrario: el PR #5 intentó sumar
-Cardio Infantil copiando `automatizacion/` completo (11 de 13 funciones
-duplicadas). Se cerró sin mergear — ver `docs/archivo/2026-08-03-inventario-tarjetas-cardio-infantil.md`
-y el historial de PRs #5–#10 para el razonamiento completo.
+Esto ya se probó una vez en sentido contrario: el PR #5 intentó sumar un
+cliente nuevo copiando `automatizacion/` completo (11 de 13 funciones
+duplicadas). Se cerró sin mergear — ver el historial de PRs #5–#10 para el
+razonamiento completo.
 
 ## Dónde vive cada cosa
 

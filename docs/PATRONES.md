@@ -25,8 +25,8 @@ Ejemplos ya decididos con evidencia real:
   del consolidado · separador de jerarquía de categorías (`>` vs `.`) ·
   entidad GLPI · lista de CI y motores · orden y selección de tarjetas.
 - **Código (estrategia con nombre):** clasificar casos por categoría (Acción
-  Fiduciaria, Novaventa) vs por `TIPO_DE_CASO` (Bancoldex) vs por hoja de
-  origen (Cardio Infantil) · detección de encabezado (primera fila vs bloque
+  Fiduciaria, Novaventa) vs por `TIPO_DE_CASO` (Bancoldex) · detección de
+  encabezado (primera fila vs bloque
   con fechas vs cabecera de dos filas) · de dónde sale el SLA (columna
   «Tiempo para resolver excedido» vs `INDICARDOR DE CUMPLIMIENTO`).
 
@@ -53,7 +53,7 @@ arranque falle con la lista de nombres válidos.
 extends PerfilAF`.
 
 Una jerarquía de clases invita a sobrescribir métodos, y sobrescribir métodos
-es exactamente el camino que produjo `insumos_cardio.py` en el PR #5.
+es exactamente el camino que produjo el `insumos_<cliente>.py` del PR #5.
 Descartado también **Builder**: rompería la serialización del perfil a JSON,
 que es lo que permite transportarlo dentro del export.
 
@@ -89,7 +89,8 @@ contra la cual asertan las autopruebas embebidas. Está especificado en
 ## 6. Anti-Corruption Layer en Python
 
 `insumos.py` genérico parametrizado por perfil, más `perfiles/<cliente>.py`
-solo con lo que difiere. Respuesta directa a `insumos_cardio.py`, y la razón
+solo con lo que difiere. Respuesta directa al `insumos_<cliente>.py` del
+PR #5, y la razón
 por la que `project.md` **prohíbe** crear archivos `insumos_<cliente>.py`.
 
 ## 7. Fuente única para las reglas compartidas JS↔Python (`reglas/casos.json`)

@@ -5,11 +5,19 @@ histórico completo de fases fusionadas, ver [`CHANGELOG.md`](CHANGELOG.md).
 Para la arquitectura objetivo (qué es cada fase y su criterio de
 aceptación), ver [`docs/arquitectura-multicliente.md`](docs/arquitectura-multicliente.md).
 
+> **Este archivo se actualiza siempre, no solo a veces.** Al terminar
+> cualquier tarea, refleja el resultado aquí antes de cerrar la sesión. Al
+> descubrir un bloqueo, una pregunta abierta o un pendiente que no estaba
+> anotado, agrégalo aquí en el momento — no lo dejes para "recordarlo
+> después". Un `TASKS.md` desactualizado es peor que no tenerlo: alguien
+> confía en él y decide con información vieja. Detalle completo en
+> `openspec/AGENTS.md` §«Al terminar», punto 4.
+
 **Regla operativa** (`openspec/AGENTS.md`): dos `changes` abiertos no pueden
 declarar el mismo archivo en su `tasks.md`. Revisa `openspec/changes/`
 (excluye `archivo/`) antes de tocar código.
 
-Última verificación de este archivo contra git: **07/08/2026 (cierre)** —
+Última verificación de este archivo contra git: **07/08/2026 (cierre)** — PR #18,
 Bancoldex cerrado y A/B de AF en 0, ver «Cierre del 07/08/2026» más abajo.
 
 **El cliente se escribe «Bancoldex», sin tilde.** Corregido en todo el
@@ -22,26 +30,26 @@ No reintroducir `Bancóldex`.
 ## Estado por fase
 
 Verificado con `git merge-base --is-ancestor` y `git rev-list`, no por
-lectura de docs. F2–F5 **sí están commiteadas** y las contiene por completo
-`codex/f6-perfil-novaventa` (son secuenciales sobre el mismo HTML).
+lectura de docs. **F2–F7 están en `main`** desde el PR #18 (`2e5a2af`,
+07/08/2026); sus ramas de trabajo se borraron ya fusionadas.
 
-| Fase | Rama | Estado verificado |
+| Fase | Dónde | Estado verificado |
 |---|---|---|
 | F0 — fundación (OpenSpec, arnés A/B, dorados) | `main` | **Abierta.** Falta `dorados/accion-fiduciaria-2026-06.json`. Sin esa evidencia F0 no cierra formalmente |
 | F1 — perfil de cliente como datos puros | `main` | **Cerrada.** PR #12 (`404408c`), A/B julio-2026 en 0 |
-| F2 — contrato desacoplado del DOM | `codex/f2-contrato-perfil` | Completa (7/7). Contenida en F6 |
-| F3 — inventario de tarjetas | `codex/f3-inventario-tarjetas` | Completa (6/6). Contenida en F6 |
-| F4 — plantilla y preset de tarjetas | `codex/f4-plantilla-preset` | Completa (10/10). Contenida en F6 |
-| F5 — adaptadores y modelo canónico | `codex/f5-adaptadores-canonico` | Completa (8/8). Contenida en F6 |
-| F6 — perfil Novaventa + registro de clientes | `codex/f6-perfil-novaventa` | **Cerrada el 07/08/2026.** A/B de AF en 0 con los insumos reales de julio-2026 (ver el cierre más abajo). Lista para PR |
-| F7 — adaptador Aranda + perfil Bancoldex | `codex/f6-perfil-novaventa` (portado) + `codex/bancoldex-completo` (histórico) | **Casos (Aranda) y AlertsList portados a F6 el 06/08/2026** — ver [`docs/2026-08-06-aranda-alertslist-bancoldex.md`](docs/2026-08-06-aranda-alertslist-bancoldex.md). El resto de F7b (indicadores/backups/disponibilidad/lineaBase) ya existía en F6, construido por separado. `codex/bancoldex-completo` queda como referencia histórica, no se mergea |
+| F2 — contrato desacoplado del DOM | `main` | **Cerrada** (7/7), vía PR #18 |
+| F3 — inventario de tarjetas | `main` | **Cerrada** (6/6), vía PR #18 |
+| F4 — plantilla y preset de tarjetas | `main` | **Cerrada** (10/10), vía PR #18 |
+| F5 — adaptadores y modelo canónico | `main` | **Cerrada** (8/8), vía PR #18 |
+| F6 — perfil Novaventa + registro de clientes | `main` | **Cerrada el 07/08/2026.** A/B de AF en 0 con los insumos reales de julio-2026 |
+| F7 — adaptador Aranda + perfil Bancoldex | `main` | **Cerrada.** Casos (Aranda) y AlertsList portados el 06/08 — ver [`docs/2026-08-06-aranda-alertslist-bancoldex.md`](docs/2026-08-06-aranda-alertslist-bancoldex.md). El resto (indicadores/backups/disponibilidad/lineaBase) ya venía de F6. La línea histórica quedó en el tag `historico/bancoldex-completo`, no se mergea |
 | F8 — automatización multicliente | — | No iniciada |
 | F9 — reglas compartidas JS↔Python | — | No iniciada |
 | F10 — split `fuente/` (opcional) | — | No iniciada |
-| F11 — Cardio Infantil | — | **Bloqueada** por 4 preguntas de sondeo |
 
-`fix/auditoria-2026-08-02` y `codex/f0-dorados-ab` están 0 commits por
-delante de `origin/main`: ya absorbidas, se pueden borrar.
+La sección «Bloqueo principal» que sigue es **histórica**: describe la
+divergencia entre las dos líneas de Bancoldex, resuelta al cerrar F7. Se
+conserva porque explica por qué el HTML quedó como quedó.
 
 ---
 
@@ -324,20 +332,42 @@ demanda—, así que buscarlo antes de hacer clic sugiere un entregable inerte
 que en realidad funciona. Se comprueba tras el clic, sobre
 `.dashboard-modal.is-open`.
 
+## Cardio Infantil: descartado (07/08/2026)
+
+Decisión del usuario. Se retiró del repositorio la fase **F11**, el documento
+de inventario de tarjetas y todas las menciones de los documentos vivos
+(`README.md`, este archivo, `docs/PATRONES.md`,
+`docs/arquitectura-multicliente.md`, `docs/requisitos-producto.md`,
+`openspec/project.md`, `automatizacion/sonda_glpi.py`).
+
+Tres precisiones sobre el alcance, para no rehacer el trabajo ni borrar de
+más:
+
+1. **La referencia al PR #5 se conserva a propósito.** Es el precedente que
+   sostiene la prohibición de duplicar `automatizacion/` por cliente
+   (`openspec/project.md`). Lo que se quitó es el nombre del cliente, no la
+   lección: donde decía `insumos_cardio.py` ahora dice
+   `insumos_<cliente>.py`.
+2. **Las actas fechadas no se reescriben.** `docs/archivo/2026-08-04-plan-multicliente.md`
+   y `docs/2026-08-06-reorganizacion-contexto-documental.md` conservan su
+   texto porque son el registro de lo que se decidió ese día; editarlas
+   falsearía el acta. La primera lleva una nota al encabezado avisando de que
+   todo lo relativo a ese cliente ya no aplica.
+3. **Nada se perdió.** Las 4 ramas quedaron en tags anotados y publicados,
+   `historico/cardio-infantil-*`. Se recuperan con `git checkout <tag>`.
+
 ## Siguiente paso
 
-1. Conseguir revisión de los dos PR abiertos: **#19** (rescate de la regla
-   de `TASKS.md`) y **#20** (retiro de Cardio Infantil + higiene de
-   `.gitignore`). Dependen solo de que los revise alguien distinto del autor:
-   la protección de `main` exige 1 aprobación y GitHub no deja aprobar el
-   propio PR. `enforce_admins` está **desactivado**, así que el dueño puede
-   mergear con override de admin — es saltarse la revisión, y para
-   documentación el riesgo es bajo.
-2. Afinar las tres tarjetas nuevas con el usuario y abrir el PR de
-   `feat/tarjetas-bancoldex`, ya al día con `main` y con A/B en 0.
-3. Definir con el cliente la fuente de atribución a SETI para Bancoldex. Ya
+Los tres PR de la migración (**#18**, **#19** y **#20**) están **fusionados
+a `main`** y sus ramas borradas. Queda una sola rama viva:
+`feat/tarjetas-bancoldex`.
+
+1. Afinar las tres tarjetas nuevas con el usuario y abrir el PR de
+   `feat/tarjetas-bancoldex`, ya al día con `main` y con **A/B en 0** contra
+   el `main` posterior a los tres merges.
+2. Definir con el cliente la fuente de atribución a SETI para Bancoldex. Ya
    no bloquea el entregable.
-4. El hallazgo 3 (scripts externos en el export), cuando se toque la
+3. El hallazgo 3 (scripts externos en el export), cuando se toque la
    exportación; no bloquea a nadie.
 
 ## Bloqueos conocidos
@@ -364,6 +394,25 @@ que en realidad funciona. Se comprueba tras el clic, sobre
   HTML y su perfil son **idénticos byte a byte** a los de `main`; lo único
   distinto era un symlink a `insumos-af.js`, que se retiró sin seguir el
   enlace (el archivo original sigue en el árbol). Nada irreproducible.
-- `.gitignore` cubrirá `_tmp_*/`, `.claude/launch.json` y
-  `.claude/worktrees/` **cuando entre el PR #20**, no antes: hasta entonces
-  `.claude/launch.json` seguirá apareciendo como no trackeado. Es esperado.
+- **`.gitignore` ya cubre** `_tmp_*/`, `.claude/launch.json` y
+  `.claude/worktrees/`: entró con el PR #20. Esos residuos dejaron de
+  aparecer como no trackeados.
+
+---
+
+## Tareas sueltas
+
+Lo que no es una fase completa: correcciones puntuales, deuda detectada al
+pasar, seguimientos de una PR. Se agrega aquí en cuanto se detecta y se
+quita en cuanto se resuelve — no espera a que alguien abra un change formal
+si no lo amerita.
+
+- Archivar los 5 changes de OpenSpec ya cerrados (F1–F5) — espera a que
+  F2–F6 cierren, porque exige editar `automatizacion/test_specs_*.py` que
+  el change F6 abierto también declara. Ver
+  `openspec/changes/README.md` §Estado.
+- `automatizacion/README.md` (579 líneas, el archivo de más *churn* del
+  repo) sigue siendo el segundo mayor foco de contexto pesado sin resolver
+  — quedó fuera de alcance de la reorganización documental del 06/08/2026.
+  No es urgente; anotado para no perderlo de vista.
+
