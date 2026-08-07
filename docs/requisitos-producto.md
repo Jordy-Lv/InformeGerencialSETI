@@ -187,7 +187,7 @@ exports reales → **0 diferencias** y código de salida 0.
 
 ### R4.5 Clientes pendientes **[PLAN]**
 
-Novaventa y Bancóldex, cada uno con su clasificador y su detección de
+Novaventa y Bancoldex, cada uno con su clasificador y su detección de
 encabezado como estrategia registrada. Ver el plan maestro.
 
 ---

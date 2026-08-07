@@ -76,20 +76,12 @@ class TestStoreDesplegado(unittest.TestCase):
                 "invalido",
             ],
         )
-        self.assertEqual(
-            _arreglo_js("DOMINIOS"),
-            [
-                "casos",
-                "alertas",
-                "glpi",
-                "disponibilidad",
-                "backups",
-                "indicadores",
-                "ci",
-                "logros",
-                "mitigaciones",
-                "bolsa",
-            ],
+        # F4 conserva el store completo del preset predeterminado aunque una
+        # selección temporal oculte tarjetas: los parsers no pierden su
+        # destino. El contenido se prueba en la capacidad inventario-tarjetas.
+        self.assertIn(
+            "constDOMINIOS=[...newSet(TARJETAS_PREDETERMINADAS.flatMap(t=>t.dominios))];",
+            _compacto(HTML),
         )
         self.assertIn(
             "constVACIO={estado:'no_cargado',datos:null,fuente:null,notas:[]};",

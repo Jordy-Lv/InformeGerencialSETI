@@ -28,6 +28,7 @@ agosto puede estar superado por el del 5. Por eso esta tabla lleva estado.
 
 | Fecha | Documento | Estado | Tema |
 |---|---|---|---|
+| 07 | [El entregable salía sin interactividad](2026-08-07-export-interactivo.md) | Vigente | Cuatro defectos encadenados dejaban inerte el HTML exportado; tres preexistentes, uno alcanzaba a Acción Fiduciaria. A/B en cero |
 | 05 | `2026-08-05-f2-contrato-perfil.md` — todavía en la rama `codex/f2-contrato-perfil`, no en `main` | En curso | `PERFIL.contrato.inicio` sustituye seis lecturas del DOM. **A/B en cero pendiente** |
 | 06 | Reorganización del contexto documental (este cambio) | Vigente | Partió el plan maestro en `arquitectura-multicliente.md` + `TASKS.md` + `CHANGELOG.md`; archivó histórico y changes cerrados |
 | 05 | [Fundación documental](2026-08-05-fundacion-documental.md) | Vigente | Esta capa de documentación: README, CLAUDE.md, DESIGN.md, índice y archivado de changes |

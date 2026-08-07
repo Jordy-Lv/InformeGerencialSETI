@@ -25,10 +25,10 @@ Ejemplos ya decididos con evidencia real:
   del consolidado · separador de jerarquía de categorías (`>` vs `.`) ·
   entidad GLPI · lista de CI y motores · orden y selección de tarjetas.
 - **Código (estrategia con nombre):** clasificar casos por categoría (Acción
-  Fiduciaria, Novaventa) vs por `TIPO_DE_CASO` (Bancóldex) · detección de
-  encabezado (primera fila vs bloque con fechas vs cabecera de dos filas) ·
-  de dónde sale el SLA (columna «Tiempo para resolver excedido» vs
-  `INDICARDOR DE CUMPLIMIENTO`).
+  Fiduciaria, Novaventa) vs por `TIPO_DE_CASO` (Bancoldex) · detección de
+  encabezado (primera fila vs bloque
+  con fechas vs cabecera de dos filas) · de dónde sale el SLA (columna
+  «Tiempo para resolver excedido» vs `INDICARDOR DE CUMPLIMIENTO`).
 
 **Corolario duro:** ningún mecanismo nuevo se acepta sin **dos clientes con
 evidencia real** que lo necesiten. Con uno solo es un campo opcional del
@@ -90,7 +90,8 @@ contra la cual asertan las autopruebas embebidas. Está especificado en
 
 `insumos.py` genérico parametrizado por perfil, más `perfiles/<cliente>.py`
 solo con lo que difiere. Respuesta directa al `insumos_<cliente>.py` del
-PR #5, y la razón por la que `project.md` **prohíbe** crear esos archivos.
+PR #5, y la razón
+por la que `project.md` **prohíbe** crear archivos `insumos_<cliente>.py`.
 
 ## 7. Fuente única para las reglas compartidas JS↔Python (`reglas/casos.json`)
 
