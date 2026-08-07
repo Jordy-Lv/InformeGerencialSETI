@@ -275,16 +275,66 @@ anotados y publicados: `historico/cardio-infantil-*` (4) y
    había al empezar estaban consumidos, y los 4 temporales de esta sesión se
    retiraron al cerrarla (limpios y con sus ramas ya publicadas).
 
+## El PR #18 entró a `main` (07/08/2026)
+
+Fusionado como merge commit `2e5a2af`, sin squash: los 20 commits conservan
+su historia. Verificado después del merge, no antes:
+
+- **131 pruebas en verde** sobre `main`, y la autoprueba del arnés A/B pasa
+  en sus tres casos.
+- **El merge no alteró el HTML ni los perfiles**: son bit a bit los que ya
+  se habían verificado en `e89577b` (`f0b64ab` para el HTML). Repetir el A/B
+  ahí habría comparado un archivo consigo mismo.
+
+Consecuencias que dejó, las tres resueltas en la misma sesión:
+
+1. **#19 y #20 pasaron a `CONFLICTING`.** Puestos al día con `main` por
+   `merge` (no `rebase`): las ramas tienen PR abierto y reescribir su
+   historia obligaría a un force-push.
+2. **#20 había quedado incompleto.** Su diff se calculó contra el `main`
+   viejo, y #18 **reintrodujo** menciones de Cardio Infantil —incluida la
+   fila de F11 en este archivo y un documento nuevo que #20 no conocía—. Se
+   rehízo el retiro sobre el estado actual, no se resolvieron sus conflictos
+   hunk a hunk. Detalle en la sección «Cardio Infantil» de la rama del PR.
+   **Trampa detectada al portarlo:** #20 es anterior a la corrección de la
+   grafía y escribía «Bancóldex» con tilde; aplicar su texto literal la
+   habría reintroducido en cinco sitios.
+3. **`feat/tarjetas-bancoldex` conflictaba en dos archivos**, ninguno el
+   HTML: git resolvió los hunks del fix del export como ya aplicados.
+
+## A/B de esta rama contra el `main` nuevo: 0 diferencias
+
+El HTML de esta rama difiere del de `main`, así que la verificación anterior
+—hecha contra el `main` viejo— dejó de cubrir el par. Se repitió entera con
+los insumos reales de julio-2026:
+
+- **`0 diferencias`**, código de salida 0, con el estado de entrada igualado
+  a mano (`insumos-af.js` y `Accion Fiduciaria/` copiados al worktree de
+  `main`, verificado por `md5`).
+- **El entregable sigue vivo: 9 de 10 tarjetas abren su panel, idéntico al
+  control de `main`.** La décima es `c12` («Anexos»), que declara
+  `exportable:false` y no tiene panel por diseño — no es una falla.
+
+**Aviso para quien repita esta verificación.** Medir la interacción por el
+detalle inline (`#det-cX`) da un falso negativo del 100 %: una regla de CSS
+lo oculta siempre (`display:none!important`) porque el contenido vive en
+`.dashboard-modal`. Y ese modal **no existe hasta el primer clic** —
+`podarClon()` lo elimina a propósito y `ensureModal()` lo recrea bajo
+demanda—, así que buscarlo antes de hacer clic sugiere un entregable inerte
+que en realidad funciona. Se comprueba tras el clic, sobre
+`.dashboard-modal.is-open`.
+
 ## Siguiente paso
 
-1. Conseguir revisión de los tres PR abiertos: **#18** (F2–F7, el grande),
-   **#19** (rescate de la regla de `TASKS.md`) y **#20** (retiro de Cardio
-   Infantil + higiene de `.gitignore`). Los tres dependen solo de que los
-   revise alguien distinto del autor.
+1. Conseguir revisión de los dos PR abiertos: **#19** (rescate de la regla
+   de `TASKS.md`) y **#20** (retiro de Cardio Infantil + higiene de
+   `.gitignore`). Dependen solo de que los revise alguien distinto del autor:
+   la protección de `main` exige 1 aprobación y GitHub no deja aprobar el
+   propio PR. `enforce_admins` está **desactivado**, así que el dueño puede
+   mergear con override de admin — es saltarse la revisión, y para
+   documentación el riesgo es bajo.
 2. Afinar las tres tarjetas nuevas con el usuario y abrir el PR de
-   `feat/tarjetas-bancoldex`, que parte de `48ab8da`. **Ojo al orden:** si
-   #18 entra primero, esta rama trae los mismos hunks del fix del export y
-   git los resolverá como ya aplicados o con un conflicto menor.
+   `feat/tarjetas-bancoldex`, ya al día con `main` y con A/B en 0.
 3. Definir con el cliente la fuente de atribución a SETI para Bancoldex. Ya
    no bloquea el entregable.
 4. El hallazgo 3 (scripts externos en el export), cuando se toque la
