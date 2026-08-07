@@ -29,7 +29,7 @@ campos cuando el usuario cambia de plantilla.
 ## Fuera de alcance
 
 - Modificar cifras o comportamiento de Acción Fiduciaria.
-- Implementar todavía una plantilla de validación propia para Bancóldex.
+- Implementar todavía una plantilla de validación propia para Bancoldex.
 - Convertir la bolsa manual de AF en una regla de capacidad.
 - Permitir lectores, hojas o reglas arbitrarias sin declararlas y validarlas
   previamente en una plantilla de perfil.

@@ -25,7 +25,7 @@ Ejemplos ya decididos con evidencia real:
   del consolidado · separador de jerarquía de categorías (`>` vs `.`) ·
   entidad GLPI · lista de CI y motores · orden y selección de tarjetas.
 - **Código (estrategia con nombre):** clasificar casos por categoría (Acción
-  Fiduciaria, Novaventa) vs por `TIPO_DE_CASO` (Bancóldex) vs por hoja de
+  Fiduciaria, Novaventa) vs por `TIPO_DE_CASO` (Bancoldex) vs por hoja de
   origen (Cardio Infantil) · detección de encabezado (primera fila vs bloque
   con fechas vs cabecera de dos filas) · de dónde sale el SLA (columna
   «Tiempo para resolver excedido» vs `INDICARDOR DE CUMPLIMIENTO`).

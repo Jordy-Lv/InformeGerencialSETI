@@ -56,7 +56,7 @@ clasificación o mapeos libres escritos desde la interfaz.
   de exportar, el diálogo y la barra superior se eliminan del HTML que recibe
   el cliente.
 - Una validación verdaderamente distinta requiere una nueva plantilla de
-  perfil y su evidencia real, especificación OpenSpec y pruebas. Bancóldex
+  perfil y su evidencia real, especificación OpenSpec y pruebas. Bancoldex
   es el siguiente caso de este tipo; no debe crearse como una copia de
   Novaventa o AF.
 
@@ -129,7 +129,7 @@ barra y el diálogo se podan explícitamente antes de serializar el export.
 
 ## Pendiente
 
-- Crear y verificar la plantilla de validación de Bancóldex a partir de sus
+- Crear y verificar la plantilla de validación de Bancoldex a partir de sus
   insumos reales; no reutilizar una plantilla incompatible.
 - Ejecutar la comparación A/B de Acción Fiduciaria con exportaciones reales
   antes de cerrar F6.

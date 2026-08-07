@@ -39,5 +39,21 @@ F6.
 - [x] Uniformar la botonera superior en una escala compacta y retirar la ayuda
   redundante de edición.
 - [x] Añadir spec, autopruebas y pruebas de conformidad.
+- [x] Unificar la unidad de `PERFIL.metas` en `metaPerfil()`: fracción de 1,
+  con `null` explícito distinto de clave omitida. Antes, `metas.backups` se
+  leía como porcentaje mientras `metas.disponibilidad` se leía como fracción
+  — Bancoldex (`0.95`) mostraba «Meta 0,95 %» y Novaventa (`null`) «Meta 0 %».
+- [x] Aplicar el preset del perfil en cada arranque, no solo cuando hay uno
+  guardado. Sin esto, un cliente abierto en un equipo limpio conservaba
+  visibles las tarjetas que su perfil no selecciona —con el contenido de AF
+  dentro, incluido el nombre de su anexo— y viajaban al HTML exportado.
+- [x] Rotular la tabla de indicadores desde el consolidado del cliente. Antes
+  las dos primeras celdas eran literales de AF: Bancoldex mostraba
+  «Meta 99,30 %» en vez de 99,98 %. Verificado que AF no cambia.
+- [x] Dimensionar el almacén de insumos por cliente: el prefijo declarado ya
+  no se hereda de la plantilla. Dos clientes sobre Novaventa compartían base
+  de datos y se pisaban los insumos. El borrado manual alcanza solo al
+  cliente activo y la interfaz lo nombra.
 - [ ] Validar AF, comparar las cifras de junio con el informe de referencia y
-  publicar la rama remota.
+  publicar la rama remota. **Bloqueada:** requiere los insumos reales de
+  junio-2026, que por diseño no están en el repo.

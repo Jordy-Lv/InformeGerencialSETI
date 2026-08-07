@@ -1,23 +1,23 @@
-# Reconocimiento de Bancóldex para el adaptador Aranda (F7)
+# Reconocimiento de Bancoldex para el adaptador Aranda (F7)
 
 **Fecha:** 5 de agosto de 2026
 
 ## Contexto
 
 La prioridad solicitada es que el informe pueda interpretar los datos de
-Bancóldex. Antes de implementar, se revisaron las restricciones del proyecto,
+Bancoldex. Antes de implementar, se revisaron las restricciones del proyecto,
 las especificaciones OpenSpec vigentes, el plan multicliente, el motor HTML,
 la automatización existente y los cuatro insumos reales ignorados por Git en
 `Bancoldex/`.
 
 Este documento registra el reconocimiento. **No cambia el comportamiento del
-informe ni crea un perfil Bancóldex todavía.** Por tanto no requiere un delta
+informe ni crea un perfil Bancoldex todavía.** Por tanto no requiere un delta
 OpenSpec: los requisitos de las capacidades `adaptadores-fuente`, inventario
-de tarjetas y perfil Bancóldex se escribirán en su change correspondiente
+de tarjetas y perfil Bancoldex se escribirán en su change correspondiente
 antes de tocar el motor.
 
 La fase prevista para este trabajo es F7: adaptador Aranda de carga manual y
-perfil Bancóldex. F3 a F5 son prerrequisitos deliberados de F7: descriptores
+perfil Bancoldex. F3 a F5 son prerrequisitos deliberados de F7: descriptores
 de tarjetas, tarjetas configurables y modelo canónico/adaptadores. Saltarlos
 forzaría ramas por cliente dentro del HTML y violaría el principio de
 multicliente por configuración.
@@ -33,7 +33,7 @@ registros.
 | `Casos  + tareas BD junio 2026.xlsx` | Hoja `Junio`, una fila de cabecera y 72 filas. Incluye `TIPO_DE_CASO`, `NUMERO_DEL_CASO`, `JERARQUIA`, `MOTOR`, `INDICARDOR DE CUMPLIMIENTO` y `FECHA_REGISTRO`. | Casos de Aranda, SLA, tipo, jerarquía y motor. |
 | `Data consolidada junio_Bancoldex 2026.xlsx` | Hojas `Linea Base`, `Ejecucion Backups`, `Indicador`, `Casos` y `Disponibilidad Real`. | Línea base, indicadores, backups, históricos y disponibilidad por motor. |
 | `Logros_Mitigacion_TYA Bencoldex_junio.xlsx` | Hojas `Logros`, `Mitigación` y `TYA`. | Contenido cualitativo del periodo; `TYA` es una sábana de horas y no debe suponerse compatible con la tarjeta de bolsa sin una regla explícita. |
-| `reporte-bancoldex-2026-07-02.pdf` | Informe de junio de 2026, 11 páginas. | Referencia externa para validar el perfil Bancóldex, no fuente de cálculo. |
+| `reporte-bancoldex-2026-07-02.pdf` | Informe de junio de 2026, 11 páginas. | Referencia externa para validar el perfil Bancoldex, no fuente de cálculo. |
 
 ## Hallazgos verificables de los insumos
 
@@ -67,7 +67,7 @@ El plan inicial propuso filtrar Aranda con `Proyecto` que contenga
 
 - Las 72 filas tienen `Proyecto = Mesa de Servicios TI.`.
 - `COMPANIA = BANCOLDEX` aparece solo en 64 filas.
-- Las 8 filas restantes no tienen compañía, pero el PDF de Bancóldex las
+- Las 8 filas restantes no tienen compañía, pero el PDF de Bancoldex las
   incluye en sus totales de 72.
 
 Por ello, filtrar por `Proyecto` produciría cero casos y filtrar por
@@ -76,8 +76,8 @@ filtros como si fuera una garantía de la fuente.
 
 La decisión que debe quedar escrita en el diseño de F7 es una de estas dos:
 
-1. **Archivo de alcance único:** el perfil Bancóldex acepta todas las filas
-   porque el export se entrega específicamente para Bancóldex; la identidad
+1. **Archivo de alcance único:** el perfil Bancoldex acepta todas las filas
+   porque el export se entrega específicamente para Bancoldex; la identidad
    se valida por el perfil seleccionado y por el esquema, no por una columna.
 2. **Archivo de alcance mixto:** se requiere una columna o regla de Aranda
    que identifique las 72 filas sin excluir las ocho vacías; debe comprobarse
@@ -89,7 +89,7 @@ un filtro no auditable.
 
 ### Consolidado
 
-Bancóldex no usa el esquema de Acción Fiduciaria:
+Bancoldex no usa el esquema de Acción Fiduciaria:
 
 - `Indicador` tiene cuatro métricas, no tres, y su cabecera ocupa dos filas:
   la primera aporta el mes y la segunda distingue las series `BANCOLDEX` y
@@ -106,7 +106,7 @@ Bancóldex no usa el esquema de Acción Fiduciaria:
 Estos cambios justifican las estrategias declaradas en el plan: cabecera de
 dos filas, adaptador Aranda y los campos canónicos opcionales `motor`,
 `ambiente` y `cambio`. Esos campos no deben aparecer en Acción Fiduciaria
-solo porque existan para Bancóldex.
+solo porque existan para Bancoldex.
 
 ### Contenido cualitativo
 
@@ -122,13 +122,13 @@ Se abrió el HTML actual en una sesión local de navegador, se seleccionó
 junio de 2026 y se cargaron los insumos mediante los mismos controles de
 archivo que usa una persona. No se guardó ni exportó ningún informe.
 
-1. Al cargar el consolidado Bancóldex, el informe lo marca como incompleto.
+1. Al cargar el consolidado Bancoldex, el informe lo marca como incompleto.
    El motor exige las hojas `Indicadores`, `Disponibilidad` y `Backups`; no
-   reconoce los nombres ni las formas de Bancóldex.
+   reconoce los nombres ni las formas de Bancoldex.
 2. Al cargar el export Aranda por la entrada que hoy recibe GLPI, el informe
    lo rechaza correctamente: exige `Entidad`, `Fecha de apertura` y
    `Categoría/Tipo`, que no existen en la fuente Aranda.
-3. La validación no produjo cifras Bancóldex falsas. El informe conserva el
+3. La validación no produjo cifras Bancoldex falsas. El informe conserva el
    estado explícito de error y bloquea la exportación, que es el
    comportamiento seguro mientras F7 no exista.
 
@@ -166,7 +166,7 @@ El árbol de trabajo tiene un change F2 activo que ya lista
 La regla de OpenSpec prohíbe que otro change abierto reserve esos mismos
 archivos. Por eso este reconocimiento no modifica el plan maestro ni el HTML.
 
-La ruta segura para priorizar Bancóldex es:
+La ruta segura para priorizar Bancoldex es:
 
 1. Cerrar y aislar F2.
 2. Ejecutar F3, F4 y F5 manteniendo equivalencia A/B de Acción Fiduciaria.
@@ -197,7 +197,7 @@ La ruta segura para priorizar Bancóldex es:
 ## Pendiente
 
 - Confirmar si el export Aranda se entrega siempre con alcance exclusivo de
-  Bancóldex. Sin esa decisión no hay un filtro de cliente seguro.
+  Bancoldex. Sin esa decisión no hay un filtro de cliente seguro.
 - Completar las fases F3 a F5 antes de implementar el perfil y adaptador F7.
 - Escribir el change de F7 con propuesta, diseño, tareas, delta de spec y
   fixtures sintéticos antes de editar el motor.

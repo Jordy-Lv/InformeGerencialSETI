@@ -50,7 +50,7 @@ El plan se ejecuta con varias IAs en paralelo. Por eso la especificación
 
 | Decisión | Resuelto |
 |---|---|
-| **Casos de Bancóldex** | Export manual de Aranda (`Casos + tareas BD <mes>.xlsx`). Se construye adaptador de carga manual; **no** hay extractor automático en este alcance. El sondeo de una API de Aranda queda anotado como pregunta abierta, no bloquea. |
+| **Casos de Bancoldex** | Export manual de Aranda (`Casos + tareas BD <mes>.xlsx`). Se construye adaptador de carga manual; **no** hay extractor automático en este alcance. El sondeo de una API de Aranda queda anotado como pregunta abierta, no bloquea. |
 | **Alertas de Novaventa** | AlertOps **ya está activado**, y además debe poder interpretarse desde el consolidado `Data_<mes>.xlsx`. → Un dominio admite **varias fuentes alternativas con precedencia**. |
 | **PR #5 / Cardio** | Cerrado con feedback. Se recupera el inventario de tarjetas (PR #1) a `docs/` y sus aportes reales entran como PRs pequeños al núcleo compartido. |
 | **Nombres** | Repo → `InformeGerencialSETI`. Artefacto → `informe.html` (plantilla) y `informe-<cliente>-<periodo>.html` (salida). |
@@ -106,7 +106,7 @@ merge**):
   instancia GLPI, mismas columnas exactas, misma taxonomía de categorías,
   hojas `Disponibilidad`/`Backups`/`Logros` idénticas. Su delta completo son
   ~8 claves.
-- **Bancóldex extiende `base`.** Tendría que sobrescribir casi todo: fuente
+- **Bancoldex extiende `base`.** Tendría que sobrescribir casi todo: fuente
   de casos, esquema de columnas, separador, origen del SLA, 4 indicadores en
   vez de 3, `Linea Base` con `AMBIENTE`, `Ejecucion Backups` con columna
   `BD`, `Indicador` con encabezado de dos filas cruzadas `BANCOLDEX|SETI`,
@@ -199,7 +199,7 @@ Los `null` tri-valuados son el corazón del diseño, y no son teoría: el commit
 `e34ad12` ("Un caso no se asume atribuible a SETI por defecto — solo un SI
 explícito cuenta") y el hallazgo F1 de la auditoría del 02/08 dicen
 exactamente esto. Colapsar "no sé" a `false` o `true` es cómo se inventan
-números. Bancóldex lo hace inevitable: su SLA sale de `INDICARDOR DE
+números. Bancoldex lo hace inevitable: su SLA sale de `INDICARDOR DE
 CUMPLIMIENTO` con valores `Cumple`/`No cumple` y celdas vacías.
 
 **Advertencia de diseño:** no normalizar "a la forma que AF tiene hoy". AF no
@@ -223,7 +223,7 @@ casos: {
 }
 // Novaventa: SOLO cambia filtroCliente.valor -> 'novaventa'
 
-// Bancóldex — 'aranda-export'
+// Bancoldex — 'aranda-export'
 casos: {
   cabecera:{estrategia:'primera-fila-con', campos:[['numero_del_caso'],['fecha_registro']]},
   columnas:{id:['numero_del_caso'], tipoCaso:['tipo_de_caso'], jerarquia:['jerarquia'],
@@ -265,11 +265,11 @@ campos. Con la evidencia nueva eso es peligroso:
   y el histórico real en f7–f10. `filaCabecera` matchearía el primero →
   **metas leídas como serie histórica**. Un número plausible y falso, el
   peor tipo.
-- **Bancóldex `Indicador`** tiene encabezado de dos filas (f2 meses, f3
+- **Bancoldex `Indicador`** tiene encabezado de dos filas (f2 meses, f3
   `BANCOLDEX|SETI`). Un solo índice no puede describirlo.
 
 Estrategias registradas: `primera-fila-con` (comportamiento actual, literal)
-· `bloque-con-fechas` (Novaventa) · `cabecera-de-dos-filas` (Bancóldex) ·
+· `bloque-con-fechas` (Novaventa) · `cabecera-de-dos-filas` (Bancoldex) ·
 `por-hoja-de-origen` (Cardio, cuando se confirme).
 
 **Regla dura transversal:** si más de un candidato matchea y la estrategia no
@@ -283,7 +283,7 @@ CasoCanonico[] → REPORTE.publicar(...)`. `cargarGlpi`/`cargarAlertas`/
 `cargarConsolidado` conservan nombre y firma; su cuerpo pasa a ser una
 llamada al pipeline. `cargarConsolidado` (línea 3884) itera
 `PERFIL.fuentes.consolidado.hojas`, así que `Capacidad` (Novaventa) y `Linea
-Base` (Bancóldex) son **entradas de datos, no ramas de código**.
+Base` (Bancoldex) son **entradas de datos, no ramas de código**.
 
 Los siete patrones que sostienen este diseño (Registry, Strategy nombrada,
 Adapter + Canónico, Observer extendido, Anti-Corruption Layer, tabla
@@ -361,7 +361,7 @@ acaso" es el que produce el bug de dos verdades.
 | **F4** | HTML de tarjetas generado desde plantilla única; modal de selección; preset persistido | Deseleccionar «Bolsa de horas» retira su criterio y su página del PDF y el resto de cifras es idéntico; volver a seleccionarla restaura el export **byte a byte**; PDF correcto con preset mínimo (1 tarjeta) y máximo |
 | **F5** | Adaptadores + modelo canónico + fuentes alternativas con precedencia; AF migrado | A/B en 0; autoprueba que demuestra que `slaCumplido:null` **no** se cuenta como cumplido; encabezado ambiguo publica `invalido` con los candidatos |
 | **F6** | Perfil Novaventa (AlertOps + `Data_<mes>` como alternativa) | Las cifras cuadran con `Novaventa/Informe Novaventa Junio 2026.pptx`; goldens de AF en 0; sobrescribe <30 % de las claves de AF; **cero funciones nuevas** salvo `bloque-con-fechas` y la tarjeta `capacidad` |
-| **F7** | Adaptador Aranda (carga manual) + perfil Bancóldex | Los casos de junio-2026 cuadran con `Bancoldex/reporte-bancoldex-2026-07-02.pdf`; goldens de AF y Novaventa en 0; `cambio` y `ambiente` existen en el canónico **sin aparecer** en el informe de AF |
+| **F7** | Adaptador Aranda (carga manual) + perfil Bancoldex | Los casos de junio-2026 cuadran con `Bancoldex/reporte-bancoldex-2026-07-02.pdf`; goldens de AF y Novaventa en 0; `cambio` y `ambiente` existen en el canónico **sin aparecer** en el informe de AF |
 | **F8** | Automatización multicliente: `--cliente`, `.env.<cliente>` con precedencia sobre `.env` común, `insumos.py` genérico, ledger con dimensión de cliente | `actualizar_informe.py --cliente accion-fiduciaria` produce **el mismo sha256 por fuente** que la corrida previa; el ledger migrado conserva los periodos de AF; `pytest` verde |
 | **F9** | Reglas compartidas JS↔Python (`reglas/casos.json` + hash) | La autoprueba falla si el hash de la tabla embebida no coincide — se verifica desincronizándola a propósito |
 | **F10** | *(Opcional)* Split `fuente/` + `construir_informe.py` | Reproduce el HTML vigente **byte a byte** antes de aceptar el split |
@@ -409,7 +409,7 @@ diffs sin ningún build.
 - `automatizacion/historico_casos.py` — ledger sin dimensión de cliente;
   **la migración de datos de mayor riesgo**
 - `automatizacion/extraer_indisponibilidades.py:73` — `CLIENTE_OBJETIVO`
-  hardcodeado sobre un archivo compartido entre AF, Bancóldex y EMI
+  hardcodeado sobre un archivo compartido entre AF, Bancoldex y EMI
 - `automatizacion/test_insumos_af.py` — toda la cobertura de Python que
   existe hoy (54 líneas, solo `clasificar_caso_glpi`)
 
@@ -462,7 +462,7 @@ categoría **reales**, con IDs, títulos y contenido **inventados**.
 **Regla de merge: ningún perfil nuevo entra si las goldens de todos los
 perfiles existentes no pasan sin cambios.** Ventaja concreta: los
 entregables reales ya están en el árbol para validar contra la verdad, no
-contra sí mismos — el `.pptx` de Novaventa y el `.pdf` de Bancóldex son la
+contra sí mismos — el `.pptx` de Novaventa y el `.pdf` de Bancoldex son la
 referencia de lo que el cliente ya recibió.
 
 Un solo comando: `verificar` = `pytest` + `verificar_ab.py` sobre todas las
@@ -495,7 +495,7 @@ goldens.
    nodos concretos y de un ajuste iterativo al marco 16:9. → `exportable`
    en el descriptor + autoprueba de páginas = tarjetas exportables +
    portada + prueba con preset mínimo y máximo en F4.
-7. **`DisponibilidadMensual.xlsx` compartido entre AF, Bancóldex y EMI** —
+7. **`DisponibilidadMensual.xlsx` compartido entre AF, Bancoldex y EMI** —
    un cambio de filtro afecta dos informes, y el archivo se bloquea en vivo
    (commit `ea78db1`). → Fixture con las tres entidades mezcladas; **no
    relajar nunca el reintento por bloqueo** al refactorizar.
@@ -514,10 +514,10 @@ goldens.
 
 ## Preguntas abiertas (no bloquean; se resuelven por sondeo, no por inferencia)
 
-- ¿Aranda (Bancóldex) expone API? Hoy se asume export manual.
+- ¿Aranda (Bancoldex) expone API? Hoy se asume export manual.
 - ¿Cuál fecha de GLPI cuenta contractualmente para SLA? Es el pendiente de
   negocio más antiguo del proyecto.
-- Bancóldex: la hoja `TYA` (86 filas con `Integrante | Actividad | Horas
+- Bancoldex: la hoja `TYA` (86 filas con `Integrante | Actividad | Horas
   Reportadas`) podría **automatizar la bolsa de horas**, que en AF es 100 %
   manual por diseño. Candidata a tarjeta/mecanismo nuevo — pero solo si un
   segundo cliente la necesita.

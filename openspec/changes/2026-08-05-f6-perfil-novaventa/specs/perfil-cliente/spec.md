@@ -36,6 +36,110 @@ el dominio `capacidad`, sin escribir ni derivar datos en el dominio `bolsa`.
 - **THEN** publica las ocupaciones de `/db2dta1` y `/db2dta2` en `capacidad`
   y conserva `bolsa` como dato manual independiente
 
+### Requirement: unidad canónica de `PERFIL.metas`
+
+Todas las claves de `PERFIL.metas` SHALL declararse como fracción de 1
+(`0.95` es 95 %), sin excepción por clave. El motor SHALL convertirlas a
+porcentaje en el punto de presentación y no SHALL interpretar una clave como
+porcentaje ya escalado.
+
+Un perfil SHALL poder declarar `null` explícito en una meta para indicar «sin
+meta contractual», caso distinto de omitir la clave; omitirla SHALL conservar
+el valor heredado de Acción Fiduciaria.
+
+#### Scenario: meta declarada en fracción
+
+- **GIVEN** el perfil Bancoldex, que declara `metas.backups = 0.95`
+- **WHEN** se presenta la tarjeta de gestión de backups
+- **THEN** la meta se muestra como `95%` y el chip de cumplimiento se evalúa
+  contra 95, no contra 0,95
+
+#### Scenario: meta anulada explícitamente
+
+- **GIVEN** el perfil Novaventa, que declara `metas.backups = null` porque su
+  consolidado informa ejecución pero no una meta contractual
+- **WHEN** se presenta la tarjeta de gestión de backups y su radar histórico
+- **THEN** se muestra el resultado y su evolución sin meta ni chip de
+  cumplimiento, y no se atribuye al cliente la meta heredada de otro perfil
+
+#### Scenario: meta omitida conserva el valor heredado
+
+- **GIVEN** el perfil Acción Fiduciaria, que no declara `metas.backups`
+- **WHEN** se presenta la tarjeta de gestión de backups
+- **THEN** la meta sigue siendo `99,3%`, idéntica al comportamiento previo
+
+### Requirement: el preset declarado se aplica sin depender del almacenamiento
+
+El motor SHALL aplicar al DOM el preset de tarjetas del perfil activo en cada
+arranque, haya o no un preset guardado en el navegador. Una tarjeta que el
+perfil no selecciona no SHALL quedar visible ni viajar en el HTML exportado.
+
+#### Scenario: primera apertura en un equipo limpio
+
+- **GIVEN** el perfil Bancoldex, que selecciona `c3, c4, c7, c8, c8m`, y un
+  navegador sin preset guardado para ese cliente
+- **WHEN** se abre el informe
+- **THEN** las tarjetas `c5`, `c6`, `c9`, `c11` y `c12` quedan ocultas, y el
+  HTML exportado no contiene sus textos —entre ellos la meta de 99,30 % y el
+  nombre del anexo de Acción Fiduciaria— que pertenecen a otro cliente
+
+#### Scenario: un preset guardado sigue mandando
+
+- **GIVEN** un cliente cuyo usuario guardó antes un preset propio
+- **WHEN** se abre el informe
+- **THEN** se aplica el preset guardado, no el del perfil
+
+### Requirement: la tabla de indicadores se rotula desde la fuente
+
+El lector de Indicadores SHALL escribir el nombre y la meta de cada fila de la
+tabla del periodo desde el consolidado del cliente. No SHALL dejar en pie los
+literales estáticos de Acción Fiduciaria cuando el perfil activo es otro.
+
+#### Scenario: metas de Bancoldex
+
+- **GIVEN** el consolidado de Bancoldex, cuya hoja `Indicador` declara metas
+  de 0,9998, 0,97 y 0,99
+- **WHEN** se carga el consolidado
+- **THEN** la tabla muestra 99,98 %, 97 % y 99 %, y no las metas heredadas de
+  Acción Fiduciaria (99,30 %, 95 % y 90 %)
+
+#### Scenario: Acción Fiduciaria no cambia
+
+- **GIVEN** el consolidado de Acción Fiduciaria
+- **WHEN** se carga
+- **THEN** los rótulos y metas de la tabla quedan idénticos a los literales
+  que hoy trae el HTML, carácter por carácter
+
+### Requirement: los insumos guardados pertenecen a un solo cliente
+
+El almacén de insumos SHALL estar dimensionado por cliente. Un perfil que
+extiende una plantilla no SHALL heredar su almacén: los insumos guardados de
+un cliente no SHALL aparecer, restaurarse ni sobrescribirse desde otro.
+
+El borrado manual de informes guardados SHALL alcanzar únicamente al cliente
+activo, y la interfaz SHALL nombrar de qué cliente se trata.
+
+#### Scenario: dos clientes sobre la misma plantilla
+
+- **GIVEN** dos clientes personalizados que declaran la plantilla Novaventa
+- **WHEN** se carga un consolidado en el primero y luego se abre el segundo
+- **THEN** el segundo no restaura el consolidado del primero, y el del primero
+  sigue guardado
+
+#### Scenario: los clientes base conservan su almacén
+
+- **GIVEN** Acción Fiduciaria, Novaventa y Bancoldex, que declaran su propio
+  prefijo de almacén
+- **WHEN** se abre cualquiera de ellos
+- **THEN** siguen leyendo y escribiendo el prefijo que ya declaraban, para no
+  perder los insumos guardados en equipos donde ya se usaban
+
+#### Scenario: borrar alcanza solo al cliente abierto
+
+- **GIVEN** insumos guardados en dos clientes distintos
+- **WHEN** se pulsa «Borrar informes guardados» con uno de ellos abierto
+- **THEN** se borran los de ese cliente y los del otro quedan intactos
+
 ### Requirement: guía de carga declarada por perfil
 
 El motor SHALL permitir que un perfil declare ayudas para los insumos cuando
