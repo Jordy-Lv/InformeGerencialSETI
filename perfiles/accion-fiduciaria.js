@@ -12,6 +12,9 @@ window.PERFIL_ACCION_FIDUCIARIA = {
 
   contrato: {
     codigo: 'CN-21012025',
+    // Fecha calendario ISO. F2 la valida al arrancar y es la fuente de
+    // verdad para los históricos; el DOM solo la presenta como 01/09/2025.
+    inicio: '2025-09-01',
     vigenciaHasta: '2026-08-31',
   },
 
@@ -21,12 +24,44 @@ window.PERFIL_ACCION_FIDUCIARIA = {
     entregables: 0.90,
   },
 
+  // F3: orden entregado de las tarjetas. Son ids de inventario, no selectores
+  // ni funciones; F4 añadirá los operadores de herencia y el preset editable.
+  tarjetas: {
+    seleccionadas: ['c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c8m', 'c9', 'c11', 'c12'],
+  },
+
   // Alias que también identifican a este cliente dentro de una columna de
   // "Cliente"/"Entidad" de un archivo cargado, además del nombre completo
   // normalizado. Existía ya como caso especial en esClienteAccion() (línea
   // ~3431 del HTML, antes de este cambio) — se conserva tal cual, no se
   // inventa un alias nuevo.
   aliasCliente: ['accion'],
+
+  // F5: declaraciones de lectura, sin funciones. GLPI es la fuente de casos
+  // del periodo; AlertsList manda para alertas del mes en curso y el
+  // consolidado conserva el histórico. La precedencia hace explícita una
+  // regla que el cargador ya aplicaba manualmente.
+  fuentes: {
+    glpi: {
+      lector: 'tabular-xlsx',
+      cabecera: {estrategia: 'primera-fila-con', campos: [['entidad'], ['fecha de apertura', 'fecha apertura'], ['categoria', 'tipo']]},
+      columnas: {id: ['id'], entidad: ['entidad'], fecha: ['fecha de apertura', 'fecha apertura'], categoria: ['categoria'], tipo: ['tipo'], slaExcedido: ['tiempo para resolver excedido', 'tiempo para resolver', 'sla excedido']},
+      filtroCliente: {campo: 'entidad', estrategia: 'contiene-normalizado', valor: 'accion fiduciaria'},
+      jerarquia: {separador: '>'},
+      clasificador: 'glpi-por-categoria',
+      sla: {estrategia: 'columna-excedido', verdaderos: ['si', 'sí', 'yes', 'true', '1', 'vencido', 'excedido']},
+    },
+    alertas: {
+      origenes: [
+        {id: 'alertops', precedencia: 1, ambito: 'mes-en-curso'},
+        {id: 'consolidado-data', precedencia: 2, ambito: 'historico'},
+      ],
+      cabecera: {estrategia: 'primera-fila-con', campos: [['alert id', 'alertid'], ['created date', 'fecha'], ['escalation policy', 'escalation', 'response play']]},
+    },
+    consolidado: {
+      indicadores: {hojas: ['Indicadores', 'Inidcadores'], cabecera: {estrategia: 'bloque-con-fechas', campos: [['indicador'], ['meta']]}},
+    },
+  },
 
   almacen: {
     // Prefijo de las claves en localStorage/IndexedDB. Las claves viejas
