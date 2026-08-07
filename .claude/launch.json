@@ -1,0 +1,39 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ab-pr18-8110",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "/private/tmp/claude-501/-Users-yordypardopajaro-Developer-work-InformeAccionFiduciariaRemake/ef2c6e2c-7d19-43fa-9a0f-b67f553ac5fe/scratchpad/servidor_ab.py",
+        "8110",
+        "/private/tmp/claude-501/-Users-yordypardopajaro-Developer-work-InformeAccionFiduciariaRemake/ef2c6e2c-7d19-43fa-9a0f-b67f553ac5fe/scratchpad/pr18",
+        "/private/tmp/claude-501/-Users-yordypardopajaro-Developer-work-InformeAccionFiduciariaRemake/ef2c6e2c-7d19-43fa-9a0f-b67f553ac5fe/scratchpad/ab"
+      ],
+      "port": 8110
+    },
+    {
+      "name": "ab-main-8111",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "/private/tmp/claude-501/-Users-yordypardopajaro-Developer-work-InformeAccionFiduciariaRemake/ef2c6e2c-7d19-43fa-9a0f-b67f553ac5fe/scratchpad/servidor_ab.py",
+        "8111",
+        "/private/tmp/claude-501/-Users-yordypardopajaro-Developer-work-InformeAccionFiduciariaRemake/ef2c6e2c-7d19-43fa-9a0f-b67f553ac5fe/scratchpad/mainab",
+        "/private/tmp/claude-501/-Users-yordypardopajaro-Developer-work-InformeAccionFiduciariaRemake/ef2c6e2c-7d19-43fa-9a0f-b67f553ac5fe/scratchpad/ab"
+      ],
+      "port": 8111
+    },
+    {
+      "name": "export-verif-8112",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8112",
+        "--directory",
+        "/private/tmp/claude-501/-Users-yordypardopajaro-Developer-work-InformeAccionFiduciariaRemake/ef2c6e2c-7d19-43fa-9a0f-b67f553ac5fe/scratchpad/ab"
+      ],
+      "port": 8112
+    }
+  ]
+}

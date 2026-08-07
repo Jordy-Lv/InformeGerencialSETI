@@ -224,7 +224,7 @@ class TestEntregableInteractivo(unittest.TestCase):
         que el entregable no lleva, y rompía a Bancoldex y Novaventa."""
         self.assertIn("if(propio===PERFIL_EMBEBIDO) return propio;", HTML)
 
-    def test_los_scripts_legados_toleran_las_tarjetas_podadas(self):
+    def test_los_scripts_legados_toleran_que_falte_su_tabla(self):
         """#tbodyCI vive en c11: un perfil que no la selecciona no la lleva."""
         self.assertIn("const tb=document.getElementById('tbodyCI');\n  // Un perfil", HTML)
         self.assertIn("if(!tb) return;", HTML)

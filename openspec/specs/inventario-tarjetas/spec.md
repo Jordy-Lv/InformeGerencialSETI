@@ -238,6 +238,15 @@ elimina.
 - **THEN** el informe arranca con el perfil ya resuelto que viaja en el
   estado, sin intentar cargar el perfil padre
 
+#### Scenario: los scripts de autoría no abortan el entregable
+
+- **GIVEN** un entregable del que el podado eliminó el panel de carga
+  (`#loadPanel`, y con él `#loadSummary`)
+- **WHEN** se abre y la cadena `restaurarPresetTarjetas()` →
+  `aplicarPresetTarjetas()` → `actualizarResumen()` alcanza esa función
+- **THEN** la función devuelve sin escribir, en vez de lanzar un `TypeError`
+  que aborte el script y deje el informe inerte
+
 #### Scenario: exportar con una tarjeta abierta
 
 - **GIVEN** una tarjeta abierta en su modal en el momento de exportar
