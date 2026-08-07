@@ -230,8 +230,8 @@ def opciones_por_api(cli, base, token):
 # extraer_glpi.py). El JSON crudo ya queda en 03-searchoptions.json; esto es
 # solo una lectura rápida en consola para no tener que abrirlo y buscar a
 # mano cada vez que se sondea una instancia nueva — el mismo paso que ya
-# traía la sonda de Cardio Infantil (PR #5, cerrado por bifurcar el
-# proyecto, pero esta parte sí era una mejora genérica).
+# traía la sonda del PR #5 (cerrado por bifurcar el proyecto, pero esta
+# parte sí era una mejora genérica).
 _TERMINOS_RELEVANTES = (
     "título", "titulo", "entidad", "fecha de apertura", "estado",
     "categoría", "categoria", "prioridad", "tipo", "resolver",

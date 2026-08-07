@@ -10,6 +10,13 @@
 > histórico** — enlazado desde varios documentos por ruta — pero no es la
 > fuente de verdad: si algo aquí contradice a los tres documentos de
 > arriba, ganan ellos.
+>
+> **Cardio Infantil se descartó el 07/08/2026** por decisión del usuario. El
+> texto de abajo se conserva sin editar porque es el acta de la sesión del
+> 04/08 y reescribirla falsearía el registro, pero **todo lo que menciona a
+> ese cliente —la fase F11, su perfil y sus preguntas de sondeo— ya no
+> aplica**. Su inventario de tarjetas se eliminó del repositorio; las ramas
+> quedaron respaldadas en los tags `historico/cardio-infantil-*`.
 
 **Para:** quien continúe (Claude, otra IA, u otra persona del equipo).
 **Qué es esto:** el plan aprobado de la refactorización multicliente completa

@@ -46,7 +46,6 @@ lectura de docs. F2–F5 **sí están commiteadas** y las contiene por completo
 | F8 — automatización multicliente | — | No iniciada |
 | F9 — reglas compartidas JS↔Python | — | No iniciada |
 | F10 — split `fuente/` (opcional) | — | No iniciada |
-| F11 — Cardio Infantil | — | **Bloqueada** por 4 preguntas de sondeo |
 
 `fix/auditoria-2026-08-02` y `codex/f0-dorados-ab` están 0 commits por
 delante de `origin/main`: ya absorbidas, se pueden borrar.
@@ -210,21 +209,41 @@ Detalle en [`docs/2026-08-07-cierre-bancoldex.md`](docs/2026-08-07-cierre-bancol
    (`?perfil=`) se descarta: `cambiarClienteActivo` cubre lo mismo. **No
    queda nada por portar de `codex/bancoldex-completo`.**
 
+## Cardio Infantil: descartado (07/08/2026)
+
+Decisión del usuario. Se retiró del repositorio la fase **F11**, el documento
+de inventario de tarjetas y todas las menciones de los documentos vivos
+(`README.md`, este archivo, `docs/PATRONES.md`,
+`docs/arquitectura-multicliente.md`, `docs/requisitos-producto.md`,
+`openspec/project.md`, `automatizacion/sonda_glpi.py`).
+
+Tres precisiones sobre el alcance, para no rehacer el trabajo ni borrar de
+más:
+
+1. **La referencia al PR #5 se conserva a propósito.** Es el precedente que
+   sostiene la prohibición de duplicar `automatizacion/` por cliente
+   (`openspec/project.md`). Lo que se quitó es el nombre del cliente, no la
+   lección: donde decía `insumos_cardio.py` ahora dice
+   `insumos_<cliente>.py`.
+2. **Las actas fechadas no se reescriben.** `docs/archivo/2026-08-04-plan-multicliente.md`
+   y `docs/2026-08-06-reorganizacion-contexto-documental.md` conservan su
+   texto porque son el registro de lo que se decidió ese día; editarlas
+   falsearía el acta. La primera lleva una nota al encabezado avisando de que
+   todo lo relativo a ese cliente ya no aplica.
+3. **Nada se perdió.** Las 4 ramas quedaron en tags anotados y publicados,
+   `historico/cardio-infantil-*`. Se recuperan con `git checkout <tag>`.
+
 ## Siguiente paso
 
-1. Publicar la rama y abrir el PR de `codex/f6-perfil-novaventa` → `main`
-   (lleva F2–F7 juntas). **Ya no hay nada que lo bloquee.**
-2. Definir con el cliente la fuente de atribución a SETI para Bancoldex. Ya
+1. Definir con el cliente la fuente de atribución a SETI para Bancoldex. Ya
    no bloquea el entregable.
-3. El hallazgo 3 (scripts externos en el export), cuando se toque la
+2. El hallazgo 3 (scripts externos en el export), cuando se toque la
    exportación; no bloquea a nadie.
 
 ## Bloqueos conocidos
 
 - `dorados/accion-fiduciaria-2026-06.json` no existe — requiere insumos
   reales de junio-2026 que no están en el repo (por diseño).
-- Cardio Infantil (F11) bloqueada hasta resolver 4 preguntas de sondeo —
-  ver `docs/arquitectura-multicliente.md`.
 
 ## Higiene pendiente
 
