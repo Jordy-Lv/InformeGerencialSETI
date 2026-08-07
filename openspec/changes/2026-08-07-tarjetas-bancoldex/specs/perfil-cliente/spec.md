@@ -26,7 +26,7 @@ SHALL calcularla el motor, no el perfil.
 
 - **GIVEN** un perfil que no declara `lineaBase.control`
 - **WHEN** arranca el informe
-- **THEN** el perfil es válido y `c13` no se ofrece
+- **THEN** el perfil es válido y `c3b` no se ofrece
 
 ### Requirement: firmantes declarados por el perfil y editables
 

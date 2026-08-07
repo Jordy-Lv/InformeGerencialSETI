@@ -9,7 +9,7 @@ aceptación), ver [`docs/arquitectura-multicliente.md`](docs/arquitectura-multic
 declarar el mismo archivo en su `tasks.md`. Revisa `openspec/changes/`
 (excluye `archivo/`) antes de tocar código.
 
-Última verificación de este archivo contra git: **07/08/2026 (noche)** —
+Última verificación de este archivo contra git: **07/08/2026 (cierre)** —
 Bancoldex cerrado y A/B de AF en 0, ver «Cierre del 07/08/2026» más abajo.
 
 **El cliente se escribe «Bancoldex», sin tilde.** Corregido en todo el
@@ -202,10 +202,37 @@ Detalle en [`docs/2026-08-07-cierre-bancoldex.md`](docs/2026-08-07-cierre-bancol
    (`?perfil=`) se descarta: `cambiarClienteActivo` cubre lo mismo. **No
    queda nada por portar de `codex/bancoldex-completo`.**
 
+## Sesión del 07/08/2026 (noche): F7 commiteada y tarjetas nuevas
+
+Detalle en [`docs/2026-08-07-tarjetas-bancoldex.md`](docs/2026-08-07-tarjetas-bancoldex.md).
+
+1. **F7 estaba sin commitear.** Todo el trabajo del 06 y 07 de agosto vivía
+   en el árbol sin guardar: el change `2026-08-05-f7-bancoldex-aranda` sin
+   trackear, +546 líneas del HTML, el perfil, 9 documentos y las pruebas. El
+   PR #18 llegaba solo hasta `abfe85f`. Commiteado en `48ab8da` y **el PR #18
+   ya lo contiene** (20 commits, 69 archivos, +8142/−233). Falta revisión: la
+   protección de rama impide que el autor apruebe su propio PR.
+2. **Tres tarjetas nuevas para Bancoldex** en `feat/tarjetas-bancoldex`,
+   change `2026-08-07-tarjetas-bancoldex`: `c3b` (control de línea base),
+   `c14` (firmas aprobadoras, trazadas sobre canvas en el propio informe) y
+   `c8m` completada con responsable, fecha, observaciones y avance.
+   **A/B de Acción Fiduciaria en 0 diferencias**; 135 pruebas en verde.
+3. **El export arrastraba tarjetas de otros clientes.** Lo detectó el A/B
+   (16 diferencias en la primera corrida): `podarClon()` no filtraba por
+   preset, solo `exportarPDF()` lo hacía. Corregido; arregla también que una
+   tarjeta desactivada desde el selector siguiera saliendo en el entregable.
+4. **Las autopruebas del store solo valen con Acción Fiduciaria activa.**
+   Dos de las 31 tienen el cliente escrito a mano y dan falso negativo con
+   cualquier otro perfil. Preexistente, no lo introduce este change (con AF:
+   31/31). Debería parametrizarse por `PERFIL`.
+
 ## Siguiente paso
 
-1. Publicar la rama y abrir el PR de `codex/f6-perfil-novaventa` → `main`
-   (lleva F2–F7 juntas). **Ya no hay nada que lo bloquee.**
+1. Conseguir revisión del PR #18 (`codex/f6-perfil-novaventa` → `main`,
+   lleva F2–F7). **Ya solo depende de que lo revise alguien distinto del
+   autor.**
+2. Afinar las tres tarjetas nuevas con el usuario y abrir su PR
+   (`feat/tarjetas-bancoldex`), que parte de `48ab8da`.
 2. Definir con el cliente la fuente de atribución a SETI para Bancoldex. Ya
    no bloquea el entregable.
 3. El hallazgo 3 (scripts externos en el export), cuando se toque la

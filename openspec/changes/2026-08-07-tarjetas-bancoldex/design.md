@@ -35,6 +35,17 @@ cada una justificándolo por lo mismo. `2026-08-05-f3-inventario-tarjetas`
 lo dice literalmente: «F2 quedó registrado en el commit `38530c5` […] F3 es
 el siguiente cambio secuencial sobre el HTML».
 
+## Decisión 1b — los identificadores son `c3b` y `c14`, no `c13`/`c14`
+
+El proposal hablaba de `c13`. **`c13` ya está ocupado**: identifica la
+diapositiva fija «Gracias» (`slideCard#c13`, con su `s13`). Reutilizarlo
+habría hecho que `document.getElementById('c13')` devolviera el nodo
+equivocado.
+
+Se usa `c3b`, con el mismo patrón de sufijo que ya emplea `c8m`: acompaña a
+`c3` y se monta justo detrás. Para las firmas, `c14`/`s14` estaban libres.
+Cubierto por prueba (`test_c13_no_se_reutiliza_para_una_tarjeta`).
+
 ## Decisión 1 — las tarjetas nuevas necesitan nodo legado en el DOM
 
 `montarTarjetasDesdeInventario()` recorre `INVENTARIO_TARJETAS`, busca
@@ -119,6 +130,48 @@ una dimensión de primera clase ni una estrategia registrada.
 El canvas de firma **sí** es un tipo de componente nuevo, y se señala
 explícitamente: se acepta porque es una tarjeta opcional del inventario que
 ningún otro perfil selecciona, no una capacidad transversal del motor.
+
+## Hallazgos de la implementación (07/08/2026)
+
+Tres defectos que ninguna inspección de código habría dado por sí sola; los
+tres salieron de ejecutar la verificación de verdad.
+
+### 1. El export arrastraba las tarjetas de otros clientes — lo detectó el A/B
+
+La primera corrida del A/B dio **16 diferencias**, todas de `c3b` y `c14`
+apareciendo dentro del entregable de Acción Fiduciaria. `podarClon()` no
+filtraba por preset: el filtro por `seleccionadas` solo existía en
+`exportarPDF()`. Hasta ahora no hacía falta, porque todas las tarjetas del
+DOM pertenecían al preset de AF.
+
+Se añade el podado por `TARJETAS_SELECCIONADAS` en `podarClon()`. **Corrige
+además un defecto latente**: una tarjeta desactivada desde el selector de
+composición seguía viajando en el HTML exportado. Tras el arreglo, A/B en 0.
+
+Es el riesgo que la tabla de abajo anticipaba como «el riesgo del change», y
+se confirmó. La inspección del DOM en pantalla no lo veía: las tarjetas
+estaban `hidden`, que es exactamente lo que engaña al ojo y no al arnés.
+
+### 2. La firma se guardaba en blanco
+
+`toDataURL()` devolvía `data:,` (6 bytes). El buffer del `<canvas>` se
+dimensionaba desde `getBoundingClientRect()`, pero `renderC14()` monta el
+lienzo con el detalle de la tarjeta colapsado (`display:none`), así que el
+rect medía 0×0. Se pasa a un buffer fijo de 600×200 y el CSS lo escala; las
+coordenadas del puntero se convierten a coordenadas de buffer. Verificado:
+PNG real de 9,1 KB, coherente con los ~10 KB estimados arriba.
+
+### 3. El avance se pintaba como «0 %»
+
+La hoja trae `0.2` y el comentario del código afirmaba que `pctNum()`
+resolvía ambas escalas. **Es falso**: `pctNum()` solo parsea, no reescala.
+Se aplica el mismo umbral `1.01` que ya usa
+`actualizarTarjetasDesdeStore()` con los indicadores.
+
+De paso se separó el rótulo del nombre de columna: el perfil declara
+`avance: 'Avance'` como rótulo y la columna se localiza por alias
+(`estado`, `avance`, …), para que el rótulo del informe no quede atado al
+encabezado del archivo del cliente.
 
 ## Riesgos
 

@@ -9,6 +9,7 @@ RAIZ = Path(__file__).resolve().parent.parent
 HTML = (RAIZ / "informe-accion-fiduciaria 1.html").read_text(encoding="utf-8")
 PERFIL = (RAIZ / "perfiles/accion-fiduciaria.js").read_text(encoding="utf-8")
 NOVAVENTA = (RAIZ / "perfiles/novaventa.js").read_text(encoding="utf-8")
+BANCOLDEX = (RAIZ / "perfiles/bancoldex.js").read_text(encoding="utf-8")
 SPEC = (RAIZ / "openspec/specs/inventario-tarjetas/spec.md").read_text(encoding="utf-8")
 DELTA = (
     RAIZ
@@ -133,6 +134,74 @@ class TestInventarioDesplegado(unittest.TestCase):
         self.assertIn("c10:renderC10", HTML)
         self.assertIn('class="capacity-chart"', HTML)
         self.assertIn('Ocupación por filesystem', HTML)
+
+
+class TestTarjetasBancoldex(unittest.TestCase):
+    """Change 2026-08-07: control de línea base (c3b) y firmas (c14)."""
+
+    def test_las_tarjetas_nuevas_estan_en_el_inventario_y_el_dom(self):
+        for tarjeta, renderizador in (("c3b", "renderC3b"), ("c14", "renderC14")):
+            with self.subTest(tarjeta=tarjeta):
+                self.assertIn(f"id:'{tarjeta}'", HTML)
+                self.assertIn(f'id="tk-{tarjeta}"', HTML)
+                self.assertIn(f'id="det-{tarjeta}"', HTML)
+                self.assertIn(f"function {renderizador}()", HTML)
+                self.assertIn(f"{tarjeta}:{renderizador}", HTML)
+
+    def test_c13_no_se_reutiliza_para_una_tarjeta(self):
+        """c13 ya identifica la diapositiva fija «Gracias»."""
+        self.assertIn('class="slideCard" id="c13"', HTML)
+        self.assertNotIn("id:'c13'", HTML)
+        self.assertNotIn('id="tk-c13"', HTML)
+
+    def test_bancoldex_selecciona_las_dos_tarjetas_y_af_no(self):
+        self.assertRegex(BANCOLDEX, r"seleccionadas\s*:\s*\[(?s:.*?)'c3b'")
+        self.assertRegex(BANCOLDEX, r"seleccionadas\s*:\s*\[(?s:.*?)'c14'")
+        for tarjeta in ("'c3b'", "'c14'"):
+            with self.subTest(tarjeta=tarjeta):
+                self.assertNotIn(tarjeta, PERFIL)
+                self.assertNotIn(tarjeta, NOVAVENTA)
+
+    def test_el_export_poda_las_tarjetas_no_seleccionadas(self):
+        """Sin esto, c3b y c14 viajaban dentro del entregable de AF."""
+        self.assertIn(
+            "const tarjetasActivas=new Set(TARJETAS_SELECCIONADAS.map(t=>t.legado.tarjeta));",
+            HTML,
+        )
+        self.assertIn("if(!tarjetasActivas.has(e.id)) e.remove();", HTML)
+
+    def test_la_diferencia_de_linea_base_la_calcula_el_motor(self):
+        self.assertIn("diferencia:Number(f.actual)-Number(f.base)", HTML)
+        self.assertNotIn("diferencia:", BANCOLDEX)
+
+    def test_el_lienzo_de_firma_no_depende_del_tamano_en_pantalla(self):
+        """El detalle está colapsado al montar: un buffer derivado del rect
+        medía 0x0 y toDataURL() devolvía «data:,»."""
+        self.assertIn("const FIRMA_ANCHO=600, FIRMA_ALTO=200;", HTML)
+        self.assertIn("canvas.width=FIRMA_ANCHO; canvas.height=FIRMA_ALTO;", HTML)
+
+    def test_el_perfil_no_transporta_trazos_de_firma(self):
+        self.assertIn("firmantes:", BANCOLDEX)
+        # La clave, no la palabra: el comentario del perfil explica justamente
+        # por qué el trazo no vive ahí.
+        self.assertNotRegex(BANCOLDEX, r"\btrazo\s*:")
+
+    def test_las_columnas_de_mitigacion_son_opcionales(self):
+        """AF entrega otro formato: sin declararlas, el marcado no cambia."""
+        self.assertIn("function detalleMitigacion(r)", HTML)
+        self.assertIn(
+            "const cols=PERFIL.fuentes?.cualitativos?.columnas?.mitigaciones;\n    if(!cols) return '';",
+            HTML,
+        )
+        # `columnas` a secas no sirve: AF la declara para otras fuentes. Lo
+        # que este change añade es el bloque de columnas de mitigaciones.
+        self.assertRegex(BANCOLDEX, r"mitigaciones\s*:\s*\{")
+        self.assertNotRegex(PERFIL, r"mitigaciones\s*:\s*\{")
+        self.assertNotRegex(NOVAVENTA, r"mitigaciones\s*:\s*\{")
+
+    def test_el_avance_se_reescala_desde_fraccion(self):
+        """La hoja trae 0.2; pctNum() no reescala y pintaba «0 %»."""
+        self.assertIn("Math.abs(avance)<=1.01?avance*100:avance", HTML)
 
 
 if __name__ == "__main__":

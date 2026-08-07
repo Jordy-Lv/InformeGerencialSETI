@@ -2,32 +2,32 @@
 
 ### Requirement: tarjeta de control de línea base
 
-El inventario SHALL incluir una tarjeta `c13` que presente la comparación
+El inventario SHALL incluir una tarjeta `c3b` que presente la comparación
 entre la línea base contratada y la vigente, con la diferencia por
 categoría, a partir de cifras declaradas por el perfil y sin requerir
 ningún insumo cargado.
 
 #### Scenario: Bancoldex declara su control de línea base
 
-- **GIVEN** el perfil `bancoldex` con `lineaBase.control` declarado y `c13`
+- **GIVEN** el perfil `bancoldex` con `lineaBase.control` declarado y `c3b`
   en `tarjetas.seleccionadas`
 - **WHEN** se renderiza el informe sin haber cargado ningún insumo
-- **THEN** `c13` muestra el total base, el total actual y la diferencia, sin
+- **THEN** `c3b` muestra el total base, el total actual y la diferencia, sin
   quedar en estado «Pendiente de cargar»
 
 #### Scenario: el detalle vive en el modal
 
-- **GIVEN** `c13` renderizada con su ficha declarada
+- **GIVEN** `c3b` renderizada con su ficha declarada
 - **WHEN** se abre la tarjeta
 - **THEN** el modal lista cada tipo de infraestructura con su base, su valor
   actual y su diferencia, agrupados por ambiente
 
 #### Scenario: un perfil que no la declara no la muestra
 
-- **GIVEN** un perfil sin `lineaBase.control` y sin `c13` en
+- **GIVEN** un perfil sin `lineaBase.control` y sin `c3b` en
   `tarjetas.seleccionadas`
 - **WHEN** se resuelven las tarjetas del perfil
-- **THEN** `c13` no aparece en el informe ni en el HTML exportado
+- **THEN** `c3b` no aparece en el informe ni en el HTML exportado
 
 ### Requirement: tarjeta de firmas aprobadoras
 
@@ -67,6 +67,31 @@ de red.
 - **WHEN** se genera el HTML exportado
 - **THEN** el trazo va embebido como imagen en base64, sin referencias a
   archivos externos
+
+### Requirement: el entregable solo contiene las tarjetas seleccionadas
+
+El HTML exportado SHALL contener únicamente las tarjetas que el perfil
+activo selecciona. Una tarjeta del inventario que el perfil no selecciona
+SHALL quedar fuera del entregable, no solo oculta.
+
+#### Scenario: una tarjeta de otro cliente no viaja en el entregable
+
+- **GIVEN** el perfil `accion-fiduciaria`, que no selecciona `c3b` ni `c14`
+- **WHEN** se exporta el informe a HTML
+- **THEN** el entregable no contiene sus nodos, y el A/B contra `main` da
+  cero diferencias
+
+#### Scenario: la tarjeta seleccionada sí viaja
+
+- **GIVEN** el perfil `bancoldex`, que sí selecciona `c3b` y `c14`
+- **WHEN** se exporta el informe a HTML
+- **THEN** el entregable conserva ambas tarjetas con su diapositiva
+
+#### Scenario: una tarjeta desactivada desde la interfaz
+
+- **GIVEN** una tarjeta del preset desactivada en el selector de composición
+- **WHEN** se exporta el informe a HTML
+- **THEN** tampoco viaja en el entregable
 
 ## MODIFIED Requirements
 

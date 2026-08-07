@@ -54,7 +54,63 @@ window.PERFIL_BANCOLDEX = {
       {etiqueta: 'Motores', valor: 'Oracle · SQL Server · MySQL', meta: 'Más aplicaciones (Weblogic, Apex)'},
       {etiqueta: 'Vigencia', valor: '14 nov 2026', meta: 'Contrato vigente', destacada: true},
     ],
+
+    // Control de línea base (c3b). Cifras del entregable aprobado,
+    // Bancoldex/reporte-bancoldex-2026-07-02.pdf, páginas «Línea base del
+    // servicio» y «Control línea base».
+    //
+    // NO salen del consolidado a propósito: su hoja «Linea Base» trae otra
+    // estructura (CI · MOTOR · AMBIENTE · CANTIDAD base/actual, 13 filas) y
+    // suma 220/161, no los 237/257 del PDF. No existe todavía en el
+    // repositorio la fuente que produce las cifras del entregable, así que
+    // se declaran hasta saber de dónde salen — decisión del usuario,
+    // 07/08/2026. Ver openspec/changes/2026-08-07-tarjetas-bancoldex/.
+    //
+    // `diferencia` no se declara en ninguna fila: la calcula el motor a
+    // partir de base y actual, para que no pueda contradecir a sus operandos.
+    control: {
+      fuente: 'Informe gerencial Bancoldex · junio 2026',
+      referenciaBase: 'Contrato 2024112 · noviembre 2024',
+      referenciaActual: 'Línea base junio 2026',
+      ambientes: [
+        {
+          nombre: 'Producción',
+          filas: [
+            {etiqueta: 'Bases de datos Oracle (Producción RAC)', grupo: 'Oracle', base: 14, actual: 17},
+            {etiqueta: 'Bases de datos Oracle (Producción 9.16 Stand Alone)', grupo: 'Oracle', base: 10, actual: 9},
+            {etiqueta: 'Bases de datos Oracle (Producción 19S Stand Alone)', grupo: 'Oracle', base: 4, actual: 1},
+            {etiqueta: 'Bases de datos SQL Server (Producción Clúster)', grupo: 'SQL Server', base: 26, actual: 24},
+            {etiqueta: 'Bases de datos SQL Server (Producción Stand Alone)', grupo: 'SQL Server', base: 51, actual: 53},
+            {etiqueta: 'Bases de datos MySQL (Producción)', grupo: 'MySQL', base: 1, actual: 3},
+            {etiqueta: 'Weblogic (Producción)', grupo: 'Aplicaciones', base: 2, actual: 3},
+            {etiqueta: 'Apex (Producción)', grupo: 'Aplicaciones', base: 1, actual: 1},
+          ],
+        },
+        {
+          nombre: 'Ambientes de desarrollo y prueba',
+          filas: [
+            {etiqueta: 'Bases de datos Oracle (Certificación AIX 10.13)', grupo: 'Oracle', base: 19, actual: 32},
+            {etiqueta: 'Bases de datos Oracle (Desarrollo y Pruebas AWS)', grupo: 'Oracle', base: 8, actual: 14},
+            {etiqueta: 'Bases de datos SQL Server (Desarrollo y Pruebas AWS)', grupo: 'SQL Server', base: 97, actual: 93},
+            {etiqueta: 'Bases de datos MySQL (Pruebas)', grupo: 'MySQL', base: 1, actual: 3},
+            {etiqueta: 'Weblogic (Pruebas)', grupo: 'Aplicaciones', base: 1, actual: 1},
+            {etiqueta: 'Weblogic (Desarrollo)', grupo: 'Aplicaciones', base: 1, actual: 1},
+            {etiqueta: 'Apex (Pruebas)', grupo: 'Aplicaciones', base: 1, actual: 2},
+          ],
+        },
+      ],
+    },
   },
+
+  // Firmantes del informe (c14). Valor inicial editable desde la interfaz:
+  // una rotación de personal no debe exigir tocar código. El trazo de la
+  // firma NO vive aquí — es estado del cliente en localStorage, porque un
+  // perfil es un objeto serializable que se revisa en el diff.
+  firmantes: [
+    {clave: 'gerente', nombre: 'Santiago Amaya Cely', cargo: 'Gerente de Proyecto SETI'},
+    {clave: 'lider', nombre: 'Jeyson Alzate Guzman', cargo: 'Líder técnico SETI'},
+    {clave: 'supervisor', nombre: 'Leonardo Romero Morales', cargo: 'Supervisor del Contrato 2024112'},
+  ],
 
   // Las cuatro metas del PDF de referencia («Indicadores», página 4):
   // Disponibilidad 99,98 %, Cumplimiento tiempos de Atención 97 %,
@@ -74,7 +130,10 @@ window.PERFIL_BANCOLDEX = {
   reglas: {atribucionSeti: 'sin-fuente'},
 
   tarjetas: {
-    seleccionadas: ['c3', 'c4', 'c5', 'c7', 'c8', 'c8m'],
+    // c3b (control de línea base) y c14 (firmas aprobadoras) se agregan el
+    // 07/08/2026: son las páginas 3 y 11 del entregable aprobado, que el
+    // preset anterior no cubría.
+    seleccionadas: ['c3', 'c3b', 'c4', 'c5', 'c7', 'c8', 'c8m', 'c14'],
     configuracion: {
       // c5 comparte tarjeta/modal/gráfica con AF, pero su única fuente de
       // cifras es Aranda (fuente física 'glpi': misma entrada de archivo que
@@ -158,6 +217,28 @@ window.PERFIL_BANCOLDEX = {
       entrada: 'logros',
       alcance: 'archivo-alcance-unico',
       hojas: {logros: 'Logros', mitigaciones: 'Mitigación'},
+      // Columnas adicionales del cuadro de mitigaciones (c8m). Cada valor es
+      // el RÓTULO con el que se pinta en el informe, no el encabezado del
+      // archivo: la columna de avance se localiza por alias («estado»,
+      // «avance», …), así que el informe puede decir «Avance» aunque la hoja
+      // del cliente titule esa columna «ESTADO».
+      //
+      // Van declaradas por perfil y no en el motor porque Acción Fiduciaria
+      // entrega este contenido en otro formato — una sola hoja con «Cliente
+      // · Descripción · Dato / evidencia», sin responsable, fecha ni
+      // estado. Pintarlas siempre dejaría cuatro columnas vacías en un
+      // informe que está en producción.
+      //
+      // La hoja trae el avance como fracción (0.2 = 20 %), igual que
+      // PERFIL.metas.
+      columnas: {
+        mitigaciones: {
+          responsable: 'Responsable',
+          entrega: 'Fecha de entrega',
+          observaciones: 'Observaciones',
+          avance: 'Avance',
+        },
+      },
     },
     consolidado: {
       // Verificado contra el archivo real: la fila con «INDICADOR»/«META»
