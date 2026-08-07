@@ -345,3 +345,59 @@ Tres decisiones del usuario y el A/B que bloqueaba la fusión.
 - `perfiles/bancoldex.js` — `reglas.atribucionSeti`, `c3.modificadores`.
 - `automatizacion/test_specs_perfil_cliente.py`.
 - `docs/2026-08-07-cierre-bancoldex.md` (nuevo).
+
+## Ampliación del 07/08/2026 (noche) — el entregable salía sin interactividad
+
+Se detectó al revisar el PR #18 antes de pedirle revisión a alguien más: el
+HTML exportado por esta rama se generaba y se veía correcto, pero no
+respondía a ningún clic. **Tres de los cuatro defectos son preexistentes**
+(desde F3 y F4) y uno de ellos rompía también el entregable de Acción
+Fiduciaria, que está en producción. Se declara aquí y no en un change nuevo
+porque este es el único change abierto de la rama que declara
+`informe-accion-fiduciaria 1.html`, y abrir otro lo declararía dos veces.
+
+- [x] **Delta de spec escrito primero**
+  (`specs/inventario-tarjetas/spec.md`, nuevo): «el entregable exportado
+  conserva la interacción», con los cuatro escenarios.
+- [x] `resolverPerfil()` devuelve el perfil embebido tal cual. Ya viene
+  resuelto (`codigoEstadoCliente()` serializa `perfilEfectivo()`), pero
+  conserva `extiende`, así que se buscaba `window.PERFIL_BASE` — que el
+  entregable no lleva, porque `podarClon()` elimina los `<script>` de
+  perfiles. Rompía a los perfiles con herencia: Bancoldex y Novaventa.
+- [x] `actualizarResumen()` tolera que no exista `#loadSummary`. El panel de
+  carga es de autoría y el podado lo elimina, pero
+  `restaurarPresetTarjetas()` alcanza esa función al abrir el entregable.
+  **Este rompía también a Acción Fiduciaria, desde F4.**
+- [x] La tarjeta que genera `montarTarjetasDesdeInventario()` recupera el
+  `onclick` inline que traía el HTML legado. `activarModales()` engancha con
+  `btn.onclick=fn`, que es una propiedad y no se serializa: un clon solo
+  conserva atributos. **Desde F3.**
+- [x] `pintarCI()` tolera que no exista `#tbodyCI` (vive en `c11`, que un
+  perfil puede no seleccionar).
+- [x] `podarClon()` deja de arrastrar el `#dashboardModal` de la sesión de
+  autoría, devolviendo antes su contenido a la tarjeta —`openDashboard()`
+  mueve el panel al modal, así que podarlo sin más lo borraría del
+  entregable si se exporta con una tarjeta abierta.
+- [x] 5 pruebas nuevas en `automatizacion/test_specs_inventario_tarjetas.py`
+  (131 en total, OK). El arnés A/B no puede detectar esta clase de defecto:
+  compara texto visible y estado, no atributos ni listeners.
+- [x] **A/B de Acción Fiduciaria sobre esta rama: 0 diferencias.** Con dos
+  exports reales generados en la misma sesión desde los insumos de
+  julio-2026 (`Accion Fiduciaria/`), uno en `main` (`cf50713`) y otro en esta
+  rama, ambos con el mismo estado de entrada. `verificar_ab.py --autoprueba`
+  OK antes de dar el resultado por bueno.
+- [x] **Verificado en el entregable, no solo en el DOM de autoría:** el HTML
+  exportado de la rama abre 9 de sus 10 tarjetas, lleva un solo
+  `#dashboardModal` y ninguna traza del panel de carga. El export de `main`,
+  usado como control, da exactamente lo mismo (9 de 10; la décima es `c12`,
+  que no declara renderizador). Sin errores de JavaScript en ninguno de los
+  dos: los únicos 404 son los de `insumos-af.js`, preexistentes en `main`.
+
+### Ampliación de la lista de archivos
+
+- `informe-accion-fiduciaria 1.html` — guard en `resolverPerfil()`,
+  `actualizarResumen()` y `pintarCI()`; `onclick` inline en la tarjeta
+  generada; poda del `#dashboardModal` en `podarClon()`.
+- `automatizacion/test_specs_inventario_tarjetas.py`.
+- `openspec/specs/inventario-tarjetas/spec.md` y el delta del change.
+- `docs/2026-08-07-export-interactivo.md` (nuevo).
