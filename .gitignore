@@ -40,7 +40,7 @@ Insumos*/
 # Insumos reales de otros clientes (plan de refactorización multicliente,
 # docs/2026-08-04-plan-multicliente.md). Igual criterio que arriba: xlsx/pdf/
 # pptx/docx con datos reales de casos, disponibilidad y bolsa de horas de
-# Bancóldex y Novaventa nunca deben salir del equipo donde se preparan. Para
+# Bancoldex y Novaventa nunca deben salir del equipo donde se preparan. Para
 # pruebas se usan fixtures sintéticos versionados en automatizacion/fixtures/,
 # nunca estos archivos.
 Bancoldex/

@@ -187,7 +187,7 @@ exports reales → **0 diferencias** y código de salida 0.
 
 ### R4.5 Clientes pendientes **[PLAN]**
 
-Novaventa, Bancóldex y Cardio Infantil, cada uno con su clasificador y su
+Novaventa, Bancoldex y Cardio Infantil, cada uno con su clasificador y su
 detección de encabezado como estrategia registrada. Ver el plan maestro.
 
 ---
