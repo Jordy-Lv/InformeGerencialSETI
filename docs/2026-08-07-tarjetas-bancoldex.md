@@ -82,7 +82,7 @@ no selecciona.
 ```bash
 python3 -m unittest discover -s automatizacion -p 'test_*.py'
 ```
-→ `Ran 135 tests` · `OK` (126 previas + 9 nuevas de este change).
+→ `Ran 140 tests` · `OK` (126 previas + 14 nuevas de este change).
 
 ```bash
 python3 automatizacion/verificar_ab.py --autoprueba
@@ -167,19 +167,82 @@ ejecutar la verificación.
    `pctNum()` solo parsea. Se aplicó el mismo umbral `1.01` que ya usa
    `actualizarTarjetasDesdeStore()`.
 
+## El entregable exportado salía inerte (reportado por el usuario)
+
+Tras entregar lo anterior, el usuario reportó que **el HTML exportado se
+generaba pero no permitía interactuar**. Reproducido y corregido. El A/B no
+podía verlo: compara texto visible y estado, **no atributos ni listeners**,
+así que un entregable muerto le pasa por delante con cero diferencias.
+
+Eran cuatro defectos encadenados; cada uno tapaba al siguiente.
+
+1. **El perfil embebido se volvía a resolver.** `PERFIL_EMBEBIDO` ya viene
+   resuelto (`codigoEstadoCliente()` serializa `perfilEfectivo()`), pero
+   conserva `extiende`, así que `resolverPerfil()` buscaba el padre
+   (`window.PERFIL_BASE`) — que el entregable no lleva, porque `podarClon()`
+   elimina los `<script>` de perfiles para que abra solo. El throw rompía el
+   arranque entero. **Solo afectaba a los perfiles con `extiende`**:
+   Bancoldex (`base`) y Novaventa (`accion-fiduciaria`).
+2. **`pintarCI()` no toleraba una tarjeta podada.** Hace
+   `getElementById('tbodyCI').innerHTML`, y `#tbodyCI` vive dentro de `c11`,
+   que Bancoldex no selecciona. **Este sí lo introdujo el podado por preset
+   de este change.**
+3. **`actualizarResumen()` escribía en el panel de carga.**
+   `restaurarPresetTarjetas()` → `aplicarPresetTarjetas()` →
+   `actualizarResumen()` → `#loadSummary`, que `podarClon()` elimina por ser
+   herramienta de autoría. **Este era el que rompía también a Acción
+   Fiduciaria**, y viene de F4.
+4. **La tarjeta generada perdía el `onclick` inline.**
+   `montarTarjetasDesdeInventario()` (F3) construye el botón sin él, y
+   `activarModales()` engancha con `btn.onclick=fn`, que es una *propiedad*
+   y no se serializa. El HTML legado sí traía el atributo, y por eso los
+   entregables anteriores a F3 funcionaban.
+
+**Alcance real: los entregables de la rama estaban rotos para todos los
+perfiles, Acción Fiduciaria incluida, desde F3/F4.** Comprobado: el export
+de `main` (`cf50713`) tiene los 10 botones con `onclick` y abre sus paneles;
+el de `48ab8da` (F7, antes de este change) tenía 0 y no abría ninguno.
+
+Se corrigió además un defecto menor que apareció al verificar: el export
+arrastraba el `#dashboardModal` de la sesión de autoría, duplicando ese `id`
+en el entregable. Ahora se poda, devolviendo antes su contenido a la tarjeta
+—`openDashboard()` *mueve* el panel al modal, así que exportar con una
+tarjeta abierta y podar sin más habría borrado ese panel del entregable.
+
+### Verificación del arreglo
+
+Exports generados en navegador con los insumos reales, abiertos después con
+una sonda de `window.onerror` inyectada:
+
+- **Acción Fiduciaria:** 9 de 10 tarjetas abren su panel con contenido, **0
+  errores**, un solo modal en el DOM. (`c12`/Anexos no abre porque no
+  declara renderizador en el inventario — igual que en `main`.)
+- **Bancoldex:** las 8 tarjetas de su preset abren con contenido, **0
+  errores**, un solo modal.
+- **Exportando con `c5` abierta**, el entregable conserva sus 9 paneles y no
+  lleva modal residual.
+- **A/B de Acción Fiduciaria: sigue en 0 diferencias.**
+
+Cubierto por 5 pruebas nuevas (`TestEntregableInteractivo`), porque ninguna
+de las anteriores ni el A/B lo detectaban.
+
 ## Archivos tocados
 
 - `informe-accion-fiduciaria 1.html` — entradas `c3b` y `c14` en
   `INVENTARIO_TARJETAS`; sus bloques legado en el DOM; `renderC3b`,
   `renderC14`, `totalesControlBase`, `detalleMitigacion`,
   `montarLienzoFirma`, `leerFirmas`/`guardarFirmas`/`firmantesActivos`,
-  `validarClavesPerfil`; podado por preset en `podarClon()`; columnas extra
+  `validarClavesPerfil`; podado por preset y del modal de autoría en
+  `podarClon()`; corte de la resolución del perfil embebido en
+  `resolverPerfil()`; guards en `pintarCI()` y `actualizarResumen()`;
+  `onclick` inline en la tarjeta generada; columnas extra
   en `extraerCualitativosPorHojasPerfil()`; CSS de `.control-base*`,
   `.firma*`, `.avance-anillo` y `.action-item__*`.
 - `perfiles/bancoldex.js` — `lineaBase.control`, `firmantes`,
   `fuentes.cualitativos.columnas.mitigaciones`, `c3b` y `c14` en
   `tarjetas.seleccionadas`.
-- `automatizacion/test_specs_inventario_tarjetas.py` — 9 pruebas nuevas.
+- `automatizacion/test_specs_inventario_tarjetas.py` — 14 pruebas nuevas
+  (9 de las tarjetas, 5 de la interactividad del entregable).
 - `openspec/changes/2026-08-07-tarjetas-bancoldex/` — proposal, design,
   tasks y los dos deltas.
 - `openspec/specs/inventario-tarjetas/spec.md` — 4 requisitos.

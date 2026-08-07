@@ -204,5 +204,41 @@ class TestTarjetasBancoldex(unittest.TestCase):
         self.assertIn("Math.abs(avance)<=1.01?avance*100:avance", HTML)
 
 
+class TestEntregableInteractivo(unittest.TestCase):
+    """El HTML exportado tiene que responder al clic.
+
+    El arnés A/B compara texto visible y estado, no atributos ni listeners,
+    así que un entregable inerte le pasa por delante sin una sola diferencia.
+    Estas aserciones cubren los cuatro defectos que lo dejaban muerto.
+    """
+
+    def test_la_tarjeta_generada_conserva_el_onclick_inline(self):
+        """activarModales() asigna btn.onclick (propiedad), que no se
+        serializa: el clon solo lleva atributos."""
+        self.assertIn(
+            'aria-controls="det-${t.id}" onclick="toggleTarjeta(this)"', HTML
+        )
+
+    def test_el_perfil_embebido_no_se_vuelve_a_resolver(self):
+        """Ya viene resuelto; volver a hacerlo buscaba window.PERFIL_BASE,
+        que el entregable no lleva, y rompía a Bancoldex y Novaventa."""
+        self.assertIn("if(propio===PERFIL_EMBEBIDO) return propio;", HTML)
+
+    def test_los_scripts_legados_toleran_las_tarjetas_podadas(self):
+        """#tbodyCI vive en c11: un perfil que no la selecciona no la lleva."""
+        self.assertIn("const tb=document.getElementById('tbodyCI');\n  // Un perfil", HTML)
+        self.assertIn("if(!tb) return;", HTML)
+
+    def test_actualizar_resumen_tolera_la_ausencia_del_panel(self):
+        """restaurarPresetTarjetas() la alcanza al abrir el entregable, y
+        podarClon() ya eliminó #loadPanel."""
+        self.assertIn("const resumen=document.getElementById('loadSummary');", HTML)
+        self.assertIn("if(!resumen) return;", HTML)
+
+    def test_el_modal_de_autoria_no_viaja_pero_su_contenido_si(self):
+        self.assertIn("const modalClon=doc.getElementById('dashboardModal');", HTML)
+        self.assertIn("destino?.querySelector('.tarjeta-kpi__detalle-inner')?.prepend(panel);", HTML)
+
+
 if __name__ == "__main__":
     unittest.main()

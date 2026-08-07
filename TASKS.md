@@ -226,6 +226,19 @@ Detalle en [`docs/2026-08-07-tarjetas-bancoldex.md`](docs/2026-08-07-tarjetas-ba
    cualquier otro perfil. Preexistente, no lo introduce este change (con AF:
    31/31). Debería parametrizarse por `PERFIL`.
 
+5. **El HTML exportado salía inerte** (reportado por el usuario tras lo
+   anterior). Cuatro defectos encadenados, tres de ellos **preexistentes**:
+   el perfil embebido se volvía a resolver y buscaba `window.PERFIL_BASE`
+   (rompía a Bancoldex y Novaventa); `actualizarResumen()` escribía en el
+   panel de carga que el entregable no lleva (**rompía también a Acción
+   Fiduciaria, desde F4**); y la tarjeta generada desde el inventario perdía
+   el `onclick` inline, que es lo único que sobrevive al clonado (desde F3).
+   El cuarto sí lo introdujo el podado por preset: `pintarCI()` no toleraba
+   una tarjeta podada. **Los entregables de esta rama estaban rotos para
+   todos los perfiles**; los de `main` no. Corregido y cubierto por 5
+   pruebas: el A/B no lo detecta porque compara texto y estado, no atributos
+   ni listeners.
+
 ## Siguiente paso
 
 1. Conseguir revisión del PR #18 (`codex/f6-perfil-novaventa` → `main`,

@@ -215,3 +215,34 @@ marcado que antes de este cambio.
 - **WHEN** se renderiza `c8m`
 - **THEN** esa columna se omite en lugar de pintarse vacía, y el resto del
   registro se muestra con normalidad
+
+### Requirement: el entregable exportado conserva la interacción
+
+El HTML exportado SHALL permitir abrir cada tarjeta seleccionada y ver su
+panel de detalle, sin depender de estado que no sobreviva al clonado del
+DOM (listeners, propiedades de nodo) ni de nodos que el propio podado
+elimina.
+
+#### Scenario: cada tarjeta del entregable abre su panel
+
+- **GIVEN** un informe exportado de cualquier perfil
+- **WHEN** se hace clic en el resumen de una tarjeta seleccionada
+- **THEN** se abre su panel con el contenido del periodo, sin errores en
+  consola
+
+#### Scenario: un perfil que hereda abre su entregable
+
+- **GIVEN** un perfil con `extiende` declarado, como `bancoldex` o
+  `novaventa`
+- **WHEN** se abre su HTML exportado, sin los archivos de `perfiles/`
+- **THEN** el informe arranca con el perfil ya resuelto que viaja en el
+  estado, sin intentar cargar el perfil padre
+
+#### Scenario: exportar con una tarjeta abierta
+
+- **GIVEN** una tarjeta abierta en su modal en el momento de exportar
+- **WHEN** se genera el HTML
+- **THEN** el entregable conserva ese panel en su tarjeta y no lleva el
+  modal de la sesión de autoría
+
+## MODIFIED Requirements

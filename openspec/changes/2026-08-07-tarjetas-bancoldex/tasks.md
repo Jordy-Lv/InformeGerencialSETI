@@ -60,7 +60,11 @@ F7 completo.
 
 ## Verificación
 
-- [x] `python3 -m unittest discover -s automatizacion -p 'test_*.py'` en verde.
+- [x] `python3 -m unittest discover -s automatizacion -p 'test_*.py'` en verde
+      (140 pruebas).
+- [x] **El HTML exportado responde al clic**, comprobado abriendo el
+      entregable de los dos perfiles con una sonda de `window.onerror`: AF
+      9/10 tarjetas y Bancoldex 8/8, cero errores. El A/B no cubre esto.
 - [x] `python3 automatizacion/verificar_ab.py --autoprueba` OK.
 - [x] **A/B de Acción Fiduciaria en 0 diferencias** con los insumos reales de
       julio-2026, sobre el HTML exportado. Criterio de aceptación del change.
