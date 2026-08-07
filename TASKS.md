@@ -239,34 +239,81 @@ Detalle en [`docs/2026-08-07-tarjetas-bancoldex.md`](docs/2026-08-07-tarjetas-ba
    pruebas: el A/B no lo detecta porque compara texto y estado, no atributos
    ni listeners.
 
+## Organización del repositorio (07/08/2026, noche)
+
+Inventario completo de lo remoto y limpieza. Estado resultante:
+
+**Ramas remotas — quedan 4**, todas con PR abierto: `main`,
+`codex/f6-perfil-novaventa` (#18), `docs/regla-tasks-siempre` (#19),
+`docs/retira-cardio-infantil` (#20) y `feat/tarjetas-bancoldex` (publicada,
+sin PR todavía). Se borraron 10: cuatro ya fusionadas (#12, #14, #15, #16),
+`codex/f5-adaptadores-canonico` (contenida por completo en el PR #18),
+`docs/reorg-contexto` (ver abajo) y las cuatro de `cardio-infantil/`.
+
+**Nada se borró sin respaldo.** Lo que tenía historia propia quedó en tags
+anotados y publicados: `historico/cardio-infantil-*` (4) y
+`historico/bancoldex-completo`, que también cubre
+`f7/bancoldex-aranda-perfil` (era un subconjunto suyo). Se recuperan con
+`git checkout <tag>`.
+
+1. **Cardio Infantil se descarta** (decisión del usuario). PR #20 retira la
+   fase F11, el documento de inventario y las menciones vivas. **Se conserva
+   a propósito** la referencia al PR #5 como precedente: es lo que sostiene
+   la prohibición de duplicar `automatizacion/` por cliente.
+2. **Un commit remoto se había perdido:** `6d7785c` se empujó a
+   `docs/reorg-contexto` después de que el PR #17 se fusionara, así que nunca
+   llegó a `main`. Refuerza la regla de actualizar este archivo siempre.
+   Rescatado en el PR #19.
+3. **El PR #18 iba a entrar con los entregables rotos.** La corrección del
+   export inerte vivía solo en `feat/tarjetas-bancoldex`, y tres de sus
+   cuatro defectos son preexistentes — uno rompe también a Acción
+   Fiduciaria. Portada en `e89577b`, con A/B en 0 sobre exports reales
+   generados en la sesión y el entregable abierto de verdad (9 de 10
+   tarjetas, igual que el control de `main`). Ver
+   [`docs/2026-08-07-export-interactivo.md`](docs/2026-08-07-export-interactivo.md).
+4. **Worktrees:** de 9 queda **1**, el principal. Los 7 de `/private/tmp` que
+   había al empezar estaban consumidos, y los 4 temporales de esta sesión se
+   retiraron al cerrarla (limpios y con sus ramas ya publicadas).
+
 ## Siguiente paso
 
-1. Conseguir revisión del PR #18 (`codex/f6-perfil-novaventa` → `main`,
-   lleva F2–F7). **Ya solo depende de que lo revise alguien distinto del
-   autor.**
-2. Afinar las tres tarjetas nuevas con el usuario y abrir su PR
-   (`feat/tarjetas-bancoldex`), que parte de `48ab8da`.
-2. Definir con el cliente la fuente de atribución a SETI para Bancoldex. Ya
+1. Conseguir revisión de los tres PR abiertos: **#18** (F2–F7, el grande),
+   **#19** (rescate de la regla de `TASKS.md`) y **#20** (retiro de Cardio
+   Infantil + higiene de `.gitignore`). Los tres dependen solo de que los
+   revise alguien distinto del autor.
+2. Afinar las tres tarjetas nuevas con el usuario y abrir el PR de
+   `feat/tarjetas-bancoldex`, que parte de `48ab8da`. **Ojo al orden:** si
+   #18 entra primero, esta rama trae los mismos hunks del fix del export y
+   git los resolverá como ya aplicados o con un conflicto menor.
+3. Definir con el cliente la fuente de atribución a SETI para Bancoldex. Ya
    no bloquea el entregable.
-3. El hallazgo 3 (scripts externos en el export), cuando se toque la
+4. El hallazgo 3 (scripts externos en el export), cuando se toque la
    exportación; no bloquea a nadie.
 
 ## Bloqueos conocidos
 
 - `dorados/accion-fiduciaria-2026-06.json` no existe — requiere insumos
   reales de junio-2026 que no están en el repo (por diseño).
-- Cardio Infantil (F11) bloqueada hasta resolver 4 preguntas de sondeo —
-  ver `docs/arquitectura-multicliente.md`.
 
 ## Higiene pendiente
 
-- Change duplicado por errata: `openspec/changes/2026-08-05-f6-perfil-noventa/`
-  (solo tiene `specs/`, sin `tasks.md`) convive con el correcto
-  `-novaventa`. Decidir cuál se borra.
 - `2026-08-05-fundacion-documental` va 13/19: faltan specs de `exportacion`,
   renombrar `esAccionFiduciaria()`/`esClienteAccion()` y archivar el change
   de F1.
-- Sin trackear en el árbol: `.claude/launch.json`, `.claude/worktrees/`,
-  `_tmp_main_ab/` (residuo de una verificación A/B).
-- 7 worktrees registrados, varios en `/private/tmp` ya consumidos:
-  `git worktree prune`.
+- Un symlink a `Accion Fiduciaria` no queda cubierto por el patrón
+  `Accion Fiduciaria/` del `.gitignore` (la barra final solo casa
+  directorios). Sin consecuencia hoy; anotado para no redescubrirlo.
+
+### Resuelto al cerrar la sesión del 07/08
+
+- **Change duplicado por errata** (`2026-08-05-f6-perfil-noventa/`):
+  **borrado**. No había nada que decidir — era un árbol de directorios vacío,
+  sin un solo archivo, y ninguna rama del repositorio lo versiona. El correcto
+  (`-novaventa`) conserva sus cinco archivos intactos.
+- **`_tmp_main_ab/` (4,1 MB): borrado.** Antes de tocarlo se comprobó que su
+  HTML y su perfil son **idénticos byte a byte** a los de `main`; lo único
+  distinto era un symlink a `insumos-af.js`, que se retiró sin seguir el
+  enlace (el archivo original sigue en el árbol). Nada irreproducible.
+- `.gitignore` cubrirá `_tmp_*/`, `.claude/launch.json` y
+  `.claude/worktrees/` **cuando entre el PR #20**, no antes: hasta entonces
+  `.claude/launch.json` seguirá apareciendo como no trackeado. Es esperado.
