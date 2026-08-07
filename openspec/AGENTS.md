@@ -120,12 +120,21 @@ una implementación completa, verifica esta definición de terminado:
    `Archivos tocados` y `Pendiente`. Cada afirmación verificable lleva al lado
    el comando ejecutado y su resultado; una prueba no ejecutada se marca como
    pendiente, nunca como implícitamente aprobada.
-4. **Estado activo:** si cambia el estado, riesgo, bloqueo o alcance de una
-   fase, se actualiza `TASKS.md` (la raíz). Si la fase **cierra**, su fila
-   sale de `TASKS.md` y entra como entrada de 3–5 líneas en `CHANGELOG.md`,
-   enlazando al documento de sesión. Si el cambio afecta a la arquitectura
-   objetivo misma (no solo su estado), se actualiza
-   `docs/arquitectura-multicliente.md`.
+4. **Estado activo — `TASKS.md` se actualiza siempre, no solo a veces:**
+   - Al **terminar** cualquier tarea (una fase completa, una corrección
+     puntual, lo que sea): se refleja de inmediato. Si la fase **cierra**,
+     su fila sale de `TASKS.md` y entra como entrada de 3–5 líneas en
+     `CHANGELOG.md`, enlazando al documento de sesión.
+   - Al **descubrir** trabajo nuevo que no estaba anotado — un bloqueo, una
+     pregunta que hay que resolver, un pendiente que surge al implementar
+     algo distinto —: se agrega a `TASKS.md` en el momento, no se deja para
+     "recordarlo después". `TASKS.md` desactualizado es peor que no tenerlo:
+     alguien confía en él y decide con información vieja.
+   - Si el cambio afecta a la arquitectura objetivo misma (no solo su
+     estado), se actualiza además `docs/arquitectura-multicliente.md`.
+   - Nunca se cierra una sesión de trabajo con `TASKS.md` desactualizado
+     respecto de lo que se hizo o de lo que se sabe ahora y no se sabía al
+     empezar.
 5. **PR remota:** título y descripción resumen el resultado real, enumeran las
    verificaciones ejecutadas y separan claramente lo resuelto de lo pendiente.
    Tras cada push material, se revisan también comentarios, revisiones y checks

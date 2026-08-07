@@ -5,6 +5,14 @@ histórico completo de fases fusionadas, ver [`CHANGELOG.md`](CHANGELOG.md).
 Para la arquitectura objetivo (qué es cada fase y su criterio de
 aceptación), ver [`docs/arquitectura-multicliente.md`](docs/arquitectura-multicliente.md).
 
+> **Este archivo se actualiza siempre, no solo a veces.** Al terminar
+> cualquier tarea, refleja el resultado aquí antes de cerrar la sesión. Al
+> descubrir un bloqueo, una pregunta abierta o un pendiente que no estaba
+> anotado, agrégalo aquí en el momento — no lo dejes para "recordarlo
+> después". Un `TASKS.md` desactualizado es peor que no tenerlo: alguien
+> confía en él y decide con información vieja. Detalle completo en
+> `openspec/AGENTS.md` §«Al terminar», punto 4.
+
 **Regla operativa** (`openspec/AGENTS.md`): dos `changes` abiertos no pueden
 declarar el mismo archivo en su `tasks.md`. Revisa `openspec/changes/`
 (excluye `archivo/`) antes de tocar código.
@@ -230,3 +238,21 @@ Detalle en [`docs/2026-08-07-cierre-bancoldex.md`](docs/2026-08-07-cierre-bancol
   `_tmp_main_ab/` (residuo de una verificación A/B).
 - 7 worktrees registrados, varios en `/private/tmp` ya consumidos:
   `git worktree prune`.
+
+---
+
+## Tareas sueltas
+
+Lo que no es una fase completa: correcciones puntuales, deuda detectada al
+pasar, seguimientos de una PR. Se agrega aquí en cuanto se detecta y se
+quita en cuanto se resuelve — no espera a que alguien abra un change formal
+si no lo amerita.
+
+- Archivar los 5 changes de OpenSpec ya cerrados (F1–F5) — espera a que
+  F2–F6 cierren, porque exige editar `automatizacion/test_specs_*.py` que
+  el change F6 abierto también declara. Ver
+  `openspec/changes/README.md` §Estado.
+- `automatizacion/README.md` (579 líneas, el archivo de más *churn* del
+  repo) sigue siendo el segundo mayor foco de contexto pesado sin resolver
+  — quedó fuera de alcance de la reorganización documental del 06/08/2026.
+  No es urgente; anotado para no perderlo de vista.
