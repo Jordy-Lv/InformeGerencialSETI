@@ -101,3 +101,20 @@ F7 completo.
 - [ ] **`Ejecución de Backups` como cuarta fila de `c4`.** Existe en la
       fuente. El usuario decidió que backups conserva su tarjeta propia
       (`c7`); no se retoma sin una decisión nueva.
+
+## Ajuste del 07/08/2026 (tarde): sección propia para las firmas
+
+- [x] Rótulo «04 · Aprobación del informe» delante de `c14`, con
+      `data-tarjetas` para que solo lo vea el perfil que la selecciona.
+- [x] `aplicarPresetTarjetas()` oculta los rótulos condicionales sin sus
+      tarjetas; `podarClon()` los elimina del entregable.
+- [x] Regla CSS `[hidden]{display:none}` para el rótulo: `display:flex`
+      ganaba y la sección se veía igual con el atributo puesto.
+- [x] `c14` pasa a formato compacto (sin `dash-grid--full`), que era lo que
+      solapaba la etiqueta con el valor.
+- [x] Delta aplicado a `openspec/specs/inventario-tarjetas/spec.md`.
+- [x] 146 pruebas en verde y **A/B de Acción Fiduciaria en 0 diferencias**
+      contra `main` (`2a9e79f`), con los insumos reales de julio-2026.
+- [x] Verificado en navegador con Bancoldex: la sección aparece y la tarjeta
+      ya no se solapa. Con Acción Fiduciaria el rótulo no se pinta ni viaja
+      en su entregable.

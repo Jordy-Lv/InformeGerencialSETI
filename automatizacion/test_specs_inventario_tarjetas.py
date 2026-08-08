@@ -203,6 +203,48 @@ class TestTarjetasBancoldex(unittest.TestCase):
         """La hoja trae 0.2; pctNum() no reescala y pintaba «0 %»."""
         self.assertIn("Math.abs(avance)<=1.01?avance*100:avance", HTML)
 
+    def test_las_firmas_tienen_su_propia_seccion(self):
+        """c14 colgaba de «Seguimiento del servicio» sin rótulo propio."""
+        self.assertIn(
+            '<div class="report-section-label" data-tarjetas="c14">'
+            "<span>04</span><h2>Aprobación del informe</h2></div>",
+            HTML,
+        )
+
+    def test_la_seccion_de_firmas_precede_a_su_tarjeta(self):
+        rotulo = HTML.index('data-tarjetas="c14"')
+        tarjeta = HTML.index('id="tk-c14"')
+        self.assertLess(rotulo, tarjeta)
+        # Y nada se interpone: el rótulo encabeza esa tarjeta, no otra.
+        self.assertNotIn('id="tk-', HTML[rotulo:tarjeta])
+
+    def test_un_rotulo_condicional_se_oculta_sin_sus_tarjetas(self):
+        """Sin esto, Acción Fiduciaria vería una sección vacía —y el texto
+        del rótulo saldría como diferencia en su A/B."""
+        self.assertIn(
+            "document.querySelectorAll('.report-section-label[data-tarjetas]')",
+            HTML,
+        )
+        self.assertIn("rotulo.hidden=!suyas.some(id=>activas.has(id));", HTML)
+
+    def test_el_rotulo_oculto_no_se_sigue_pintando(self):
+        """`display:flex` gana sobre el `display:none` que el navegador da a
+        `[hidden]`: el atributo estaba puesto y la sección se veía igual."""
+        self.assertIn(
+            ".dash-grid--proposal .report-section-label[hidden]{display:none}",
+            HTML,
+        )
+
+    def test_el_rotulo_podado_no_viaja_en_el_entregable(self):
+        self.assertIn(
+            "if(!suyas.some(id=>idsActivos.has(id))) rotulo.remove();", HTML
+        )
+
+    def test_c14_usa_el_formato_compacto(self):
+        """El formato ancho solapaba la etiqueta con el valor."""
+        self.assertIn('<div class="tarjeta-kpi" id="tk-c14">', HTML)
+        self.assertNotIn('dash-grid--full" id="tk-c14"', HTML)
+
 
 class TestEntregableInteractivo(unittest.TestCase):
     """El HTML exportado tiene que responder al clic.

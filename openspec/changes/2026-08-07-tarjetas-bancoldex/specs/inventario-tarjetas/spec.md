@@ -68,6 +68,53 @@ de red.
 - **THEN** el trazo va embebido como imagen en base64, sin referencias a
   archivos externos
 
+### Requirement: sección propia para las firmas, condicionada al perfil
+
+El informe SHALL agrupar la tarjeta de firmas bajo su propio rótulo de
+sección, «04 · Aprobación del informe», al mismo nivel que «Marco
+contractual», «Operación del período» y «Seguimiento del servicio».
+
+Un rótulo de sección MAY declarar de qué tarjetas depende. Cuando lo hace,
+SHALL mostrarse solo si el perfil activo selecciona al menos una de ellas, y
+SHALL desaparecer del HTML exportado cuando el podado se lleva todas.
+
+La dependencia se declara como dato en el marcado (una lista de
+identificadores), no como comportamiento: el motor aplica la misma regla a
+cualquier sección que la use.
+
+#### Scenario: Bancoldex ve la sección de aprobación
+
+- **GIVEN** el perfil `bancoldex`, que selecciona `c14`
+- **WHEN** se renderiza el informe
+- **THEN** el rótulo «04 · Aprobación del informe» encabeza la tarjeta de
+  firmas
+
+#### Scenario: un perfil que no firma no ve la sección
+
+- **GIVEN** el perfil `accion-fiduciaria`, que no selecciona `c14`
+- **WHEN** se renderiza el informe
+- **THEN** el rótulo no aparece, y el informe conserva sus tres secciones
+  sin ninguna cabecera vacía
+
+#### Scenario: el rótulo no viaja en un entregable sin sus tarjetas
+
+- **GIVEN** un perfil que no selecciona ninguna tarjeta de la sección
+- **WHEN** se genera el HTML exportado
+- **THEN** el rótulo se elimina del entregable, no viaja oculto
+
+### Requirement: la tarjeta de firmas usa el formato compacto
+
+La tarjeta `c14` SHALL presentarse con el formato compacto de una sola
+columna, no con el de ancho completo reservado a las tarjetas de varios
+campos (`dash-grid--full`).
+
+#### Scenario: el resumen no se solapa
+
+- **GIVEN** `c14` renderizada en su sección
+- **WHEN** se observa su resumen colapsado
+- **THEN** la etiqueta, el valor y la nota se apilan sin solaparse, como en
+  las demás tarjetas de un solo dato
+
 ### Requirement: el entregable solo contiene las tarjetas seleccionadas
 
 El HTML exportado SHALL contener únicamente las tarjetas que el perfil
