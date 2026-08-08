@@ -8,6 +8,11 @@ import re
 import unittest
 from pathlib import Path
 
+try:
+    from .deltas_openspec import leer_delta
+except ImportError:  # ejecución directa del archivo, sin paquete
+    from deltas_openspec import leer_delta
+
 
 RAIZ = Path(__file__).resolve().parent.parent
 HTML = (RAIZ / "informe-accion-fiduciaria 1.html").read_text(encoding="utf-8")
@@ -15,18 +20,9 @@ PERFIL = (RAIZ / "perfiles/accion-fiduciaria.js").read_text(encoding="utf-8")
 NOVAVENTA = (RAIZ / "perfiles/novaventa.js").read_text(encoding="utf-8")
 BANCOLDEX = (RAIZ / "perfiles/bancoldex.js").read_text(encoding="utf-8")
 SPEC = (RAIZ / "openspec/specs/perfil-cliente/spec.md").read_text(encoding="utf-8")
-DELTA = (
-    RAIZ
-    / "openspec/changes/2026-08-04-f1-perfil-cliente/specs/perfil-cliente/spec.md"
-).read_text(encoding="utf-8")
-DELTA_F2 = (
-    RAIZ
-    / "openspec/changes/2026-08-05-f2-contrato-perfil/specs/perfil-cliente/spec.md"
-).read_text(encoding="utf-8")
-DELTA_F6 = (
-    RAIZ
-    / "openspec/changes/2026-08-05-f6-perfil-novaventa/specs/perfil-cliente/spec.md"
-).read_text(encoding="utf-8")
+DELTA = leer_delta("2026-08-04-f1-perfil-cliente", "perfil-cliente")
+DELTA_F2 = leer_delta("2026-08-05-f2-contrato-perfil", "perfil-cliente")
+DELTA_F6 = leer_delta("2026-08-05-f6-perfil-novaventa", "perfil-cliente")
 
 
 def _compacto(texto):

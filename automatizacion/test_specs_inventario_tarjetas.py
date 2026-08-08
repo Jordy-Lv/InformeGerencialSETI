@@ -4,6 +4,11 @@ import re
 import unittest
 from pathlib import Path
 
+try:
+    from .deltas_openspec import leer_delta
+except ImportError:  # ejecución directa del archivo, sin paquete
+    from deltas_openspec import leer_delta
+
 
 RAIZ = Path(__file__).resolve().parent.parent
 HTML = (RAIZ / "informe-accion-fiduciaria 1.html").read_text(encoding="utf-8")
@@ -11,26 +16,11 @@ PERFIL = (RAIZ / "perfiles/accion-fiduciaria.js").read_text(encoding="utf-8")
 NOVAVENTA = (RAIZ / "perfiles/novaventa.js").read_text(encoding="utf-8")
 BANCOLDEX = (RAIZ / "perfiles/bancoldex.js").read_text(encoding="utf-8")
 SPEC = (RAIZ / "openspec/specs/inventario-tarjetas/spec.md").read_text(encoding="utf-8")
-DELTA = (
-    RAIZ
-    / "openspec/changes/2026-08-05-f3-inventario-tarjetas/specs/inventario-tarjetas/spec.md"
-).read_text(encoding="utf-8")
-DELTA_STORE = (
-    RAIZ
-    / "openspec/changes/2026-08-05-f3-inventario-tarjetas/specs/store-reporte/spec.md"
-).read_text(encoding="utf-8")
-DELTA_F4_INVENTARIO = (
-    RAIZ
-    / "openspec/changes/2026-08-05-f4-plantilla-preset/specs/inventario-tarjetas/spec.md"
-).read_text(encoding="utf-8")
-DELTA_F4_PRESET = (
-    RAIZ
-    / "openspec/changes/2026-08-05-f4-plantilla-preset/specs/preset-tarjetas/spec.md"
-).read_text(encoding="utf-8")
-DELTA_F6 = (
-    RAIZ
-    / "openspec/changes/2026-08-05-f6-perfil-novaventa/specs/inventario-tarjetas/spec.md"
-).read_text(encoding="utf-8")
+DELTA = leer_delta("2026-08-05-f3-inventario-tarjetas", "inventario-tarjetas")
+DELTA_STORE = leer_delta("2026-08-05-f3-inventario-tarjetas", "store-reporte")
+DELTA_F4_INVENTARIO = leer_delta("2026-08-05-f4-plantilla-preset", "inventario-tarjetas")
+DELTA_F4_PRESET = leer_delta("2026-08-05-f4-plantilla-preset", "preset-tarjetas")
+DELTA_F6 = leer_delta("2026-08-05-f6-perfil-novaventa", "inventario-tarjetas")
 
 IDS = ["c3", "c4", "c5", "c6", "c7", "c8", "c8m", "c9", "c11", "c12"]
 CRITERIOS = [

@@ -49,8 +49,10 @@ openspec/changes/<fecha>-<id>/
   specs/<capacidad>/spec.md   Delta: ADDED / MODIFIED / REMOVED
 ```
 
-Toma como modelo `openspec/changes/2026-08-04-f1-perfil-cliente/`: está
-cerrado con A/B en cero y sirve de referencia de nivel de detalle.
+Toma como modelo `openspec/changes/archivo/2026-08-04-f1-perfil-cliente/`:
+está cerrado con A/B en cero y sirve de referencia de nivel de detalle.
+Vive bajo `archivo/` porque un change cerrado se mueve ahí; los abiertos
+cuelgan directamente de `openspec/changes/`.
 
 ## Paso 4 — Escribir el delta antes que el código
 

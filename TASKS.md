@@ -22,7 +22,7 @@ Bancoldex cerrado y A/B de AF en 0, ver «Cierre del 07/08/2026» más abajo.
 
 **El cliente se escribe «Bancoldex», sin tilde.** Corregido en todo el
 repositorio el 07/08/2026 (232 ocurrencias, 28 archivos). La regla y su
-comprobación están en `openspec/changes/2026-08-05-f7-bancoldex-aranda/design.md`.
+comprobación están en `openspec/changes/archivo/2026-08-05-f7-bancoldex-aranda/design.md`.
 No reintroducir `Bancóldex`.
 
 ---
@@ -356,6 +356,44 @@ más:
 3. **Nada se perdió.** Las 4 ramas quedaron en tags anotados y publicados,
    `historico/cardio-infantil-*`. Se recuperan con `git checkout <tag>`.
 
+## Sección propia para las firmas y archivado de changes (07/08/2026)
+
+**1. La tarjeta de firmas estaba huérfana.** Colgaba del final de
+«Seguimiento del servicio» sin rótulo propio, y usaba el formato ancho de
+las tarjetas de varios campos: con un solo dato, la etiqueta y el valor se
+solapaban en pantalla («FIRMAS APROBADORAS0 de 3 firmadas»).
+
+Ahora tiene su sección, **«04 · Aprobación del informe»**, y el formato
+compacto de una columna.
+
+El rótulo **no puede ser fijo**: Acción Fiduciaria no firma el informe y
+habría visto una cabecera vacía, además de una diferencia de texto en su
+A/B. Se declara con `data-tarjetas` de qué tarjetas depende y el motor lo
+oculta si el perfil no selecciona ninguna; `podarClon()` lo elimina del
+entregable en vez de dejarlo viajar oculto. La regla es genérica, sirve para
+cualquier sección condicional futura.
+
+**Un defecto que solo se vio mirando el navegador:** `display:flex` del
+rótulo ganaba sobre el `display:none` que el navegador aplica a `[hidden]`,
+así que el atributo estaba puesto y la sección se pintaba igual. El DOM
+decía que estaba oculta. Corregido con una regla `[hidden]{display:none}` y
+cubierto por prueba.
+
+**2. Archivados los 7 changes de F1–F7**, ya cerrados y en `main`. Quedan
+dos abiertos de verdad: `fundacion-documental` y `tarjetas-bancoldex`.
+
+Antes había que desactivar la trampa conocida: **tres archivos de pruebas
+apuntaban con ruta rígida** a esos changes, así que archivarlos rompía la
+suite — que es exactamente lo que ya pasó una vez. En vez de reescribir las
+rutas, se extrajo `automatizacion/deltas_openspec.py`, que busca el delta
+esté abierto o archivado. `test_specs_store_reporte.py` tenía su propia
+copia del helper; ahora los cuatro usan el mismo. **La prueba deja de
+depender de en qué fase del ciclo está el change que la respalda.**
+
+Verificación: **146 pruebas en verde** antes y después de archivar, y **A/B
+de Acción Fiduciaria en 0 diferencias** contra `main` (`2a9e79f`) con los
+insumos reales de julio-2026.
+
 ## Siguiente paso
 
 Los tres PR de la migración (**#18**, **#19** y **#20**) están **fusionados
@@ -377,9 +415,14 @@ a `main`** y sus ramas borradas. Queda una sola rama viva:
 
 ## Higiene pendiente
 
-- `2026-08-05-fundacion-documental` va 13/19: faltan specs de `exportacion`,
-  renombrar `esAccionFiduciaria()`/`esClienteAccion()` y archivar el change
-  de F1.
+- `2026-08-05-fundacion-documental` va 14/19: faltan specs de `exportacion`
+  y renombrar `esAccionFiduciaria()`/`esClienteAccion()`. **Archivar el
+  change de F1 ya está hecho** (07/08), junto con los de F2–F7.
+- Las **actas fechadas de `docs/` citan rutas de changes que ahora viven
+  bajo `archivo/`**. No se reescriben, por el mismo criterio que se aplicó
+  al retirar Cardio Infantil: son el registro de dónde estaban las cosas ese
+  día. Los documentos vivos (`TASKS.md`, la skill `nuevo-change`) sí se
+  actualizaron.
 - Un symlink a `Accion Fiduciaria` no queda cubierto por el patrón
   `Accion Fiduciaria/` del `.gitignore` (la barra final solo casa
   directorios). Sin consecuencia hoy; anotado para no redescubrirlo.
